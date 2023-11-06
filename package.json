@@ -8,9 +8,18 @@
   "license": "MIT",
   "scripts": {
     "generate": "tree-sitter generate",
+    "highlight": "tree-sitter highlight",
     "parse": "tree-sitter parse",
     "test": "tree-sitter test"
   },
+  "tree-sitter": [
+    {
+      "scope": "source.js",
+      "file-types": [
+        "publicodes"
+      ]
+    }
+  ],
   "dependencies": {
     "nan": "^2.18.0"
   },
