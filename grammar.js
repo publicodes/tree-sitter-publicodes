@@ -1,20 +1,27 @@
-const 
-	COLON = ":",
-	unicode_letter = /[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nl}]/u,
-	LETTER = choice(unicode_letter),
-	space_indent = / {2}/,
-	tab_indent = /\t/,
-	INDENT = choice(space_indent, tab_indent),
-	DEDENT = token.immediate(seq(INDENT, optional(/\n/))),
-	NEW_LINE = /\r?\n/;
+// From https://github.com/publicodes/publicodes/blob/6ee8c5d2316c8099931504b401feaaabd22b89c8/packages/core/source/grammar.ne#L17C6-L19
+const letter = /[a-zA-Z\u00C0-\u017F€$%]/
+const letterOrNumber = /[a-zA-Z\u00C0-\u017F0-9\',°\s]/
+
+const word = seq(letter, repeat(letterOrNumber))
+
+const space_indent= / {2}/
+const tab_indent =/\t/
+const indent = choice(space_indent, tab_indent)
+const dedent = token.immediate(seq(indent, optional(/\n/)))
 
 module.exports = grammar({
   name: "publicodes",
 
-  extras: ($) => [
-    /\s/, // whitespace
+  extras: $ => [
+		/[\s\f\uFEFF\u2060\u200B]/,
+		/\r?\n/,
     $.comment,
   ],
+
+	conflicts: $ => [
+	],
+
+	word: $ => $.identifier,
 
   rules: {
     source_file: $ => repeat($._definition),
@@ -24,23 +31,30 @@ module.exports = grammar({
 			$.value_definition,
 		),
 
+		_rule_name : $ => seq(
+			field('name', $.identifier), ":",
+		),
+
+		namespace_definition: $ =>  $._rule_name,
+
 		value_definition: $ => seq(
-			field('name', $.identifier), COLON,
+			$._rule_name,
 			field('value', $._expression)
 		),
 
     rule_definition: $ => seq(
-			field('name', $.identifier), COLON,
+			$._rule_name,
 			field('body', $.rule_body)
 		),
 
     rule_body: $ => seq(
 			$._statement,
 			repeat($._statement),
+			optional(dedent),
 		),
 
 		_statement: $ => seq(
-			INDENT,
+			indent,
 			choice(
 				$.mechanism,
 			)
@@ -50,10 +64,11 @@ module.exports = grammar({
 			$.valeur,
 		),
 
-    valeur: $ => seq("valeur", COLON, $._expression),
+    valeur: $ => seq("valeur", ":", $._expression),
 
     _expression: $ => choice(
-			$.constant
+			$.constant,
+			$.empty,
 			// TODO: binary expressions, references, etc.
 		),
 
@@ -63,14 +78,12 @@ module.exports = grammar({
 			$.boolean,
 		),
 
-		identifier: $ => token(seq(
-      LETTER,
-      repeat(choice(LETTER, " . "))
-    )),
+		identifier: _ => token(seq(word, repeat(seq(" . ", word)))),
 
-    string: $ => /".*?"/,
-    comment: $ => /#.*/,
-		number: $ => /\d+/,
-		boolean: $ => choice("oui", "non"),
+		empty: _ => /(\r|\s)*\n/,
+		boolean: _ => choice("oui", "non"),
+    string: _ => /".*?"/,
+    comment: _ => /#.*/,
+		number: _ => /\d+/,
   },
 });

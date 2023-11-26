@@ -1,0 +1,124 @@
+========================
+Simple value definition
+========================
+
+règle: 10
+
+---
+
+(source_file
+	(value_definition
+		name: (identifier)
+		value: (constant (number))))
+
+===============================
+Simple empty value definition
+===============================
+
+règle: 
+
+---
+
+(source_file
+	(value_definition
+		name: (identifier)
+		value: (empty)))
+
+=======================
+Simple rule definition
+=======================
+
+règle:
+  valeur: 10
+
+---
+
+(source_file
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number)))))))
+
+===================================
+Two simple rule defs with `valeur`
+===================================
+
+règle:
+  valeur: 10
+
+règle2:
+  valeur: 10
+
+---
+
+(source_file
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number))))))
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number)))))))
+
+========================================
+Simple rule defs with complex rule name
+=======================================
+
+règle . test:
+  valeur: 10
+
+règle test:
+  valeur: 10
+
+transport . arrêter l'avion:
+  valeur: 10
+
+transport . arrêter l'avion 2 . test:
+  valeur: 10
+
+règle . 1:
+  valeur: 10
+
+---
+
+(source_file
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number))))))
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number))))))
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number))))))
+	(rule_definition
+		name: (identifier)
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number))))))
+	(rule_definition
+		name: (identifier)
+		(ERROR
+			(UNEXPECTED '.')
+			(number))
+		body: (rule_body
+			(mechanism
+			 (valeur
+				(constant (number)))))))
