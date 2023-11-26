@@ -9,6 +9,10 @@ const tab_indent =/\t/
 const indent = choice(space_indent, tab_indent)
 const dedent = token.immediate(seq(indent, optional(/\n/)))
 
+const indentedBlock = (rule) => {
+	return seq(indent, repeat1(rule), optional(dedent))
+}
+
 module.exports = grammar({
   name: "publicodes",
 
@@ -19,9 +23,11 @@ module.exports = grammar({
   ],
 
 	conflicts: $ => [
+
 	],
 
-	word: $ => $.identifier,
+	// FIXME: issue with boolean and identifier
+	// word: $ => $.identifier,
 
   rules: {
     source_file: $ => repeat($._definition),
@@ -39,7 +45,7 @@ module.exports = grammar({
 
 		value_definition: $ => seq(
 			$._rule_name,
-			field('value', $._expression)
+			field('value', choice($._expression, $.empty))
 		),
 
     rule_definition: $ => seq(
@@ -47,28 +53,26 @@ module.exports = grammar({
 			field('body', $.rule_body)
 		),
 
-    rule_body: $ => seq(
-			$._statement,
-			repeat($._statement),
-			optional(dedent),
-		),
+    rule_body: $ => indentedBlock($._statement),
 
-		_statement: $ => seq(
-			indent,
-			choice(
+		_statement: $ => choice(
 				$.mechanism,
-			)
-		),
+			),
 
 		mechanism: $ => choice(
 			$.valeur,
+			$.somme,
 		),
 
-    valeur: $ => seq("valeur", ":", $._expression),
+    valeur: $ => seq('valeur', ':', $._expression),
+
+		somme: $ => prec.left(seq(
+			'somme', ':',
+			indentedBlock(seq('-', $._expression)),
+		)),
 
     _expression: $ => choice(
 			$.constant,
-			$.empty,
 			// TODO: binary expressions, references, etc.
 		),
 
@@ -81,9 +85,10 @@ module.exports = grammar({
 		identifier: _ => token(seq(word, repeat(seq(" . ", word)))),
 
 		empty: _ => /(\r|\s)*\n/,
-		boolean: _ => choice("oui", "non"),
+		boolean: _ => choice('oui', 'non'),
     string: _ => /".*?"/,
     comment: _ => /#.*/,
-		number: _ => /\d+/,
+		// TODO: may want to distinguish between integers and floats
+		number: _ => /\d+(\.\d)*/,
   },
 });

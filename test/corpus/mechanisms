@@ -1,0 +1,38 @@
+================================================================================
+Somme
+================================================================================
+
+somme . number: 
+	somme:
+		- 10
+		- 10.5
+
+somme . with boolean: 
+	somme:
+		- 10
+		- 10.5
+		- oui
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule_definition
+    (identifier)
+    (rule_body
+      (mechanism
+        (somme
+          (constant
+            (number))
+          (constant
+            (number))))))
+  (rule_definition
+    (identifier)
+    (rule_body
+      (mechanism
+        (somme
+          (constant
+            (number))
+          (constant
+            (number))
+          (constant
+            (boolean)))))))

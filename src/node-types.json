@@ -36,6 +36,10 @@
       "required": true,
       "types": [
         {
+          "type": "somme",
+          "named": true
+        },
+        {
           "type": "valeur",
           "named": true
         }
@@ -84,6 +88,21 @@
     }
   },
   {
+    "type": "somme",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constant",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -112,10 +131,6 @@
       "types": [
         {
           "type": "constant",
-          "named": true
-        },
-        {
-          "type": "empty",
           "named": true
         }
       ]
@@ -152,6 +167,10 @@
     }
   },
   {
+    "type": "-",
+    "named": false
+  },
+  {
     "type": ":",
     "named": false
   },
@@ -177,6 +196,10 @@
   },
   {
     "type": "oui",
+    "named": false
+  },
+  {
+    "type": "somme",
     "named": false
   },
   {
