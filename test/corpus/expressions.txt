@@ -9,8 +9,7 @@ a: 10
 (source_file
   (value_definition
     name: (identifier)
-    value: (constant
-      (number))))
+    value: (number)))
 
 ================================================================================
 Float constant
@@ -23,8 +22,7 @@ a: 10.2
 (source_file
   (value_definition
     name: (identifier)
-    value: (constant
-      (number))))
+    value: (number)))
 
 ================================================================================
 Boolean constant
@@ -38,9 +36,8 @@ b: non
 (source_file
   (value_definition
     (identifier)
-    (constant
-      (boolean)))
+    (true))
   (value_definition
     (identifier)
-    (constant
-      (boolean))))
+    (false)))
+

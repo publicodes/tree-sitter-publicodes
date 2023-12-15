@@ -296,15 +296,23 @@
       "members": [
         {
           "type": "SYMBOL",
+          "name": "true"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "false"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
           "name": "number"
         },
         {
           "type": "SYMBOL",
           "name": "string"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "boolean"
         }
       ]
     },
@@ -360,22 +368,31 @@
         ]
       }
     },
-    "empty": {
-      "type": "PATTERN",
-      "value": "(\\r|\\s)*\\n"
-    },
-    "boolean": {
-      "type": "CHOICE",
-      "members": [
-        {
+    "true": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
           "type": "STRING",
           "value": "oui"
-        },
-        {
+        }
+      }
+    },
+    "false": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
           "type": "STRING",
           "value": "non"
         }
-      ]
+      }
+    },
+    "empty": {
+      "type": "PATTERN",
+      "value": "(\\r|\\s)*\\n"
     },
     "string": {
       "type": "PATTERN",
@@ -407,7 +424,9 @@
   "conflicts": [],
   "precedences": [],
   "externals": [],
-  "inline": [],
+  "inline": [
+    "constant"
+  ],
   "supertypes": []
 }
 

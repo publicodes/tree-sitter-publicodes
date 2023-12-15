@@ -9,8 +9,7 @@ règle: 10
 (source_file
   (value_definition
     (identifier)
-    (constant
-      (number))))
+    (number)))
 
 ================================================================================
 Simple empty value definition
@@ -40,8 +39,7 @@ règle:
     body: (rule_body
       (mechanism
         (valeur
-          (constant
-            (number)))))))
+          (number))))))
 
 ================================================================================
 Two simple rule defs with `valeur`
@@ -61,15 +59,13 @@ règle2:
     body: (rule_body
       (mechanism
         (valeur
-          (constant
-            (number))))))
+          (number)))))
   (rule_definition
     name: (identifier)
     body: (rule_body
       (mechanism
         (valeur
-          (constant
-            (number)))))))
+          (number))))))
 
 ================================================================================
 Simple rule defs with complex rule name
@@ -98,29 +94,25 @@ règle . 1:
     (rule_body
       (mechanism
         (valeur
-          (constant
-            (number))))))
+          (number)))))
   (rule_definition
     (identifier)
     (rule_body
       (mechanism
         (valeur
-          (constant
-            (number))))))
+          (number)))))
   (rule_definition
     (identifier)
     (rule_body
       (mechanism
         (valeur
-          (constant
-            (number))))))
+          (number)))))
   (rule_definition
     (identifier)
     (rule_body
       (mechanism
         (valeur
-          (constant
-            (number))))))
+          (number)))))
   (rule_definition
     (identifier)
     (ERROR
@@ -129,5 +121,4 @@ règle . 1:
     (rule_body
       (mechanism
         (valeur
-          (constant
-            (number)))))))
+          (number))))))
