@@ -35,9 +35,26 @@ b: non
 
 (source_file
   (value_definition
-    (identifier)
-    (true))
+    name: (identifier)
+    value: (true))
   (value_definition
-    (identifier)
-    (false)))
+    name: (identifier)
+    value: (false)))
 
+================================================================================
+Identifier constant
+================================================================================
+
+rule:
+
+rule . sub: rule
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (value_definition
+	name: (identifier)
+	value: (empty))
+  (value_definition
+	name: (identifier)
+	value: (identifier)))
