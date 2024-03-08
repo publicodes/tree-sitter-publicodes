@@ -1,0 +1,129 @@
+================================================================================
+Integer constant
+================================================================================
+
+a: 10
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule_definition
+    dottedName: (identifier)
+    value: (number)))
+
+================================================================================
+Float constant
+================================================================================
+
+a: 10.2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule_definition
+    dottedName: (identifier)
+    value: (number)))
+
+================================================================================
+Number with unit - 1
+================================================================================
+
+a: 10.2 €
+c: 28 animaux de compagnie
+d: 4°C
+e: 6 $ canadiens
+f: 5%
+g: 34.4m²
+ 
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit)))))
+
+
+
+================================================================================
+Number with unit - 2
+================================================================================
+
+
+b: 14 heures travaillées /jour
+c: 5 kW.h
+d: 10 % /an
+e: 15 €/mois
+f: 65.6 € /kW.h /éolienne
+
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit)
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit)
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit)
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit)
+        (unit))))
+  (rule_definition
+    (identifier)
+    (number
+      (units
+        (unit)
+        (unit)
+        (unit)
+        (unit)))))
+
+
+================================================================================
+Number with unit - 3 (TODO)
+:error
+================================================================================
+a: 5.8 L/100km
+b: 12 €/100g

@@ -1,8 +1,22 @@
 // From https://github.com/publicodes/publicodes/blob/6ee8c5d2316c8099931504b401feaaabd22b89c8/packages/core/source/grammar.ne#L17C6-L19
-const letter = /[a-zA-Z\u00C0-\u017F€$%]/;
-const letterOrNumber = /[a-zA-Z\u00C0-\u017F0-9\',°\s]/;
+const letter = /[a-zA-Z\u00C0-\u017F]/;
+const digit = /[0-9]/;
+const symbol = /[',°€%²$_()’"«»]/;
+const anyChar = choice(letter, symbol, digit);
+const wordStartingWithLetter = seq(letter, repeat(anyChar));
 
-const word = seq(letter, repeat(letterOrNumber));
+const wordsStartingWith = (word) =>
+    seq(word, repeat(seq(" ", repeat1(anyChar))));
+
+const words = wordsStartingWith(wordStartingWithLetter);
+
+const unitSymbol = /[°%\p{Sc}]/; // °, %, and all currency symbols (to be completed?)
+
+const unitWord = choice(
+    seq(unitSymbol, repeat(anyChar)),
+    wordStartingWithLetter
+);
+const unit = wordsStartingWith(unitWord);
 
 const space_indent = / {2}/;
 const tab_indent = /\t/;
@@ -30,18 +44,18 @@ module.exports = grammar({
     // word: ($) => $.identifier,
 
     rules: {
-        source_file: ($) => repeat($._definition),
+        source_file: ($) => repeat(choice($.rule_definition, $._empty)),
 
-        _definition: ($) => choice($.rule_definition, $.value_definition),
+        _rule_name: ($) => seq(field("dottedName", $.identifier), ":"),
 
-        _rule_name: ($) => seq(field("name", $.identifier), ":"),
-
-        namespace_definition: ($) => $._rule_name,
-
-        value_definition: ($) =>
-            seq($._rule_name, field("value", choice($._expression, $.empty))),
-
-        rule_definition: ($) => seq($._rule_name, field("body", $.rule_body)),
+        rule_definition: ($) =>
+            seq(
+                $._rule_name,
+                choice(
+                    field("body", $.rule_body),
+                    field("value", choice($._expression, $._empty))
+                )
+            ),
 
         rule_body: ($) => indentedBlock($._statement),
 
@@ -53,27 +67,32 @@ module.exports = grammar({
 
         somme: ($) =>
             prec.left(
-                seq("somme", ":", indentedBlock(seq("-", $._expression))),
+                seq("somme", ":", indentedBlock(seq("-", $._expression)))
             ),
 
-        _expression: ($) =>
-            choice(
-                $.constant,
-                // TODO: binary expressions, references, etc.
-            ),
+        _expression: ($) => $.constant,
 
         constant: ($) =>
             choice($.true, $.false, $.identifier, $.number, $.string),
 
-        identifier: (_) => token(seq(word, repeat(seq(" . ", word)))),
+        identifier: (_) => token(seq(words, repeat(seq(" . ", words)))),
 
         true: (_) => token(prec(2, "oui")),
         false: (_) => token(prec(2, "non")),
 
-        empty: (_) => /(\r|\s)*\n/,
+        _empty: (_) => /(\r|\s)*\n/,
         string: (_) => /".*?"/,
         comment: (_) => /#.*/,
         // TODO: may want to distinguish between integers and floats
-        number: (_) => /\d+(\.\d)*/,
+        number: ($) => seq(/\d+(\.\d)*/, optional($.units)),
+        units: ($) =>
+            seq(
+                / ?/,
+                field("numerators", $._units),
+                field("denominators", repeat(seq(/ ?\//, $._units)))
+            ),
+        _units: ($) => seq($.unit, repeat(seq(/ ?\./, $.unit))),
+        unit: ($) => seq(token.immediate(unit), optional($.exposant)),
+        exposant: () => token.immediate(choice("²", "³")),
     },
 });

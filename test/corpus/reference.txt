@@ -1,0 +1,16 @@
+================================================================================
+Identifier constant
+================================================================================
+
+rule:
+
+rule . sub: rule
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule_definition
+	dottedName: (identifier))
+  (rule_definition
+	dottedName: (identifier)
+	value: (identifier)))

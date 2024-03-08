@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Publicodes grammar for tree-sitter",
   "main": "bindings/node",
+  "types": "bindings/node",
   "repository": "git@github.com:publicodes/tree-sitter-publicodes.git",
   "author": "Emile Rolley <emile.rolley@tuta.io>",
   "license": "MIT",
@@ -10,7 +11,9 @@
     "generate": "tree-sitter generate",
     "highlight": "tree-sitter highlight",
     "parse": "yarn run generate && tree-sitter parse",
-    "test": "yarn run generate && tree-sitter test"
+    "test": "yarn run generate && tree-sitter test",
+    "install": "node-gyp-build",
+    "prebuildify": "prebuildify --napi --strip"
   },
   "tree-sitter": [
     {
@@ -21,9 +24,27 @@
     }
   ],
   "dependencies": {
-    "nan": "^2.18.0"
+    "node-addon-api": "^7.1.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree_sitter": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.20.8"
-  }
+    "tree-sitter-cli": "^0.22.2",
+    "prebuildify": "^6.0.0"
+  },
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
+  ]
 }
