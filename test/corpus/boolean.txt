@@ -11,8 +11,8 @@ b: non
 (source_file
   (rule
     (name)
-    value: (true))
+    value: (boolean))
   (rule
     (name)
-    value: (false)))
+    value: (boolean)))
 

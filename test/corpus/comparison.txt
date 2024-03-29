@@ -1,0 +1,78 @@
+================================================================================
+Comparison of number
+================================================================================
+
+a: -15 € > 45
+b: (12 * 4) <= -45 * (54 / e)
+c: a != 5
+b: poa azd = dzad l
+--------------------------------------------------------------------------------
+    (source_file
+      (rule
+        (name)
+        (comparison
+          (ar_unary_expression
+            (number
+              (units
+                (unit))))
+          (number)))
+      (rule
+        (name)
+        (comparison
+          (ar_binary_expression
+            (number)
+            (number))
+          (ar_binary_expression
+            (ar_unary_expression
+              (number))
+            (ar_binary_expression
+              (number)
+              (reference
+                (name))))))
+      (rule
+        (name)
+        (comparison
+          (reference
+            (name))
+          (number)))
+      (rule
+        (name)
+        (comparison
+          (reference
+            (name))
+          (reference
+            (name)))))
+
+
+
+
+================================================================================
+Comparison of boolean
+================================================================================
+
+a: b  != oui
+b: aaizjd = non
+b: oui = azdfe
+
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (name)
+        (comparison
+          (reference
+            (name))
+          (boolean)))
+      (rule
+        (name)
+        (comparison
+          (reference
+            (name))
+          (boolean)))
+      (rule
+        (name)
+        (comparison
+          (boolean)
+          (reference
+            (name)))))

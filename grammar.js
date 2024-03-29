@@ -45,7 +45,7 @@ module.exports = grammar({
 
     // FIXME: issue with boolean and identifier
     word: ($) => $.name,
-
+    conflicts: ($) => [[$._ar_expression, $._bool_expression]],
     rules: {
         source_file: ($) => repeat(choice($.rule, $._empty)),
 
@@ -75,18 +75,26 @@ module.exports = grammar({
 
         /*
         ==============================
-            Expressions
+            Expressions arithmétiques
         =============================
         */
-        _expression: ($) => seq(choice($.constant, $._ar_expression)),
+        _expression: ($) =>
+            seq(
+                choice(
+                    prec(3, $.constant),
+                    prec(2, $.reference),
+                    $._ar_expression,
+                    $._bool_expression
+                )
+            ),
 
         _ar_expression: ($) =>
             choice(
                 $.ar_unary_expression,
                 $.ar_binary_expression,
-                seq(token(prec(2, "(")), $._ar_expression, token(prec(2, ")"))),
+                seq("(", $._ar_expression, ")"),
                 $.number,
-                alias($._dottedName, $.reference)
+                $.reference
             ),
 
         ar_unary_expression: ($) => prec(3, seq(/- ?/, $._ar_expression)),
@@ -112,7 +120,29 @@ module.exports = grammar({
                 )
             ),
 
-        constant: ($) => choice($.true, $.false, $.string, $.date),
+        /*
+        ==============================
+            Expressions booléennes
+        =============================
+        */
+        _bool_expression: ($) =>
+            choice(
+                $.boolean,
+                $.comparison,
+                $.reference,
+                seq("(", $._bool_expression, ")")
+            ),
+
+        comparison: ($) =>
+            prec.left(
+                1,
+                seq(
+                    $._expression,
+                    choice(" = ", " != ", " < ", " <= ", " > ", " >= "),
+                    $._expression
+                )
+            ),
+
         /*
         ===================
             Identifier
@@ -120,6 +150,7 @@ module.exports = grammar({
         */
         _dottedName: ($) => seq($.name, repeat(seq(" . ", $.name))),
         name: ($) => rule_name,
+        reference: ($) => $._dottedName,
         /*
         ===================
             Various
@@ -134,9 +165,8 @@ module.exports = grammar({
             Constants
         ===================
 */
-        boolean: ($) => /oui|non/,
-        true: (_) => "oui",
-        false: (_) => "non",
+        constant: ($) => choice($.boolean, $.string, $.number, $.date),
+        boolean: (_) => choice("oui", "non"),
 
         string: (_) => /'.*?'/,
 
