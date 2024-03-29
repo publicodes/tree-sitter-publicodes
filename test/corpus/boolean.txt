@@ -9,10 +9,10 @@ b: non
 --------------------------------------------------------------------------------
 
 (source_file
-  (rule_definition
-    dottedName: (identifier)
+  (rule
+    (name)
     value: (true))
-  (rule_definition
-    dottedName: (identifier)
+  (rule
+    (name)
     value: (false)))
 

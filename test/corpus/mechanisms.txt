@@ -11,15 +11,15 @@ somme:
 --------------------------------------------------------------------------------
 
 (source_file
-  (rule_definition
-    (identifier)
+  (rule
+    (name)
     (rule_body
       (mechanism
         (somme
           (number)
           (number)))))
-  (rule_definition
-    (identifier)
+  (rule
+    (name)
     (rule_body
       (mechanism
         (somme

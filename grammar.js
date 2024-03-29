@@ -1,22 +1,26 @@
 // From https://github.com/publicodes/publicodes/blob/6ee8c5d2316c8099931504b401feaaabd22b89c8/packages/core/source/grammar.ne#L17C6-L19
 const letter = /[a-zA-Z\u00C0-\u017F]/;
-const digit = /[0-9]/;
-const symbol = /[',°€%²$_()’"«»]/;
-const anyChar = choice(letter, symbol, digit);
-const wordStartingWithLetter = seq(letter, repeat(anyChar));
+const symbol = prec(0, /[',°€%²$_’"«»]/); // TODO: add parentheses
+const digit = /\d/;
 
-const wordsStartingWith = (word) =>
-    seq(word, repeat(seq(" ", repeat1(anyChar))));
+const number = /\d+(\.\d+)?/;
+const date = /(?:(?:0?[1-9]|[12][0-9]|3[01])\/)?(?:0?[1-9]|1[012])\/\d{4}/;
+const exposant = /[⁰-⁹]+/;
+const any_char = choice(letter, symbol, digit);
+const any_char_or_special_char = choice(any_char, /\-|\+/);
 
-const words = wordsStartingWith(wordStartingWithLetter);
+const phrase_starting_with = (char) =>
+    seq(
+        seq(char, repeat(any_char_or_special_char)),
+        repeat(seq(" ", seq(any_char, repeat(any_char_or_special_char))))
+    );
 
-const unitSymbol = /[°%\p{Sc}]/; // °, %, and all currency symbols (to be completed?)
+const rule_name = token(phrase_starting_with(letter));
 
-const unitWord = choice(
-    seq(unitSymbol, repeat(anyChar)),
-    wordStartingWithLetter
+const unit_symbol = /[°%\p{Sc}]/; // °, %, and all currency symbols (to be completed?)
+const unit_identifier = token.immediate(
+    phrase_starting_with(choice(unit_symbol, letter))
 );
-const unit = wordsStartingWith(unitWord);
 
 const space_indent = / {2}/;
 const tab_indent = /\t/;
@@ -37,23 +41,22 @@ module.exports = grammar({
     name: "publicodes",
 
     extras: ($) => [/[\s\f\uFEFF\u2060\u200B]/, /\r?\n/, $.comment],
-
     inline: ($) => [$.constant],
 
     // FIXME: issue with boolean and identifier
-    // word: ($) => $.identifier,
+    word: ($) => $.name,
 
     rules: {
-        source_file: ($) => repeat(choice($.rule_definition, $._empty)),
+        source_file: ($) => repeat(choice($.rule, $._empty)),
 
-        _rule_name: ($) => seq(field("dottedName", $.identifier), ":"),
-
-        rule_definition: ($) =>
+        rule: ($) =>
             seq(
-                $._rule_name,
+                $._dottedName,
+                ":",
                 choice(
                     field("body", $.rule_body),
-                    field("value", choice($._expression, $._empty))
+                    field("value", $._expression),
+                    $._empty
                 )
             ),
 
@@ -70,29 +73,95 @@ module.exports = grammar({
                 seq("somme", ":", indentedBlock(seq("-", $._expression)))
             ),
 
-        _expression: ($) => $.constant,
+        /*
+        ==============================
+            Expressions
+        =============================
+        */
+        _expression: ($) => seq(choice($.constant, $._ar_expression)),
 
-        constant: ($) =>
-            choice($.true, $.false, $.identifier, $.number, $.string),
+        _ar_expression: ($) =>
+            choice(
+                $.ar_unary_expression,
+                $.ar_binary_expression,
+                seq(token(prec(2, "(")), $._ar_expression, token(prec(2, ")"))),
+                $.number,
+                alias($._dottedName, $.reference)
+            ),
 
-        identifier: (_) => token(seq(words, repeat(seq(" . ", words)))),
+        ar_unary_expression: ($) => prec(3, seq(/- ?/, $._ar_expression)),
 
-        true: (_) => token(prec(2, "oui")),
-        false: (_) => token(prec(2, "non")),
+        ar_binary_expression: ($) =>
+            choice(
+                // TODO : power of
+                prec.left(
+                    2,
+                    seq(
+                        $._ar_expression,
+                        token(prec(2, choice(" * ", " / "))),
+                        $._ar_expression
+                    )
+                ),
+                prec.left(
+                    1,
+                    seq(
+                        $._ar_expression,
+                        token(prec(2, choice(" + ", " - "))),
+                        $._ar_expression
+                    )
+                )
+            ),
+
+        constant: ($) => choice($.true, $.false, $.string, $.date),
+        /*
+        ===================
+            Identifier
+        ===================
+        */
+        _dottedName: ($) => seq($.name, repeat(seq(" . ", $.name))),
+        name: ($) => rule_name,
+        /*
+        ===================
+            Various
+        ===================
+        */
 
         _empty: (_) => /(\r|\s)*\n/,
-        string: (_) => /".*?"/,
         comment: (_) => /#.*/,
+
+        /*
+        ===================
+            Constants
+        ===================
+*/
+        boolean: ($) => /oui|non/,
+        true: (_) => "oui",
+        false: (_) => "non",
+
+        string: (_) => /'.*?'/,
+
+        date: () => date,
         // TODO: may want to distinguish between integers and floats
-        number: ($) => seq(/\d+(\.\d)*/, optional($.units)),
+        number: ($) => seq(number, optional($.units)),
         units: ($) =>
             seq(
-                / ?/,
-                field("numerators", $._units),
-                field("denominators", repeat(seq(/ ?\//, $._units)))
+                field("numerators", seq(optional(" "), $._units)),
+                field("denominators", repeat(seq("/", $._units)))
             ),
-        _units: ($) => seq($.unit, repeat(seq(/ ?\./, $.unit))),
-        unit: ($) => seq(token.immediate(unit), optional($.exposant)),
-        exposant: () => token.immediate(choice("²", "³")),
+        _units: ($) => seq($.unit, repeat(seq(".", $.unit))),
+        unit: ($) => seq(unit_identifier, optional($.exposant)),
+        exposant: () => exposant,
     },
 });
+
+/* Questions : 
+- Should we enforce a space between operators and operands? 
+    -> YES because it is easier to read and because it enable to disambiguate between unit (12 €/an) and division (12 € / an)
+- If so, should we allow for operator symbol to appear in words (ex : "a . a+") 
+    -> NO because it is not a common practice and it would make the grammar more complex
+
+- Should we allow for multiple spaces between operators, operands, words, etc? 
+    -> YES because it is a common practice and it makes the grammar more flexible 
+        (That's what copilot is saying anyway)
+        TO CHECK WITH TEST
+*/

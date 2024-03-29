@@ -9,8 +9,10 @@ rule . sub: rule
 --------------------------------------------------------------------------------
 
 (source_file
-  (rule_definition
-	dottedName: (identifier))
-  (rule_definition
-	dottedName: (identifier)
-	value: (identifier)))
+  (rule
+	(name))
+  (rule
+	(name)
+	(name)
+	value: (reference
+		(name))))
