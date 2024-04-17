@@ -102,6 +102,100 @@
     }
   },
   {
+    "type": "formule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ar_binary_expression",
+          "named": true
+        },
+        {
+          "type": "ar_unary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comparison",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "mechanism",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_valeur",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ar_binary_expression",
+          "named": true
+        },
+        {
+          "type": "ar_unary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comparison",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "mechanism",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "mechanism",
     "named": true,
     "fields": {},
@@ -110,15 +204,31 @@
       "required": true,
       "types": [
         {
-          "type": "somme",
-          "named": true
-        },
-        {
-          "type": "valeur",
+          "type": "m_valeur",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "meta",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "meta_key",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "meta_key",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "number",
@@ -228,53 +338,18 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
+        {
+          "type": "formule",
+          "named": true
+        },
         {
           "type": "mechanism",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "somme",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ar_binary_expression",
-          "named": true
         },
         {
-          "type": "ar_unary_expression",
-          "named": true
-        },
-        {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "comparison",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "reference",
-          "named": true
-        },
-        {
-          "type": "string",
+          "type": "meta",
           "named": true
         }
       ]
@@ -353,49 +428,6 @@
     }
   },
   {
-    "type": "valeur",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "ar_binary_expression",
-          "named": true
-        },
-        {
-          "type": "ar_unary_expression",
-          "named": true
-        },
-        {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "comparison",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "reference",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": " ",
     "named": false
   },
@@ -436,10 +468,6 @@
     "named": false
   },
   {
-    "type": "-",
-    "named": false
-  },
-  {
     "type": ".",
     "named": false
   },
@@ -464,6 +492,10 @@
     "named": true
   },
   {
+    "type": "formule",
+    "named": false
+  },
+  {
     "type": "name",
     "named": true
   },
@@ -476,12 +508,12 @@
     "named": false
   },
   {
-    "type": "somme",
-    "named": false
-  },
-  {
     "type": "string",
     "named": true
+  },
+  {
+    "type": "titre",
+    "named": false
   },
   {
     "type": "valeur",

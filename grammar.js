@@ -22,56 +22,73 @@ const unit_identifier = token.immediate(
     phrase_starting_with(choice(unit_symbol, letter))
 );
 
-const space_indent = / {2}/;
-const tab_indent = /\t/;
-const indent = choice(space_indent, tab_indent);
-const dedent = token.immediate(seq(indent, optional(/\n/)));
-
-const indentedBlock = (rule) => {
-    return seq(indent, repeat1(rule), optional(dedent));
-};
-
 /* eslint-disable arrow-parens */
 /* eslint-disable camelcase */
 /* eslint-disable-next-line spaced-comment */
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+function mayBeIndented($, rule) {
+    return choice(seq($._indent, rule, $._dedent), rule);
+}
 module.exports = grammar({
     name: "publicodes",
 
     extras: ($) => [/[\s\f\uFEFF\u2060\u200B]/, /\r?\n/, $.comment],
     inline: ($) => [$.constant],
 
+    externals: ($) => [$._indent, $._dedent, $._newline, $.error_recovery_mode],
+
     // FIXME: issue with boolean and identifier
     word: ($) => $.name,
     conflicts: ($) => [[$._ar_expression, $._bool_expression]],
     rules: {
-        source_file: ($) => repeat(choice($.rule, $._empty)),
+        source_file: ($) => repeat($.rule),
 
         rule: ($) =>
             seq(
                 $._dottedName,
                 ":",
                 choice(
-                    field("body", $.rule_body),
-                    field("value", $._expression),
-                    $._empty
+                    field("value", mayBeIndented($, $._expression)),
+                    $._newline,
+                    field("body", $.rule_body)
                 )
             ),
 
-        rule_body: ($) => indentedBlock($._statement),
-
-        _statement: ($) => choice($.mechanism),
-
-        mechanism: ($) => choice($.valeur, $.somme),
-
-        valeur: ($) => seq("valeur", ":", $._expression),
-
-        somme: ($) =>
-            prec.left(
-                seq("somme", ":", indentedBlock(seq("-", $._expression)))
+        rule_body: ($) => seq($._indent, repeat($._statement), $._dedent),
+        _statement: ($) => choice($.mechanism, $.meta, $.formule),
+        // Formule can only appear top-level in a rule
+        formule: ($) => seq("formule", ":", $._valeur),
+        /*
+        ====================
+            Mécanismes
+        ====================
+        */
+        _valeur: ($) =>
+            choice(
+                mayBeIndented($, $._expression),
+                seq($._indent, $.mechanism, $._dedent)
             ),
+
+        mechanism: ($) => choice($.m_valeur),
+
+        m_valeur: ($) => seq("valeur", ":", $._valeur),
+        // mec_somme: ($) =>
+        //     seq(
+        //         "somme",
+        //         ":",
+        //         indented($, repeat1(seq("-", $.valeur, repeat($._empty))))
+        //     ),
+
+        /*
+        ====================
+            Métadonnées
+        ====================
+        */
+
+        meta: ($) => seq($.meta_key, ":", mayBeIndented($, /.*\n/)),
+        meta_key: ($) => choice("titre"),
 
         /*
         ==============================
@@ -151,20 +168,21 @@ module.exports = grammar({
         _dottedName: ($) => seq($.name, repeat(seq(" . ", $.name))),
         name: ($) => rule_name,
         reference: ($) => $._dottedName,
+
         /*
         ===================
             Various
         ===================
         */
-
-        _empty: (_) => /(\r|\s)*\n/,
+        _empty: (_) => /((\r|\s)*\n)+/,
         comment: (_) => /#.*/,
 
         /*
         ===================
             Constants
         ===================
-*/
+        */
+
         constant: ($) => choice($.boolean, $.string, $.number, $.date),
         boolean: (_) => choice("oui", "non"),
 
