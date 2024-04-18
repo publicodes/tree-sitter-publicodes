@@ -22,6 +22,8 @@ const unit_identifier = token.immediate(
     phrase_starting_with(choice(unit_symbol, letter))
 );
 
+const sepBy = (separator, rule) => seq(rule, repeat(seq(separator, rule)));
+
 /* eslint-disable arrow-parens */
 /* eslint-disable camelcase */
 /* eslint-disable-next-line spaced-comment */
@@ -29,7 +31,7 @@ const unit_identifier = token.immediate(
 // @ts-check
 
 function mayBeIndented($, rule) {
-    return choice(seq($._indent, rule, $._dedent), rule);
+    return choice(seq($._indent, rule, $._dedent), seq(rule, $._newline));
 }
 module.exports = grammar({
     name: "publicodes",
@@ -50,14 +52,14 @@ module.exports = grammar({
                 $._dottedName,
                 ":",
                 choice(
+                    field("empty", $._newline),
                     field("value", mayBeIndented($, $._expression)),
-                    $._newline,
                     field("body", $.rule_body)
                 )
             ),
 
         rule_body: ($) => seq($._indent, repeat($._statement), $._dedent),
-        _statement: ($) => choice($.mechanism, $.meta, $.formule),
+        _statement: ($) => choice($.mechanism, $.meta, $.formule, $._newline), //$.remplace, $.privé
         // Formule can only appear top-level in a rule
         formule: ($) => seq("formule", ":", $._valeur),
         /*
@@ -80,15 +82,6 @@ module.exports = grammar({
         //         ":",
         //         indented($, repeat1(seq("-", $.valeur, repeat($._empty))))
         //     ),
-
-        /*
-        ====================
-            Métadonnées
-        ====================
-        */
-
-        meta: ($) => seq($.meta_key, ":", mayBeIndented($, /.*\n/)),
-        meta_key: ($) => choice("titre"),
 
         /*
         ==============================
@@ -199,6 +192,40 @@ module.exports = grammar({
         _units: ($) => seq($.unit, repeat(seq(".", $.unit))),
         unit: ($) => seq(unit_identifier, optional($.exposant)),
         exposant: () => exposant,
+
+        /*
+        ====================
+            Métadonnées
+        ====================
+        */
+
+        meta: ($) => seq($.meta_key, ":", $.meta_value),
+        meta_key: ($) =>
+            choice("titre", "question", "références", "description", "notes"),
+
+        meta_value: ($) =>
+            choice(
+                seq($.meta_string, $._newline),
+                $.meta_object,
+                $._meta_paragraph
+            ),
+        meta_string: (_) => /[^\n]+/,
+        _meta_paragraph: ($) =>
+            seq(
+                optional($._text_line),
+                $._indent,
+                repeat1(seq($._text_line, $._newline)),
+                $._dedent
+            ),
+        meta_object: ($) =>
+            seq(
+                $._indent,
+                repeat1(choice(seq($._meta_key_custom, ":", $.meta_value))),
+                $._dedent
+            ),
+
+        _text_line: ($) => alias($.meta_string, $.text_line),
+        _meta_key_custom: ($) => alias($.meta_string, $.meta_key),
     },
 });
 

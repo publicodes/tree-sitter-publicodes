@@ -215,11 +215,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "meta_key",
+          "named": true
+        },
+        {
+          "type": "meta_value",
           "named": true
         }
       ]
@@ -229,6 +233,48 @@
     "type": "meta_key",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "meta_object",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "meta_key",
+          "named": true
+        },
+        {
+          "type": "meta_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "meta_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "meta_object",
+          "named": true
+        },
+        {
+          "type": "meta_string",
+          "named": true
+        },
+        {
+          "type": "text_line",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "number",
@@ -488,12 +534,20 @@
     "named": true
   },
   {
+    "type": "description",
+    "named": false
+  },
+  {
     "type": "exposant",
     "named": true
   },
   {
     "type": "formule",
     "named": false
+  },
+  {
+    "type": "meta_string",
+    "named": true
   },
   {
     "type": "name",
@@ -504,11 +558,27 @@
     "named": false
   },
   {
+    "type": "notes",
+    "named": false
+  },
+  {
     "type": "oui",
     "named": false
   },
   {
+    "type": "question",
+    "named": false
+  },
+  {
+    "type": "références",
+    "named": false
+  },
+  {
     "type": "string",
+    "named": true
+  },
+  {
+    "type": "text_line",
     "named": true
   },
   {
