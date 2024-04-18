@@ -1,28 +1,196 @@
 ================================================================================
-Somme
-:skip
+Array-like mechanism
 ================================================================================
 
-somme: 
+a: 
   somme:
     - 10.5
-    - 10
+    - -10
+    - produit:
+      - 10.5
+      - (-10)
+      - a
+
 
 --------------------------------------------------------------------------------
-
 (source_file
   (rule
     (name)
     (rule_body
       (mechanism
-        (somme
+        (m_array
           (number)
-          (number)))))
-  (rule
-    (name)
-    (rule_body
-      (mechanism
-        (somme
-          (number)
-          (number)
-          (true))))))
+          (ar_unary_expression
+            (number))
+          (mechanism
+            (m_array
+              (number)
+              (ar_unary_expression
+                (number))
+              (reference
+                (name)))))))))
+
+
+
+================================================================================
+Array-like mechanism - 2
+================================================================================
+
+b: 
+  toutes ces conditions:
+    - oui
+    - b > 10
+    - 
+      une de ces conditions:
+        - a > 10
+        - a < -10
+        - a = 0
+--------------------------------------------------------------------------------
+  (source_file
+    (rule
+      (name)
+      (rule_body
+        (mechanism
+          (m_array
+            (boolean)
+            (comparison
+              (reference
+                (name))
+              (number))
+            (mechanism
+              (m_array
+                (comparison
+                  (reference
+                    (name))
+                  (number))
+                (comparison
+                  (reference
+                    (name))
+                  (ar_unary_expression
+                    (number)))
+                (comparison
+                  (reference
+                    (name))
+                  (number)))))))))
+
+
+================================================================================
+Array-like mechanism - 3
+================================================================================
+
+c: 
+  le maximum de:
+  - 10
+  - 20
+  - 30 
+
+--------------------------------------------------------------------------------
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (mechanism
+            (m_array
+              (number)
+              (number)
+              (number))))))
+
+
+================================================================================
+Unary mechanism
+================================================================================
+
+a: 
+  valeur: -10
+  plafond: 10
+  plancher: -10
+  applicable si: a > 0
+  non applicable si: non
+  unité: m
+  par défaut: 0
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (mechanism
+            (m_unary
+              (ar_unary_expression
+                (number))))
+          (mechanism
+            (m_unary
+              (number)))
+          (mechanism
+            (m_unary
+              (ar_unary_expression
+                (number))))
+          (mechanism
+            (m_unary
+              (comparison
+                (reference
+                  (name))
+                (number))))
+          (mechanism
+            (m_unary
+              (boolean)))
+          (mechanism
+            (m_unary
+              (reference
+                (name))))
+          (mechanism
+            (m_unary
+              (number))))))
+
+
+================================================================================
+Inversion (TODO)
+:skip
+================================================================================
+
+a: 
+  inversion numérique: 
+    - a
+    - b
+
+--------------------------------------------------------------------------------
+
+
+================================================================================
+Inversion - KO
+:error
+================================================================================
+
+a: 
+  inversion avec: 
+  - a + 5
+
+--------------------------------------------------------------------------------
+
+
+================================================================================
+Contexte
+================================================================================
+a: 
+  contexte: 
+    b : 10
+    c: 
+      somme: 
+      - 10
+--------------------------------------------------------------------------------
+  (source_file
+    (rule
+      (name)
+      (rule_body
+        (mechanism
+          (m_contexte
+            (reference
+              (name))
+            (number)
+            (reference
+              (name))
+            (mechanism
+              (m_array
+                (number))))))))
+

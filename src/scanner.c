@@ -1,21 +1,95 @@
 #include "tree_sitter/parser.h"
 #include "tree_sitter/array.h"
 
+// CAREFUL : This enum should be in the same order as the `externals` array in the grammar.js file
 enum TokenType
 {
   INDENT,
   DEDENT,
+  COMMENT,
   NEWLINE,
+  PARAGRAPH,
   ERROR_RECOVERY_MODE
 };
 
 static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
-
+static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 // Create the array in your create function
 
 void *tree_sitter_publicodes_external_scanner_create(void)
 {
   return ts_calloc(1, sizeof(Array(int)));
+}
+
+static bool parse_paragraph(void *payload, TSLexer *lexer, const bool *valid_symbols)
+{
+  Array(int) *indents = payload;
+  uint16_t previous_indent_length = *array_back(indents);
+
+  lexer->result_symbol = PARAGRAPH;
+
+  // Skip the newline following the `|` character
+  while (lexer->lookahead && lexer->lookahead != '\n')
+  {
+    if (lexer->lookahead != ' ')
+    {
+      return false;
+    }
+    skip(lexer);
+  }
+
+  // TODO first line is whitespace or newline ?
+
+  uint16_t paragraph_indent_length = 0;
+
+  // Compute the indent length of the first line
+  while (lexer->lookahead && (lexer->lookahead == ' ' || lexer->lookahead == '\n'))
+  {
+    if (lexer->lookahead == ' ')
+    {
+      paragraph_indent_length++;
+    }
+    else if (lexer->lookahead == '\n')
+    {
+      paragraph_indent_length = 0;
+    }
+    skip(lexer);
+  }
+
+  // In case the first line is not indented, the paragraph is empty
+  if (paragraph_indent_length <= previous_indent_length)
+  {
+    return true;
+  }
+
+  while (lexer->lookahead)
+  {
+    while (lexer->lookahead && lexer->lookahead != '\n')
+    {
+      advance(lexer);
+    }
+    advance(lexer);
+
+    uint16_t line_indent_length = 0;
+    while (line_indent_length < paragraph_indent_length && lexer->lookahead)
+    {
+      if (lexer->lookahead == ' ')
+      {
+        line_indent_length++;
+        skip(lexer);
+      }
+      else
+      {
+        break;
+      }
+    }
+
+    if (lexer->lookahead && lexer->lookahead != '\n' && line_indent_length < paragraph_indent_length)
+    {
+      return true;
+    }
+  }
+  return true;
 }
 
 bool tree_sitter_publicodes_external_scanner_scan(
@@ -24,6 +98,16 @@ bool tree_sitter_publicodes_external_scanner_scan(
     const bool *valid_symbols)
 {
   bool error_recovery_mode = valid_symbols[ERROR_RECOVERY_MODE];
+
+  if (!valid_symbols[INDENT] && !valid_symbols[DEDENT] && !valid_symbols[NEWLINE] && !valid_symbols[PARAGRAPH])
+  {
+    return false;
+  }
+
+  if (valid_symbols[PARAGRAPH] && !error_recovery_mode)
+  {
+    return parse_paragraph(payload, lexer, valid_symbols);
+  }
 
   Array(int) *indents = payload;
   uint32_t indent_length = 0;
@@ -42,21 +126,26 @@ bool tree_sitter_publicodes_external_scanner_scan(
       indent_length++;
       skip(lexer);
     }
-    else if (lexer->lookahead == '\r' || lexer->lookahead == '\f')
-    {
-      indent_length = 0;
-      skip(lexer);
-    }
-    else if (lexer->lookahead == '\t')
-    {
-      indent_length += 8;
-      skip(lexer);
-    }
+
     else if (lexer->eof(lexer))
     {
       indent_length = 0;
       found_end_of_line = true;
       break;
+    }
+
+    else if (lexer->lookahead == '#')
+    {
+      if (!found_end_of_line)
+      {
+        return false;
+      }
+      while (lexer->lookahead && lexer->lookahead != '\n')
+      {
+        lexer->advance(lexer, true);
+      }
+      lexer->result_symbol = COMMENT;
+      return true;
     }
     else
     {

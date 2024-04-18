@@ -1,0 +1,323 @@
+
+================================================================================
+Rule with titre
+================================================================================
+
+a:
+  titre: Yay
+
+b:
+  titre: "Yay"
+  valeur: 4
+
+c: 
+
+  valeur: 6
+
+  titre: "çàkdf&ok'hf   fnk&ẰÉ
+  
+
+d: 
+  titre: 10
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (meta_string)))))
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (meta_string)))
+      (mechanism
+        (m_unary
+          (number)))))
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_unary
+          (number)))
+      (meta
+        (key)
+        (meta_value
+          (meta_string)))))
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (meta_string))))))
+          
+================================================================================
+Meta string indented
+================================================================================
+a:
+  titre: 
+    pitou
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (meta_string))))))
+          
+================================================================================
+Meta multiple lines string without starting line (TODO)
+:skip
+================================================================================
+x: 
+  description: 
+    Poulie : 4
+    Perpouix
+    zdsz
+a: 5
+--------------------------------------------------------------------------------
+
+================================================================================
+Meta multiple lines with starting line
+================================================================================
+x: 
+  description: Lorsque la durée d'un contrat de travail est : "inférieure"
+    il est possible d'appliquer un abattement pour diminuer le montant du
+    prélèvement à la source : c'est top
+  valeur: 4
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (meta_string)
+          (meta_string)
+          (meta_string)))
+      (mechanism
+        (m_unary
+          (number))))))
+
+================================================================================
+Meta multiple lines with starting line and comments
+================================================================================
+x: 
+  description: Lorsque la durée d'un contrat de travail est inférieure # COMMENT
+     # COMMENT 
+    il est possible d'appliquer un abattement pour diminuer le montant du # COMMENT
+    Zooo
+  # COMMENT
+
+    jdioz
+    prélèvement à la source # Ceci est un commentaire
+    # COMMENT
+  valeur: 4
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (meta
+            (key)
+            (meta_value
+              (meta_string)
+              (comment)
+              (comment)
+              (meta_string)
+              (comment)
+              (meta_string)
+              (comment)
+              (meta_string)
+              (meta_string)
+              (comment)
+              (comment)))
+          (mechanism
+            (m_unary
+              (number))))))
+
+
+================================================================================
+Rule with références
+================================================================================
+
+a: 
+  références: 
+    Article 1 du code civil: https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000006417248&cidTexte=LEGITEXT000006070721
+    Quel est le meilleur langage pour écrire la loi ? : "https://publi.codes"
+
+    
+    "This is the best link : that's for sure": "https://www.wikipedia.org"
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (meta_object
+            (key)
+            (meta_value
+              (meta_string))
+            (key)
+            (meta_value
+              (meta_string))
+            (key)
+            (meta_value
+              (meta_string))))))))
+
+================================================================================
+Rule with empty meta
+================================================================================
+a: 
+  description: |
+  notes: |
+
+  titre: 
+  question: ""
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (paragraph)))
+      (meta
+        (key)
+        (meta_value
+          (paragraph)))
+      (meta
+        (key)
+        (meta_value))
+      (meta
+        (key)
+        (meta_value
+          (meta_string))))))
+
+
+================================================================================
+Meta paragraph (TODO)
+:skip
+================================================================================
+a:
+  notes: |
+    # Ce titre n'est pas un commentaire car il est dans un texte
+
+    - A noter : ceci
+    - et cela
+
+    **Dans l’idéal, on devrait supporter le markdown**
+
+b: 
+  description: | # Ceci est un commentaire
+
+    Ceci est le début du texte
+      Avec une indentation
+    # Ceci n'est pas un commentaire
+  # Ceci en est un
+  valeur: 4
+
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (paragraph)))))
+  (rule
+    (name)
+    (rule_body
+      (meta
+        (key)
+        (meta_value
+          (comment)
+          (paragraph)))
+      (comment)))
+================================================================================
+Paragraph cannot contain comments
+:error
+================================================================================
+a:
+  notes: |
+  # Ceci est un bug
+    lala
+--------------------------------------------------------------------------------
+
+
+================================================================================
+Rule with all the supported meta
+================================================================================
+
+a: 
+  titre: Ma super règle
+  description: |
+   
+  notes:  Attention, cette règle est très importante
+  question: "Combien font 2 + 2 ?"
+  références: 
+    1 : "https://www.wikipedia.org"
+    # Ceci est un commentaire
+    2 : 
+      "https://theguardian.com" # Ceci aussi
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (meta
+            (key)
+            (meta_value
+              (meta_string)))
+          (meta
+            (key)
+            (meta_value
+              (paragraph)))
+          (meta
+            (key)
+            (meta_value
+              (meta_string)))
+          (meta
+            (key)
+            (meta_value
+              (meta_string)))
+          (meta
+            (key)
+            (meta_value
+              (meta_object
+                (key)
+                (meta_value
+                  (meta_string)
+                  (comment))
+                (key)
+                (meta_value
+                  (meta_string)
+                  (comment))))))))
+

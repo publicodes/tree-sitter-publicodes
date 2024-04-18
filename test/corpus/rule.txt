@@ -33,13 +33,13 @@ c:
     (name)
     (rule_body
       (mechanism
-        (m_valeur
+        (m_unary
           (number)))))
   (rule
     (name)
     (rule_body
       (mechanism
-        (m_valeur
+        (m_unary
           (string)))))
   (rule
     (name)
@@ -58,128 +58,32 @@ a:
   
 --------------------------------------------------------------------------------
 
-
 ================================================================================
-Rule with titre
+Rules with commentaire
 ================================================================================
-
-a:
-  titre: Yay
-
-b:
-  titre: "Yay"
-  valeur: 4
-
-c: 
-
-  titre: 
-    piloup
-  
-  valeur: 6
-
-d: 
-  titre: 10
---------------------------------------------------------------------------------
-
-(source_file
-  (rule
-    (name)
-    (rule_body
-      (meta
-        (meta_key)
-        (meta_value
-          (meta_string)))))
-  (rule
-    (name)
-    (rule_body
-      (meta
-        (meta_key)
-        (meta_value
-          (meta_string)))
-      (mechanism
-        (m_valeur
-          (number)))))
-  (rule
-    (name)
-    (rule_body
-      (meta
-        (meta_key)
-        (meta_value
-          (text_line)))
-      (mechanism
-        (m_valeur
-          (number)))))
-  (rule
-    (name)
-    (rule_body
-      (meta
-        (meta_key)
-        (meta_value
-          (meta_string))))))
-
-================================================================================
-Rule with meta on multiple lines
-================================================================================
-x: 
-  description: Lorsque la durée d'un contrat de travail est inférieure à 2 mois,
-    il est possible d'appliquer un abattement pour diminuer le montant du
-    prélèvement à la source
-
-a:
-  notes: 
-    Il ne faut pas oublier : 
-
-    - de faire ceci
-    - de faire cela
-    - de faire autre chose
-
+a: # COMZ
+#COMZ
+  # COMZ
+  valeur: 4 + 5 # COMZ
+# COMZ
+  # COMZ : 
+b: 
 --------------------------------------------------------------------------------
 
     (source_file
       (rule
         (name)
+        (comment)
+        (comment)
+        (comment)
         (rule_body
-          (meta
-            (meta_key)
-            (meta_value
-              (text_line)
-              (text_line)
-              (text_line)))))
+          (mechanism
+            (m_unary
+              (ar_binary_expression
+                (number)
+                (number))
+              (comment)
+              (comment)
+              (comment)))))
       (rule
-        (name)
-        (rule_body
-          (meta
-            (meta_key)
-            (meta_value
-              (text_line)
-              (text_line)
-              (text_line)
-              (text_line))))))
-
-
-================================================================================
-Rule with références
-================================================================================
-
-a: 
-  références: 
-    Article 1 du code civil: https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000006417248&cidTexte=LEGITEXT000006070721
-    Quel est le meilleur langage pour écrire la loi ? : "https://publi.codes"
---------------------------------------------------------------------------------
-
-================================================================================
-Rule with all the supported meta
-================================================================================
-
-a: 
-  titre: Ma super règle
-  description: 
-    ## Une règle qui fait des trucs, c'est chouette
-  notes:  Attention, cette règle est très importante
-  question: "Combien font 2 + 2 ?"
-  références: 
-    1 : "https://www.wikipedia.org"
-    2 : "https://theguardian.com"
-
-
---------------------------------------------------------------------------------
+        (name)))

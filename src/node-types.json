@@ -149,9 +149,213 @@
     }
   },
   {
-    "type": "m_valeur",
+    "type": "key",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "m_array",
+    "named": true,
+    "fields": {
+      "mechanism_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "le maximum de",
+            "named": false
+          },
+          {
+            "type": "le minimum de",
+            "named": false
+          },
+          {
+            "type": "moyenne",
+            "named": false
+          },
+          {
+            "type": "produit",
+            "named": false
+          },
+          {
+            "type": "somme",
+            "named": false
+          },
+          {
+            "type": "toutes ces conditions",
+            "named": false
+          },
+          {
+            "type": "une de ces conditions",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ar_binary_expression",
+          "named": true
+        },
+        {
+          "type": "ar_unary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comparison",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "mechanism",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_contexte",
     "named": true,
     "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ar_binary_expression",
+          "named": true
+        },
+        {
+          "type": "ar_unary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comparison",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "mechanism",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_inversion",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_unary",
+    "named": true,
+    "fields": {
+      "mechanism_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "applicable si",
+            "named": false
+          },
+          {
+            "type": "arrondi",
+            "named": false
+          },
+          {
+            "type": "est applicable",
+            "named": false
+          },
+          {
+            "type": "est défini",
+            "named": false
+          },
+          {
+            "type": "est non applicable",
+            "named": false
+          },
+          {
+            "type": "est non défini",
+            "named": false
+          },
+          {
+            "type": "non applicable si",
+            "named": false
+          },
+          {
+            "type": "par défaut",
+            "named": false
+          },
+          {
+            "type": "plafond",
+            "named": false
+          },
+          {
+            "type": "plancher",
+            "named": false
+          },
+          {
+            "type": "unité",
+            "named": false
+          },
+          {
+            "type": "valeur",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -204,7 +408,19 @@
       "required": true,
       "types": [
         {
-          "type": "m_valeur",
+          "type": "m_array",
+          "named": true
+        },
+        {
+          "type": "m_contexte",
+          "named": true
+        },
+        {
+          "type": "m_inversion",
+          "named": true
+        },
+        {
+          "type": "m_unary",
           "named": true
         }
       ]
@@ -219,7 +435,7 @@
       "required": true,
       "types": [
         {
-          "type": "meta_key",
+          "type": "key",
           "named": true
         },
         {
@@ -230,11 +446,6 @@
     }
   },
   {
-    "type": "meta_key",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "meta_object",
     "named": true,
     "fields": {},
@@ -243,7 +454,7 @@
       "required": true,
       "types": [
         {
-          "type": "meta_key",
+          "type": "key",
           "named": true
         },
         {
@@ -270,7 +481,7 @@
           "named": true
         },
         {
-          "type": "text_line",
+          "type": "paragraph",
           "named": true
         }
       ]
@@ -514,6 +725,10 @@
     "named": false
   },
   {
+    "type": "-",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -526,8 +741,20 @@
     "named": false
   },
   {
+    "type": "applicable si",
+    "named": false
+  },
+  {
+    "type": "arrondi",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true
+  },
+  {
+    "type": "contexte",
+    "named": false
   },
   {
     "type": "date",
@@ -535,6 +762,22 @@
   },
   {
     "type": "description",
+    "named": false
+  },
+  {
+    "type": "est applicable",
+    "named": false
+  },
+  {
+    "type": "est défini",
+    "named": false
+  },
+  {
+    "type": "est non applicable",
+    "named": false
+  },
+  {
+    "type": "est non défini",
     "named": false
   },
   {
@@ -546,8 +789,24 @@
     "named": false
   },
   {
+    "type": "inversion numérique",
+    "named": false
+  },
+  {
+    "type": "le maximum de",
+    "named": false
+  },
+  {
+    "type": "le minimum de",
+    "named": false
+  },
+  {
     "type": "meta_string",
     "named": true
+  },
+  {
+    "type": "moyenne",
+    "named": false
   },
   {
     "type": "name",
@@ -555,6 +814,10 @@
   },
   {
     "type": "non",
+    "named": false
+  },
+  {
+    "type": "non applicable si",
     "named": false
   },
   {
@@ -566,6 +829,26 @@
     "named": false
   },
   {
+    "type": "par défaut",
+    "named": false
+  },
+  {
+    "type": "paragraph",
+    "named": true
+  },
+  {
+    "type": "plafond",
+    "named": false
+  },
+  {
+    "type": "plancher",
+    "named": false
+  },
+  {
+    "type": "produit",
+    "named": false
+  },
+  {
     "type": "question",
     "named": false
   },
@@ -574,11 +857,11 @@
     "named": false
   },
   {
-    "type": "string",
-    "named": true
+    "type": "somme",
+    "named": false
   },
   {
-    "type": "text_line",
+    "type": "string",
     "named": true
   },
   {
@@ -586,7 +869,23 @@
     "named": false
   },
   {
+    "type": "toutes ces conditions",
+    "named": false
+  },
+  {
+    "type": "une de ces conditions",
+    "named": false
+  },
+  {
+    "type": "unité",
+    "named": false
+  },
+  {
     "type": "valeur",
+    "named": false
+  },
+  {
+    "type": "|",
     "named": false
   }
 ]

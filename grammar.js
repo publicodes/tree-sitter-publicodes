@@ -22,7 +22,7 @@ const unit_identifier = token.immediate(
     phrase_starting_with(choice(unit_symbol, letter))
 );
 
-const sepBy = (separator, rule) => seq(rule, repeat(seq(separator, rule)));
+const arrayPrefix = token(prec(2, "-"));
 
 /* eslint-disable arrow-parens */
 /* eslint-disable camelcase */
@@ -30,16 +30,31 @@ const sepBy = (separator, rule) => seq(rule, repeat(seq(separator, rule)));
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-function mayBeIndented($, rule) {
+function mayBeIndentedSingleLine($, rule) {
     return choice(seq($._indent, rule, $._dedent), seq(rule, $._newline));
 }
+
+function mayBeIndentedBlock($, rule) {
+    return choice(
+        seq($._indent, repeat1(seq(rule)), $._dedent),
+        seq($._newline, repeat1(seq(rule)))
+    );
+}
+
 module.exports = grammar({
     name: "publicodes",
 
-    extras: ($) => [/[\s\f\uFEFF\u2060\u200B]/, /\r?\n/, $.comment],
+    extras: ($) => [$.comment, /[\s\f\uFEFF\u2060\u200B]/],
     inline: ($) => [$.constant],
 
-    externals: ($) => [$._indent, $._dedent, $._newline, $.error_recovery_mode],
+    externals: ($) => [
+        $._indent,
+        $._dedent,
+        $.comment,
+        $._newline,
+        $.paragraph,
+        $.error_recovery_mode,
+    ],
 
     // FIXME: issue with boolean and identifier
     word: ($) => $.name,
@@ -53,7 +68,7 @@ module.exports = grammar({
                 ":",
                 choice(
                     field("empty", $._newline),
-                    field("value", mayBeIndented($, $._expression)),
+                    field("value", mayBeIndentedSingleLine($, $._expression)),
                     field("body", $.rule_body)
                 )
             ),
@@ -69,19 +84,69 @@ module.exports = grammar({
         */
         _valeur: ($) =>
             choice(
-                mayBeIndented($, $._expression),
-                seq($._indent, $.mechanism, $._dedent)
+                mayBeIndentedSingleLine($, $._expression),
+                mayBeIndentedSingleLine($, $.mechanism)
             ),
 
-        mechanism: ($) => choice($.m_valeur),
+        mechanism: ($) => choice($.m_unary, $.m_array, $._m_special),
 
-        m_valeur: ($) => seq("valeur", ":", $._valeur),
-        // mec_somme: ($) =>
-        //     seq(
-        //         "somme",
-        //         ":",
-        //         indented($, repeat1(seq("-", $.valeur, repeat($._empty))))
-        //     ),
+        m_unary: ($) =>
+            seq(
+                field(
+                    "mechanism_name",
+                    choice(
+                        "valeur",
+                        "plafond",
+                        "plancher",
+                        "unité",
+                        "applicable si",
+                        "non applicable si",
+                        "arrondi",
+                        "est non défini",
+                        "est défini",
+                        "est non applicable",
+                        "est applicable",
+                        "par défaut"
+                    )
+                ),
+                ":",
+                $._valeur
+            ),
+        m_array: ($) =>
+            seq(
+                field(
+                    "mechanism_name",
+                    choice(
+                        "somme",
+                        "produit",
+                        "moyenne",
+                        "le maximum de",
+                        "le minimum de",
+                        "une de ces conditions",
+                        "toutes ces conditions"
+                    )
+                ),
+                ":",
+                mayBeIndentedBlock($, seq("-", $._valeur))
+            ),
+
+        _m_special: ($) => choice($.m_inversion, $.m_contexte),
+
+        m_inversion: ($) =>
+            seq(
+                "inversion numérique",
+                ":",
+                mayBeIndentedBlock($, seq("-", $.reference))
+            ),
+
+        m_contexte: ($) =>
+            seq(
+                "contexte",
+                ":",
+                $._indent,
+                repeat1(seq($.reference, ":", $._valeur)),
+                $._dedent
+            ),
 
         /*
         ==============================
@@ -167,8 +232,8 @@ module.exports = grammar({
             Various
         ===================
         */
-        _empty: (_) => /((\r|\s)*\n)+/,
-        comment: (_) => /#.*/,
+
+        comment: (_) => token(prec(3, seq("#", /.*/))),
 
         /*
         ===================
@@ -199,33 +264,42 @@ module.exports = grammar({
         ====================
         */
 
-        meta: ($) => seq($.meta_key, ":", $.meta_value),
-        meta_key: ($) =>
+        meta: ($) =>
+            prec(2, seq(alias($._reserved_key, $.key), ":", $.meta_value)),
+
+        _reserved_key: ($) =>
             choice("titre", "question", "références", "description", "notes"),
+
+        custom_meta: ($) => seq($.key, $.meta_value),
 
         meta_value: ($) =>
             choice(
-                seq($.meta_string, $._newline),
+                $._newline,
+                mayBeIndentedSingleLine($, $.meta_string),
+                prec(1, $._meta_multiline_string),
                 $.meta_object,
                 $._meta_paragraph
             ),
-        meta_string: (_) => /[^\n]+/,
-        _meta_paragraph: ($) =>
-            seq(
-                optional($._text_line),
-                $._indent,
-                repeat1(seq($._text_line, $._newline)),
-                $._dedent
-            ),
-        meta_object: ($) =>
-            seq(
-                $._indent,
-                repeat1(choice(seq($._meta_key_custom, ":", $.meta_value))),
-                $._dedent
-            ),
+        _meta_multiline_string2: ($) =>
+            seq($._indent, repeat1(seq($.meta_string, $._newline)), $._dedent),
 
-        _text_line: ($) => alias($.meta_string, $.text_line),
-        _meta_key_custom: ($) => alias($.meta_string, $.meta_key),
+        _meta_multiline_string: ($) =>
+            seq(
+                optional($.meta_string),
+                $._indent,
+                repeat1(seq($.meta_string, $._newline)),
+                $._dedent
+            ),
+        // Paragraph are like multiline strings but they do not parse # as comments
+        // This needs to be done in the external scanner because otherwise # would be consumed as comments
+        _meta_paragraph: ($) => seq(token(prec(2, "|")), $.paragraph),
+
+        meta_object: ($) =>
+            seq($._indent, repeat1(seq($.key, $.meta_value)), $._dedent),
+
+        key: ($) =>
+            token(prec(2, seq(choice(/"[^"]+"/, /'[^']+'/, /[^:#\n]+/), ":"))),
+        meta_string: (_) => /[^\n#]*/,
     },
 });
 
@@ -239,4 +313,10 @@ module.exports = grammar({
     -> YES because it is a common practice and it makes the grammar more flexible 
         (That's what copilot is saying anyway)
         TO CHECK WITH TEST
+
+- Should we allow tabs and spaces ?
+    -> I don't think so, because it leads to complex indentation logic : 
+       we have to choose an arbitrary length for the tab, in order to compare indentation levels of different lines. 
+       In python it's 8. But it's usually defined in the editor settings. So it would lead to unexpected behavior.
+       (TODO)
 */
