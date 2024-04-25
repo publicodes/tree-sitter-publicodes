@@ -80,21 +80,37 @@ Array-like mechanism - 3
 
 c: 
   le maximum de:
-  - 10
+  - valeur: 5
+    plafond: 4
   - 20
   - 30 
 
 --------------------------------------------------------------------------------
-    (source_file
-      (rule
-        (name)
-        (rule_body
-          (mechanism
-            (m_array
-              (number)
-              (number)
-              (number))))))
 
+  (source_file
+    (rule
+      (name)
+      (rule_body
+        (mechanism
+          (m_array
+            (mechanism
+              (m_unary
+                (number)))
+            (mechanism
+              (m_unary
+                (number)))
+            (number)
+            (number))))))
+
+================================================================================
+Array-like mechanism - 4
+================================================================================
+
+a:
+  produit:
+    - plafond
+    - a
+--------------------------------------------------------------------------------
 
 ================================================================================
 Unary mechanism
@@ -106,7 +122,6 @@ a:
   plancher: -10
   applicable si: a > 0
   non applicable si: non
-  unité: m
   par défaut: 0
 
 --------------------------------------------------------------------------------
@@ -137,16 +152,28 @@ a:
               (boolean)))
           (mechanism
             (m_unary
-              (reference
-                (name))))
-          (mechanism
-            (m_unary
               (number))))))
+================================================================================
+Unité
+================================================================================
 
+a: 
+  unité: €/mois
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_unité
+          (units
+            (unit)
+            (unit)))))))
 
 ================================================================================
-Inversion (TODO)
-:skip
+Inversion
 ================================================================================
 
 a: 
@@ -155,6 +182,16 @@ a:
     - b
 
 --------------------------------------------------------------------------------
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (mechanism
+            (m_inversion
+              (reference
+                (name))
+              (reference
+                (name)))))))
 
 
 ================================================================================
@@ -193,4 +230,179 @@ a:
             (mechanism
               (m_array
                 (number))))))))
+
+
+================================================================================
+Variations
+================================================================================
+
+a: 
+  variations: 
+    - si: a > 10
+      alors: 10
+    - si: a < 10
+      alors: 0
+
+b: 
+  variations: 
+    - si: 
+        toutes ces conditions:
+        - a = 10
+        - b = 'oui'
+      alors: 10
+    - sinon: 5
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_variations
+          (comparison
+            (reference
+              (name))
+            (number))
+          (number)
+          (comparison
+            (reference
+              (name))
+            (number))
+          (number)))))
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_variations
+          (mechanism
+            (m_array
+              (comparison
+                (reference
+                  (name))
+                (number))
+              (comparison
+                (reference
+                  (name))
+                (string))))
+          (number)
+          (number))))))
+
+================================================================================
+Durée
+================================================================================
+
+a: 
+  durée: 
+    depuis: 10/10/2010
+    jusqu'à: 10/10/2011
+    unité: mois
+
+b: 
+  durée: 
+    depuis: début de contrat
+
+c: 
+  durée: 
+    jusqu'à: fin de contrat
+    unité: année civile
+--------------------------------------------------------------------------------
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_durée
+          (date)
+          (date)))))
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_durée
+          (reference
+            (name))))))
+  (rule
+    (name)
+    (rule_body
+      (mechanism
+        (m_durée
+          (reference
+            (name)))))))
+
+================================================================================
+Barème et assimilé
+================================================================================
+
+a: 
+  barème: 
+    assiette: 50 €
+    tranches:
+    - taux: 10%
+      plafond: 100 €
+    - taux: 20%
+      plafond: 200 €
+
+b:
+  taux progressif: 
+    assiette: 50 €
+    multiplicateur: PASS
+    tranches:
+    - 
+        plafond: 100 €
+        taux: 10%
+      
+    - 
+        plafond: 200 €
+        taux: 20%
+    - taux: 100%
+
+--------------------------------------------------------------------------------
+
+ (source_file
+      (rule
+        (name)
+        (rule_body
+          (mechanism
+            (m_barème_like
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))))))
+      (rule
+        (name)
+        (rule_body
+          (mechanism
+            (m_barème_like
+              (number
+                (units
+                  (unit)))
+              (reference
+                (name))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit)))
+              (number
+                (units
+                  (unit))))))))
 

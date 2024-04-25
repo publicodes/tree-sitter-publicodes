@@ -1,0 +1,73 @@
+===================================================================================
+Une possibilité
+================================================================================
+
+a: 
+  une possibilité:
+    choix obligatoire: oui
+    possibilités:
+      - droit commun
+      - HCR
+      - BTP
+      - sport
+      - SVP
+      - compta
+      - optique
+
+a: 
+  formule: 
+    une possibilité:
+      possibilités:
+        - b
+c: 
+  une possibilité:
+    choix obligatoire: non
+    possibilités:
+      - d
+-----------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (m_une_possibilité
+            (reference
+              (name))
+            (reference
+              (name))
+            (reference
+              (name))
+            (reference
+              (name))
+            (reference
+              (name))
+            (reference
+              (name))
+            (reference
+              (name)))))
+      (rule
+        (name)
+        (rule_body
+          (formule
+            (m_une_possibilité
+              (reference
+                (name))))))
+      (rule
+        (name)
+        (rule_body
+          (m_une_possibilité
+            (reference
+              (name))))))
+
+===================================================================================
+Une possibilités n'est pas un mécanisme comme les autres
+:error
+================================================================================
+
+a: 
+  valeur: 
+    une possibilité:
+      possibilités:
+        - b
+
+-----------------------------------------------------------------------------------
