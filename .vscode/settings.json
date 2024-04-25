@@ -1,0 +1,10 @@
+{
+    "cSpell.language": "en,fr",
+    "languageToolLinter.enabled": false,
+    "languageToolLinter.diagnosticSeverity": "information",
+    "languageToolLinter.plainText.enabled": false,
+    "files.associations": {
+        "*.html": "html",
+        "array.h": "c"
+    }
+}
