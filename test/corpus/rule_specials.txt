@@ -1,0 +1,124 @@
+
+================================================================================
+Avec 
+================================================================================
+
+a: 
+  avec: 
+    a: 10
+    b: 
+      valeur: 20
+      titre: Test
+    c: 
+      somme: 
+      - 10
+      - 20
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (avec
+        (rule
+          (name)
+          (number))
+        (rule
+          (name)
+          (rule_body
+            (mechanism
+              (m_unary
+                (number)))
+            (meta
+              
+              (meta_value
+                (text_line)))))
+        (rule
+          (name)
+          (rule_body
+            (mechanism
+              (m_array
+                (number)
+                (number)))))))))
+
+================================================================================
+remplace - 1
+================================================================================
+
+a: 
+  remplace: b
+b: 
+  remplace: 
+    - c
+    - 
+      références à: a
+  titre: Test
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (remplace
+        (reference
+          (name)))))
+  (rule
+    (name)
+    (rule_body
+      (remplace
+        (reference
+          (name))
+        (reference
+          (name)))
+      (meta
+        
+        (meta_value
+          (text_line))))))
+          
+
+================================================================================
+remplace - 2
+================================================================================
+
+a: 
+  remplace: 
+    références à : b
+    sauf dans: 
+      - c
+    
+  titre: Test
+
+d: 
+  remplace: 
+    - références à: a
+      dans: 
+      - c
+      - x
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (name)
+        (rule_body
+          (remplace
+            (reference
+              (name))
+            (reference
+              (name)))
+          (meta
+            
+            (meta_value
+              (text_line)))))
+      (rule
+        (name)
+        (rule_body
+          (remplace
+            (reference
+              (name))
+            (reference
+              (name))
+            (reference
+              (name))))))

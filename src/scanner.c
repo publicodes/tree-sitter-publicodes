@@ -6,6 +6,7 @@ enum TokenType
 {
   INDENT,
   DEDENT,
+  ARRAY_PREFIX,
   COMMENT,
   NEWLINE,
   PARAGRAPH,
@@ -71,6 +72,7 @@ static bool parse_paragraph(void *payload, TSLexer *lexer, const bool *valid_sym
     advance(lexer);
 
     uint16_t line_indent_length = 0;
+    // Check if the indent length of the following line less than the paragraph indent length
     while (line_indent_length < paragraph_indent_length && lexer->lookahead)
     {
       if (lexer->lookahead == ' ')
@@ -99,7 +101,7 @@ bool tree_sitter_publicodes_external_scanner_scan(
 {
   bool error_recovery_mode = valid_symbols[ERROR_RECOVERY_MODE];
 
-  if (!valid_symbols[INDENT] && !valid_symbols[DEDENT] && !valid_symbols[NEWLINE] && !valid_symbols[PARAGRAPH])
+  if (!valid_symbols[INDENT] && !valid_symbols[DEDENT] && !valid_symbols[NEWLINE] && !valid_symbols[PARAGRAPH] && !valid_symbols[ARRAY_PREFIX])
   {
     return false;
   }
@@ -112,6 +114,24 @@ bool tree_sitter_publicodes_external_scanner_scan(
   Array(int) *indents = payload;
   uint32_t indent_length = 0;
   bool found_end_of_line = false;
+
+  /*
+    An array can have a block following directly the `-` prefix (without a new line).
+    The indent level should change in this case.
+    Example:
+    ```
+    - line1
+      line2 # This line is expected to be indented, without the need of parsing an `INDENT` token
+    ```
+  */
+  if (valid_symbols[ARRAY_PREFIX] && lexer->lookahead == '-')
+  {
+    skip(lexer);
+    lexer->result_symbol = ARRAY_PREFIX;
+    uint16_t indent_length = lexer->get_column(lexer);
+    array_push(indents, indent_length);
+    return true;
+  }
 
   for (;;)
   {
@@ -166,17 +186,13 @@ bool tree_sitter_publicodes_external_scanner_scan(
         lexer->result_symbol = INDENT;
         return true;
       }
-
-      if (valid_symbols[DEDENT])
-      {
-        array_pop(indents);
-        lexer->result_symbol = DEDENT;
-        return true;
-      }
     }
+    if (valid_symbols[NEWLINE])
+    {
 
-    lexer->result_symbol = NEWLINE;
-    return true;
+      lexer->result_symbol = NEWLINE;
+      return true;
+    }
   }
 
   if (valid_symbols[DEDENT])
