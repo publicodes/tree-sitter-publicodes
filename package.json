@@ -10,9 +10,10 @@
     "scripts": {
         "generate": "tree-sitter generate",
         "highlight": "tree-sitter highlight",
-        "parse": "yarn run generate && tree-sitter parse",
-        "test": "yarn run generate && tree-sitter test",
+        "parse": "tree-sitter generate && tree-sitter parse",
+        "test": "tree-sitter generate && tree-sitter test",
         "install": "node-gyp-build",
+        "dev": "tree-sitter generate && node-gyp rebuild",
         "prebuildify": "prebuildify --napi --strip"
     },
     "tree-sitter": [
@@ -36,8 +37,9 @@
         }
     },
     "devDependencies": {
-        "tree-sitter-cli": "^0.22.2",
-        "prebuildify": "^6.0.0"
+        "node-gyp": "^10.1.0",
+        "prebuildify": "^6.0.0",
+        "tree-sitter-cli": "^0.22.2"
     },
     "files": [
         "grammar.js",
