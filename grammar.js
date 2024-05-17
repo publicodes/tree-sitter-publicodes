@@ -61,7 +61,7 @@ function key_value(keys, rule, key_name) {
     if (!Array.isArray(keys)) {
         keys = [keys];
     }
-    let possible_keys = token(prec(3, choice(...keys)));
+    let possible_keys = token(prec(4, choice(...keys)));
     if (key_name !== undefined) {
         possible_keys = field(key_name, possible_keys);
     }
@@ -114,10 +114,15 @@ module.exports = grammar({
                 $.avec,
                 $.remplace,
                 $._tags,
-                $.custom_meta
+                $.custom_meta,
+                $.m_une_possibilité
             ),
         // Formule can only appear top-level in a rule
-        formule: ($) => key_value("formule", $._valeur),
+        formule: ($) =>
+            key_value(
+                "formule",
+                choice($._valeur, indented($, $.m_une_possibilité))
+            ),
         /*
         ====================
             Mécanismes
@@ -161,7 +166,13 @@ module.exports = grammar({
                     "une de ces conditions",
                     "toutes ces conditions",
                 ],
-                array($, choice($._expression, repeat1($.mechanism))),
+                array(
+                    $,
+                    choice(
+                        maybe_with_quote($._expression),
+                        repeat1($.mechanism)
+                    )
+                ),
                 "mechanism_name"
             ),
 
@@ -285,6 +296,20 @@ module.exports = grammar({
             key_value(["taux", "montant"], field("valeur", $._valeur)),
 
         m_texte: ($) => key_value("texte", choice($._text_line, $._paragraph)),
+
+        m_une_possibilité: ($) =>
+            key_value(
+                "une possibilité",
+                indented(
+                    $,
+                    seq(
+                        optional(
+                            key_value("choix obligatoire", choice("oui", "non"))
+                        ),
+                        key_value("possibilités", array($, $.reference))
+                    )
+                )
+            ),
 
         /*
         ========================

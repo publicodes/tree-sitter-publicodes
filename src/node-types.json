@@ -160,6 +160,10 @@
           "named": true
         },
         {
+          "type": "m_une_possibilité",
+          "named": true
+        },
+        {
           "type": "mechanism",
           "named": true
         },
@@ -744,6 +748,21 @@
     }
   },
   {
+    "type": "m_une_possibilité",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "m_unité",
     "named": true,
     "fields": {},
@@ -1081,6 +1100,10 @@
         },
         {
           "type": "formule",
+          "named": true
+        },
+        {
+          "type": "m_une_possibilité",
           "named": true
         },
         {
