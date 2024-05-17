@@ -22,23 +22,50 @@ const unit_identifier = token.immediate(
     phrase_starting_with(choice(unit_symbol, letter))
 );
 
-const arrayPrefix = token(prec(2, "-"));
-
 /* eslint-disable arrow-parens */
 /* eslint-disable camelcase */
 /* eslint-disable-next-line spaced-comment */
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-function mayBeIndentedSingleLine($, rule) {
-    return choice(seq($._indent, rule, $._dedent), seq(rule, $._newline));
+function single_line($, rule) {
+    return choice(indented($, rule), seq(rule, $._newline));
 }
 
-function mayBeIndentedBlock($, rule) {
+function maybe_with_quote(rule) {
     return choice(
-        seq($._indent, repeat1(seq(rule)), $._dedent),
-        seq($._newline, repeat1(seq(rule)))
+        // This is to be coherent with the YAML parser
+        prec(1, seq(token(prec(1, '"')), rule, token(prec(1, '"')))),
+        prec(1, seq(token(prec(1, "'")), rule, token(prec(1, "'")))),
+        rule
     );
+}
+
+function indented($, rule) {
+    return seq($._indent, rule, $._dedent);
+}
+
+function may_be_indented($, rule) {
+    return choice(indented($, rule), seq($._newline, rule));
+}
+
+function array($, rule) {
+    const array_rule = repeat1(array_item($, rule));
+    return may_be_indented($, array_rule);
+}
+
+function array_item($, rule) {
+    return seq($._array_prefix, choice(rule, indented($, rule)), $._dedent);
+}
+function key_value(keys, rule, key_name) {
+    if (!Array.isArray(keys)) {
+        keys = [keys];
+    }
+    let possible_keys = token(prec(3, choice(...keys)));
+    if (key_name !== undefined) {
+        possible_keys = field(key_name, possible_keys);
+    }
+    return seq(possible_keys, ":", rule);
 }
 
 module.exports = grammar({
@@ -50,6 +77,7 @@ module.exports = grammar({
     externals: ($) => [
         $._indent,
         $._dedent,
+        $._array_prefix,
         $.comment,
         $._newline,
         $.paragraph,
@@ -64,19 +92,32 @@ module.exports = grammar({
 
         rule: ($) =>
             seq(
+                optional(seq("[", $.tag, "]")),
                 $._dottedName,
                 ":",
                 choice(
                     field("empty", $._newline),
-                    field("value", mayBeIndentedSingleLine($, $._expression)),
+                    field(
+                        "value",
+                        single_line($, maybe_with_quote($._expression))
+                    ),
                     field("body", $.rule_body)
                 )
             ),
 
-        rule_body: ($) => seq($._indent, repeat($._statement), $._dedent),
-        _statement: ($) => choice($.mechanism, $.meta, $.formule, $._newline), //$.remplace, $.privé
+        rule_body: ($) => indented($, repeat1($._statement)),
+        _statement: ($) =>
+            choice(
+                $.mechanism,
+                $.meta,
+                $.formule,
+                $.avec,
+                $.remplace,
+                $._tags,
+                $.custom_meta
+            ),
         // Formule can only appear top-level in a rule
-        formule: ($) => seq("formule", ":", $._valeur),
+        formule: ($) => key_value("formule", $._valeur),
         /*
         ====================
             Mécanismes
@@ -84,68 +125,230 @@ module.exports = grammar({
         */
         _valeur: ($) =>
             choice(
-                mayBeIndentedSingleLine($, $._expression),
-                mayBeIndentedSingleLine($, $.mechanism)
+                single_line($, maybe_with_quote($._expression)),
+                indented($, repeat1($.mechanism))
             ),
 
         mechanism: ($) => choice($.m_unary, $.m_array, $._m_special),
 
         m_unary: ($) =>
-            seq(
-                field(
-                    "mechanism_name",
-                    choice(
-                        "valeur",
-                        "plafond",
-                        "plancher",
-                        "unité",
-                        "applicable si",
-                        "non applicable si",
-                        "arrondi",
-                        "est non défini",
-                        "est défini",
-                        "est non applicable",
-                        "est applicable",
-                        "par défaut"
-                    )
-                ),
-                ":",
-                $._valeur
+            key_value(
+                [
+                    "valeur",
+                    "plafond",
+                    "plancher",
+                    "applicable si",
+                    "non applicable si",
+                    "arrondi",
+                    "est non défini",
+                    "est défini",
+                    "est non applicable",
+                    "est applicable",
+                    "par défaut",
+                    "abattement",
+                ],
+                $._valeur,
+                "mechanism_name"
             ),
         m_array: ($) =>
-            seq(
-                field(
-                    "mechanism_name",
-                    choice(
-                        "somme",
-                        "produit",
-                        "moyenne",
-                        "le maximum de",
-                        "le minimum de",
-                        "une de ces conditions",
-                        "toutes ces conditions"
-                    )
-                ),
-                ":",
-                mayBeIndentedBlock($, seq("-", $._valeur))
+            key_value(
+                [
+                    "somme",
+                    "produit",
+                    "moyenne",
+                    "le maximum de",
+                    "le minimum de",
+                    "une de ces conditions",
+                    "toutes ces conditions",
+                ],
+                array($, choice($._expression, repeat1($.mechanism))),
+                "mechanism_name"
             ),
 
-        _m_special: ($) => choice($.m_inversion, $.m_contexte),
+        _m_special: ($) =>
+            choice(
+                $.m_inversion,
+                $.m_contexte,
+                $.m_variations,
+                $.m_unité,
+                $.m_durée,
+                $.m_barème_like,
+                $.m_texte
+            ),
 
         m_inversion: ($) =>
-            seq(
-                "inversion numérique",
-                ":",
-                mayBeIndentedBlock($, seq("-", $.reference))
-            ),
+            key_value("inversion numérique", array($, $.reference)),
 
         m_contexte: ($) =>
-            seq(
+            key_value(
                 "contexte",
-                ":",
-                $._indent,
-                repeat1(seq($.reference, ":", $._valeur)),
-                $._dedent
+                indented($, repeat1(seq($.reference, ":", $._valeur)))
+            ),
+        m_variations: ($) =>
+            key_value(
+                "variations",
+                indented(
+                    $,
+                    seq(
+                        repeat1(array_item($, $._variation_si)),
+                        optional(array_item($, $._variation_sinon))
+                    )
+                )
+            ),
+        _variation_si: ($) =>
+            seq(key_value("si", $._valeur), key_value("alors", $._valeur)),
+        _variation_sinon: ($) => key_value("sinon", $._valeur),
+
+        m_unité: ($) => key_value("unité", single_line($, $.units)),
+
+        m_durée: ($) =>
+            key_value(
+                "durée",
+                indented(
+                    $,
+                    seq(
+                        optional(
+                            seq("depuis", ":", field("depuis", $._valeur))
+                        ),
+                        optional(
+                            seq("jusqu'à", ":", field("jusqu_à", $._valeur))
+                        ),
+                        optional(
+                            seq(
+                                "unité",
+                                ":",
+                                field(
+                                    "unité",
+                                    single_line(
+                                        $,
+                                        choice(
+                                            "jour",
+                                            "mois",
+                                            "an",
+                                            "année civile",
+                                            "trimestre",
+                                            "trimestre civil"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+
+        m_barème_like: ($) =>
+            key_value(
+                ["barème", "taux progressif", "grille"],
+                indented(
+                    $,
+                    seq(
+                        "assiette",
+                        ":",
+                        field("assiette", $._valeur),
+                        optional(
+                            seq(
+                                "multiplicateur",
+                                ":",
+                                field("multiplicateur", $._valeur)
+                            )
+                        ),
+                        "tranches",
+                        ":",
+                        may_be_indented(
+                            $,
+                            seq(
+                                repeat1(array_item($, $._m_tranche)),
+                                optional(array_item($, $._m_last_tranche))
+                            )
+                        )
+                    )
+                ),
+                "mechanism_name"
+            ),
+
+        _m_tranche: ($) =>
+            choice(
+                // With plafond last
+                seq(
+                    key_value(["taux", "montant"], field("valeur", $._valeur)),
+                    key_value("plafond", field("plafond", $._valeur))
+                ),
+                // With plafond first
+                seq(
+                    key_value("plafond", field("plafond", $._valeur)),
+                    key_value(["taux", "montant"], field("valeur", $._valeur))
+                )
+            ),
+
+        _m_last_tranche: ($) =>
+            key_value(["taux", "montant"], field("valeur", $._valeur)),
+
+        m_texte: ($) => key_value("texte", choice($._text_line, $._paragraph)),
+
+        /*
+        ========================
+            Avec et remplace     
+        ========================
+        */
+
+        avec: ($) => key_value("avec", indented($, repeat1($.rule))),
+        remplace: ($) =>
+            key_value(
+                "remplace",
+                choice(
+                    single_line($, $.reference),
+                    indented($, $._remplace_rule),
+                    array($, choice($._remplace_rule, $.reference))
+                )
+            ),
+
+        _remplace_rule: ($) =>
+            seq(
+                key_value("références à", single_line($, $.reference)),
+                optional(
+                    field(
+                        "dans",
+                        key_value(
+                            "dans",
+                            choice(
+                                single_line($, $.reference),
+                                array($, $.reference)
+                            )
+                        )
+                    )
+                ),
+                optional(
+                    field(
+                        "sauf_dans",
+                        key_value(
+                            "sauf dans",
+                            choice(
+                                single_line($, $.reference),
+                                array($, $.reference)
+                            )
+                        )
+                    )
+                )
+            ),
+
+        /*
+        ========================
+            Tags
+        ========================
+        */
+
+        _tags: ($) => seq($.tag, ":", "oui"),
+        tag: ($) =>
+            token(
+                prec(
+                    3,
+                    choice(
+                        "privé",
+                        "résoudre la référence circulaire",
+                        "expérimental"
+                    )
+                )
             ),
 
         /*
@@ -265,41 +468,33 @@ module.exports = grammar({
         */
 
         meta: ($) =>
-            prec(2, seq(alias($._reserved_key, $.key), ":", $.meta_value)),
+            key_value(
+                ["titre", "question", "références", "description", "notes"],
+                $.meta_value,
+                "meta_name"
+            ),
 
-        _reserved_key: ($) =>
-            choice("titre", "question", "références", "description", "notes"),
-
-        custom_meta: ($) => seq($.key, $.meta_value),
+        custom_meta: ($) => seq(field("meta_name", $._key), $.meta_value),
 
         meta_value: ($) =>
-            choice(
-                $._newline,
-                mayBeIndentedSingleLine($, $.meta_string),
-                prec(1, $._meta_multiline_string),
-                $.meta_object,
-                $._meta_paragraph
-            ),
-        _meta_multiline_string2: ($) =>
-            seq($._indent, repeat1(seq($.meta_string, $._newline)), $._dedent),
+            choice($._newline, $._text_line, $.object, $._paragraph),
 
-        _meta_multiline_string: ($) =>
-            seq(
-                optional($.meta_string),
-                $._indent,
-                repeat1(seq($.meta_string, $._newline)),
-                $._dedent
+        _text_line: ($) =>
+            choice(
+                seq(
+                    optional($.text_line),
+                    indented($, repeat1(seq($.text_line, $._newline)))
+                ),
+                seq($.text_line, $._newline)
             ),
         // Paragraph are like multiline strings but they do not parse # as comments
         // This needs to be done in the external scanner because otherwise # would be consumed as comments
-        _meta_paragraph: ($) => seq(token(prec(2, "|")), $.paragraph),
+        _paragraph: ($) => seq(token(prec(2, choice("|", ">"))), $.paragraph),
 
-        meta_object: ($) =>
-            seq($._indent, repeat1(seq($.key, $.meta_value)), $._dedent),
-
-        key: ($) =>
+        object: ($) => indented($, repeat1(seq($._key, $.meta_value))),
+        _key: ($) =>
             token(prec(2, seq(choice(/"[^"]+"/, /'[^']+'/, /[^:#\n]+/), ":"))),
-        meta_string: (_) => /[^\n#]*/,
+        text_line: ($) => token(prec(1, /[^\n#]*/)),
     },
 });
 
@@ -312,11 +507,13 @@ module.exports = grammar({
 - Should we allow for multiple spaces between operators, operands, words, etc? 
     -> YES because it is a common practice and it makes the grammar more flexible 
         (That's what copilot is saying anyway)
-        TO CHECK WITH TEST
 
 - Should we allow tabs and spaces ?
-    -> I don't think so, because it leads to complex indentation logic : 
+    -> NO, because it leads to complex indentation logic : 
        we have to choose an arbitrary length for the tab, in order to compare indentation levels of different lines. 
        In python it's 8. But it's usually defined in the editor settings. So it would lead to unexpected behavior.
-       (TODO)
+
+
+- Should we have a number node that contains unit or separate them in number_with_unit and number ?
+
 */

@@ -26,16 +26,16 @@ d:
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (meta_string)))))
+          (text_line)))))
   (rule
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (meta_string)))
+          (text_line)))
       (mechanism
         (m_unary
           (number)))))
@@ -46,16 +46,16 @@ d:
         (m_unary
           (number)))
       (meta
-        (key)
+        
         (meta_value
-          (meta_string)))))
+          (text_line)))))
   (rule
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (meta_string))))))
+          (text_line))))))
           
 ================================================================================
 Meta string indented
@@ -71,21 +71,36 @@ a:
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (meta_string))))))
+          (text_line))))))
           
 ================================================================================
-Meta multiple lines string without starting line (TODO)
-:skip
+Meta multiple lines string without starting line
 ================================================================================
 x: 
-  description: 
-    Poulie : 4
+  description:
+    Poulie  4
     Perpouix
-    zdsz
+    zdsz : 5
+
 a: 5
 --------------------------------------------------------------------------------
+
+  (source_file
+    (rule
+      (name)
+      (rule_body
+        (meta
+          
+          (meta_value
+            (text_line)
+            (text_line)
+            (text_line)))))
+    (rule
+      (name)
+      (number)))
+
 
 ================================================================================
 Meta multiple lines with starting line
@@ -95,6 +110,7 @@ x:
     il est possible d'appliquer un abattement pour diminuer le montant du
     prélèvement à la source : c'est top
   valeur: 4
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -102,11 +118,11 @@ x:
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (meta_string)
-          (meta_string)
-          (meta_string)))
+          (text_line)
+          (text_line)
+          (text_line)))
       (mechanism
         (m_unary
           (number))))))
@@ -119,11 +135,11 @@ x:
      # COMMENT 
     il est possible d'appliquer un abattement pour diminuer le montant du # COMMENT
     Zooo
-  # COMMENT
+    # COMMENT
 
     jdioz
     prélèvement à la source # Ceci est un commentaire
-    # COMMENT
+  # COMMENT
   valeur: 4
 
 --------------------------------------------------------------------------------
@@ -133,17 +149,17 @@ x:
         (name)
         (rule_body
           (meta
-            (key)
+            
             (meta_value
-              (meta_string)
+              (text_line)
               (comment)
               (comment)
-              (meta_string)
+              (text_line)
               (comment)
-              (meta_string)
+              (text_line)
               (comment)
-              (meta_string)
-              (meta_string)
+              (text_line)
+              (text_line)
               (comment)
               (comment)))
           (mechanism
@@ -171,18 +187,18 @@ a:
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (meta_object
-            (key)
+          (object
+            
             (meta_value
-              (meta_string))
-            (key)
+              (text_line))
+            
             (meta_value
-              (meta_string))
-            (key)
+              (text_line))
+            
             (meta_value
-              (meta_string))))))))
+              (text_line))))))))
 
 ================================================================================
 Rule with empty meta
@@ -201,25 +217,24 @@ a:
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
           (paragraph)))
       (meta
-        (key)
+        
         (meta_value
           (paragraph)))
       (meta
-        (key)
+        
         (meta_value))
       (meta
-        (key)
+        
         (meta_value
-          (meta_string))))))
+          (text_line))))))
 
 
 ================================================================================
-Meta paragraph (TODO)
-:skip
+Meta paragraph - 1 
 ================================================================================
 a:
   notes: |
@@ -229,16 +244,8 @@ a:
     - et cela
 
     **Dans l’idéal, on devrait supporter le markdown**
-
-b: 
-  description: | # Ceci est un commentaire
-
-    Ceci est le début du texte
-      Avec une indentation
-    # Ceci n'est pas un commentaire
-  # Ceci en est un
-  valeur: 4
-
+  description: >
+    Ceci aussi est un paragraphe
 
 --------------------------------------------------------------------------------
 
@@ -247,18 +254,43 @@ b:
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
-          (paragraph)))))
+          (paragraph)))
+      (meta
+        
+        (meta_value
+          (paragraph))))))
+
+================================================================================
+Meta paragraph with comment
+================================================================================
+
+b: 
+  description: | # Ceci est un commentaire
+    Ceci est le début du texte
+      Avec une indentation
+    # Ceci n'est pas un commentaire
+  # Ceci est un commentaire
+  valeur: 4
+
+--------------------------------------------------------------------------------
+(source_file
   (rule
     (name)
     (rule_body
       (meta
-        (key)
+        
         (meta_value
           (comment)
           (paragraph)))
-      (comment)))
+      (comment)
+      (mechanism
+        (m_unary
+          (number))))))
+
+
+
 ================================================================================
 Paragraph cannot contain comments
 :error
@@ -293,31 +325,60 @@ a:
         (name)
         (rule_body
           (meta
-            (key)
+            
             (meta_value
-              (meta_string)))
+              (text_line)))
           (meta
-            (key)
+            
             (meta_value
               (paragraph)))
           (meta
-            (key)
+            
             (meta_value
-              (meta_string)))
+              (text_line)))
           (meta
-            (key)
+            
             (meta_value
-              (meta_string)))
+              (text_line)))
           (meta
-            (key)
+            
             (meta_value
-              (meta_object
-                (key)
+              (object
+                
                 (meta_value
-                  (meta_string)
+                  (text_line)
                   (comment))
-                (key)
+                
                 (meta_value
-                  (meta_string)
+                  (text_line)
                   (comment))))))))
+
+
+================================================================================
+Custom meta
+================================================================================
+a: 
+  suggestions: 
+    rule1: non
+    rule2: oui
+  _cdtn: 
+    valeur: 4
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (name)
+    (rule_body
+      (custom_meta
+        (meta_value
+          (object
+            (meta_value
+              (text_line))
+            (meta_value
+              (text_line)))))
+      (custom_meta
+        (meta_value
+          (object
+            (meta_value
+              (text_line))))))))
 
