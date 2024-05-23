@@ -26,7 +26,7 @@ d:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)))))
   (rule
@@ -34,7 +34,7 @@ d:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)))
       (mechanism
@@ -50,7 +50,7 @@ d:
           (m_unary_name)
           (number)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)))))
   (rule
@@ -58,7 +58,7 @@ d:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line))))))
 
@@ -77,7 +77,7 @@ a:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line))))))
 
@@ -99,7 +99,7 @@ a: 5
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)
           (text_line)
@@ -127,7 +127,7 @@ x:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)
           (text_line)
@@ -160,7 +160,7 @@ x:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)
           (comment)
@@ -198,7 +198,7 @@ a:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (object
             (meta_value
@@ -226,18 +226,18 @@ a:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (paragraph)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (paragraph)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line))))))
 
@@ -263,11 +263,11 @@ a:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (paragraph)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (paragraph))))))
 
@@ -291,7 +291,7 @@ b:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (comment)
           (paragraph)))
@@ -335,23 +335,23 @@ a:
       (name))
     (rule_body
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (paragraph)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (text_line)))
       (meta
-        (meta_names)
+        (meta_name)
         (meta_value
           (object
             (meta_value

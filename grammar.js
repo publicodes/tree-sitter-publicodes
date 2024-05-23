@@ -97,22 +97,28 @@ module.exports = grammar({
             seq(
                 "importer!",
                 ":",
-                $._indent,
-                $.import_from,
-                optional($.import_into),
-                optional($.import_rules),
-                $._dedent,
+                indented(
+                    $,
+                    seq(
+                        $.import_from,
+                        optional($.import_into),
+                        optional($.import_rules),
+                    ),
+                ),
             ),
 
         import_from: ($) =>
             seq(
                 "depuis",
                 ":",
-                $._indent,
-                $.import_name,
-                optional($.import_source),
-                optional($.import_url),
-                $._dedent,
+                indented(
+                    $,
+                    seq(
+                        $.import_name,
+                        optional($.import_source),
+                        optional($.import_url),
+                    ),
+                ),
             ),
         import_name: ($) => seq("nom", ":", maybe_with_quote($.text_line)),
         import_source: ($) => seq("source", ":", maybe_with_quote($.text_line)),
@@ -341,7 +347,6 @@ module.exports = grammar({
         _m_tranche: ($) =>
             choice(
                 // With plafond last
-                // TODO: simple choice here?
                 seq(
                     $._m_taux_or_montant,
                     seq($.plafond, ":", field("plafond", $._valeur)),
@@ -604,11 +609,11 @@ module.exports = grammar({
 
         meta: ($) =>
             seq(
-                field("meta_name", $.meta_names),
+                field("meta_name", $.meta_name),
                 ":",
                 field("meta_value", $.meta_value),
             ),
-        meta_names: (_) =>
+        meta_name: (_) =>
             keywords([
                 "titre",
                 "question",

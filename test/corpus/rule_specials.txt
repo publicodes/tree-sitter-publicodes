@@ -36,7 +36,7 @@ a:
                 m_name: (m_unary_name)
                 (number)))
             (meta
-              meta_name: (meta_names)
+              meta_name: (meta_name)
               meta_value: (meta_value
                 (text_line)))))
         (rule
@@ -88,7 +88,7 @@ b:
           (dotted_name
             (name))))
       (meta
-        meta_name: (meta_names)
+        meta_name: (meta_name)
         meta_value: (meta_value
           (text_line))))))
 
@@ -130,7 +130,7 @@ d:
             (dotted_name
               (name)))))
       (meta
-        meta_name: (meta_names)
+        meta_name: (meta_name)
         meta_value: (meta_value
           (text_line)))))
   (rule

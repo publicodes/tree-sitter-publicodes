@@ -76,11 +76,11 @@ importer!:
           (name))
         (rule_body
           (meta
-            (meta_names)
+            (meta_name)
             (meta_value
               (text_line)))
           (meta
-            (meta_names)
+            (meta_name)
             (meta_value
               (text_line)))))
       (import_rule

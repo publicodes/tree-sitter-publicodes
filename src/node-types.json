@@ -1214,7 +1214,7 @@
         "required": true,
         "types": [
           {
-            "type": "meta_names",
+            "type": "meta_name",
             "named": true
           }
         ]
@@ -1830,7 +1830,7 @@
     "named": true
   },
   {
-    "type": "meta_names",
+    "type": "meta_name",
     "named": true
   },
   {
