@@ -150,6 +150,10 @@
         {
           "type": "import_rules",
           "named": true
+        },
+        {
+          "type": "importer",
+          "named": true
         }
       ]
     }
@@ -162,6 +166,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "depuis",
+          "named": true
+        },
         {
           "type": "import_name",
           "named": true
@@ -182,9 +190,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "dans",
+          "named": true
+        },
         {
           "type": "text_line",
           "named": true
@@ -197,9 +209,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "nom",
+          "named": true
+        },
         {
           "type": "text_line",
           "named": true
@@ -235,6 +251,10 @@
           "named": true
         },
         {
+          "type": "les_règles",
+          "named": true
+        },
+        {
           "type": "rule",
           "named": true
         }
@@ -246,9 +266,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "source",
+          "named": true
+        },
         {
           "type": "text_line",
           "named": true
@@ -261,11 +285,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "text_line",
+          "named": true
+        },
+        {
+          "type": "url",
           "named": true
         }
       ]
@@ -1767,19 +1795,11 @@
   },
   {
     "type": "dans",
-    "named": false
-  },
-  {
-    "type": "dans",
     "named": true
   },
   {
     "type": "date",
     "named": true
-  },
-  {
-    "type": "depuis",
-    "named": false
   },
   {
     "type": "depuis",
@@ -1798,8 +1818,8 @@
     "named": true
   },
   {
-    "type": "importer!",
-    "named": false
+    "type": "importer",
+    "named": true
   },
   {
     "type": "inversion_numérique",
@@ -1814,8 +1834,8 @@
     "named": true
   },
   {
-    "type": "les règles",
-    "named": false
+    "type": "les_règles",
+    "named": true
   },
   {
     "type": "m_array_name",
@@ -1851,7 +1871,7 @@
   },
   {
     "type": "nom",
-    "named": false
+    "named": true
   },
   {
     "type": "non",
@@ -1895,7 +1915,7 @@
   },
   {
     "type": "source",
-    "named": false
+    "named": true
   },
   {
     "type": "string",
@@ -1939,7 +1959,7 @@
   },
   {
     "type": "url",
-    "named": false
+    "named": true
   },
   {
     "type": "variations",

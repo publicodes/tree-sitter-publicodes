@@ -15,16 +15,23 @@ importer!:
 
 (source_file
   (import
+    (importer)
     (import_from
+      (depuis)
       (import_name
+        (nom)
         (text_line))
       (import_source
+        (source)
         (text_line))
       (import_url
+        (url)
         (text_line)))
     (import_into
+      (dans)
       (text_line))
     (import_rules
+      (les_règles)
       (import_rule
         (dotted_name
           (name))))))
@@ -41,8 +48,11 @@ importer!:
 
 (source_file
   (import
+    (importer)
     (import_from
+      (depuis)
       (import_name
+        (nom)
         (text_line)))))
 
 ================================================================================
@@ -63,10 +73,14 @@ importer!:
 
 (source_file
   (import
+    (importer)
     (import_from
+      (depuis)
       (import_name
+        (nom)
         (text_line)))
     (import_rules
+      (les_règles)
       (import_rule
         (dotted_name
           (name)))

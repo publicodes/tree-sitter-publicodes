@@ -30,8 +30,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "importer!"
+          "type": "SYMBOL",
+          "name": "importer"
         },
         {
           "type": "STRING",
@@ -89,8 +89,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "depuis"
+          "type": "SYMBOL",
+          "name": "depuis"
         },
         {
           "type": "STRING",
@@ -148,8 +148,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "nom"
+          "type": "SYMBOL",
+          "name": "nom"
         },
         {
           "type": "STRING",
@@ -240,8 +240,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "source"
+          "type": "SYMBOL",
+          "name": "source"
         },
         {
           "type": "STRING",
@@ -332,8 +332,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "url"
+          "type": "SYMBOL",
+          "name": "url"
         },
         {
           "type": "STRING",
@@ -424,8 +424,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "dans"
+          "type": "SYMBOL",
+          "name": "dans"
         },
         {
           "type": "STRING",
@@ -516,8 +516,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "les règles"
+          "type": "SYMBOL",
+          "name": "les_règles"
         },
         {
           "type": "STRING",
@@ -4114,6 +4114,118 @@
       "type": "PATTERN",
       "value": "[⁰-⁹]+"
     },
+    "importer": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "importer!"
+            }
+          ]
+        }
+      }
+    },
+    "depuis": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "depuis"
+            }
+          ]
+        }
+      }
+    },
+    "nom": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "nom"
+            }
+          ]
+        }
+      }
+    },
+    "source": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "source"
+            }
+          ]
+        }
+      }
+    },
+    "url": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "url"
+            }
+          ]
+        }
+      }
+    },
+    "dans": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "dans"
+            }
+          ]
+        }
+      }
+    },
+    "les_règles": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "les règles"
+            }
+          ]
+        }
+      }
+    },
     "formule": {
       "type": "TOKEN",
       "content": {
@@ -4173,22 +4285,6 @@
             {
               "type": "STRING",
               "value": "références à"
-            }
-          ]
-        }
-      }
-    },
-    "dans": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 4,
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "dans"
             }
           ]
         }
@@ -4477,22 +4573,6 @@
             {
               "type": "STRING",
               "value": "durée"
-            }
-          ]
-        }
-      }
-    },
-    "depuis": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 4,
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "depuis"
             }
           ]
         }

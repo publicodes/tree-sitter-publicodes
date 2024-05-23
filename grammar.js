@@ -95,7 +95,7 @@ module.exports = grammar({
 
         import: ($) =>
             seq(
-                "importer!",
+                $.importer,
                 ":",
                 indented(
                     $,
@@ -109,7 +109,7 @@ module.exports = grammar({
 
         import_from: ($) =>
             seq(
-                "depuis",
+                $.depuis,
                 ":",
                 indented(
                     $,
@@ -120,14 +120,14 @@ module.exports = grammar({
                     ),
                 ),
             ),
-        import_name: ($) => seq("nom", ":", maybe_with_quote($.text_line)),
-        import_source: ($) => seq("source", ":", maybe_with_quote($.text_line)),
-        import_url: ($) => seq("url", ":", maybe_with_quote($.text_line)),
+        import_name: ($) => seq($.nom, ":", maybe_with_quote($.text_line)),
+        import_source: ($) => seq($.source, ":", maybe_with_quote($.text_line)),
+        import_url: ($) => seq($.url, ":", maybe_with_quote($.text_line)),
 
-        import_into: ($) => seq("dans", ":", maybe_with_quote($.text_line)),
+        import_into: ($) => seq($.dans, ":", maybe_with_quote($.text_line)),
 
         import_rules: ($) =>
-            seq("les règles", ":", array($, choice($.import_rule, $.rule))),
+            seq($.les_règles, ":", array($, choice($.import_rule, $.rule))),
         import_rule: ($) => $.dotted_name,
 
         /*
@@ -525,6 +525,7 @@ module.exports = grammar({
             Identifier
         ===================
         */
+
         dotted_name: ($) => seq($.name, repeat(seq(" . ", $.name))),
         name: (_) => rule_name,
         reference: ($) => $.dotted_name,
@@ -563,8 +564,20 @@ module.exports = grammar({
         /*
         ====================
             Keywords
+
+        NOTE: we use named node to be able to used them in the semantic
+        highlighting in the language server.
+
         ====================
         */
+
+        importer: (_) => keywords("importer!"),
+        depuis: (_) => keywords("depuis"),
+        nom: (_) => keywords("nom"),
+        source: (_) => keywords("source"),
+        url: (_) => keywords("url"),
+        dans: (_) => keywords("dans"),
+        les_règles: (_) => keywords("les règles"),
 
         formule: (_) => keywords("formule"),
 
