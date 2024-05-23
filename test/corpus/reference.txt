@@ -10,12 +10,17 @@ rule . sub: rule
 
 (source_file
   (rule
-	(name))
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body))
   (rule
-	(name)
-	(name)
-	value: (reference
-		(name))))
+    rule_name: (dotted_name
+      (name)
+      (name))
+    body: (rule_body
+      (reference
+        (dotted_name
+          (name))))))
 
 ================================================================================
 Reference with `-`
@@ -27,10 +32,13 @@ rule: CSG-CRDS
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (reference
-	(dotted_name (name))))))
+        (dotted_name
+          (name))))))
+
 
 ================================================================================
 Reference indented with special characters and reserved words
@@ -38,14 +46,20 @@ Reference indented with special characters and reserved words
 ================================================================================
 
 a:
-	valeur:
-		sécurité sociale plafond
+       valeur:
+               sécurité sociale plafond
 
 --------------------------------------------------------------------------------
-    (source_file
-      (rule
-        (name))
-      (rule
-        (name)
-        (reference
-          (name))))
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (reference
+        (dotted_name
+          (name)))))))
+

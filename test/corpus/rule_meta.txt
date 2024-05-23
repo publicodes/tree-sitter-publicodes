@@ -1,4 +1,3 @@
-
 ================================================================================
 Rule with titre
 ================================================================================
@@ -23,37 +22,43 @@ d:
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line)))))
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line)))
       (mechanism
         (m_unary
+          (m_unary_name)
           (number)))))
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_unary
+          (m_unary_name)
           (number)))
       (meta
-
+        (meta_names)
         (meta_value
           (text_line)))))
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line))))))
 
@@ -68,10 +73,11 @@ a:
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line))))))
 
@@ -89,18 +95,20 @@ a: 5
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line)
           (text_line)
           (text_line)))))
   (rule
-    (dotted_name (name))
-    (number)))
-
+    (dotted_name
+      (name))
+    (rule_body
+      (number))))
 
 ================================================================================
 Meta multiple lines with starting line
@@ -115,16 +123,18 @@ x:
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line)
           (text_line)
           (text_line)))
       (mechanism
         (m_unary
+          (m_unary_name)
           (number))))))
 
 ================================================================================
@@ -146,10 +156,11 @@ x:
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (text_line)
           (comment)
@@ -164,8 +175,8 @@ x:
           (comment)))
       (mechanism
         (m_unary
+          (m_unary_name)
           (number))))))
-
 
 ================================================================================
 Rule with références
@@ -181,22 +192,19 @@ a:
 
 --------------------------------------------------------------------------------
 
-
 (source_file
   (rule
-    (name)
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (object
-
             (meta_value
               (text_line))
-
             (meta_value
               (text_line))
-
             (meta_value
               (text_line))))))))
 
@@ -214,24 +222,24 @@ a:
 
 (source_file
   (rule
-    (name)
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (paragraph)))
       (meta
-
+        (meta_names)
         (meta_value
           (paragraph)))
       (meta
-
+        (meta_names)
         (meta_value))
       (meta
-
+        (meta_names)
         (meta_value
           (text_line))))))
-
 
 ================================================================================
 Meta paragraph - 1
@@ -251,14 +259,15 @@ a:
 
 (source_file
   (rule
-    (name)
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (paragraph)))
       (meta
-
+        (meta_names)
         (meta_value
           (paragraph))))))
 
@@ -275,21 +284,22 @@ b:
   valeur: 4
 
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (name)
+    (dotted_name
+      (name))
     (rule_body
       (meta
-
+        (meta_names)
         (meta_value
           (comment)
           (paragraph)))
       (comment)
       (mechanism
         (m_unary
+          (m_unary_name)
           (number))))))
-
-
 
 ================================================================================
 Paragraph cannot contain comments
@@ -300,7 +310,6 @@ a:
   # Ceci est un bug
     lala
 --------------------------------------------------------------------------------
-
 
 ================================================================================
 Rule with all the supported meta
@@ -320,39 +329,37 @@ a:
 
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (name)
-        (rule_body
-          (meta
-
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (meta
+        (meta_names)
+        (meta_value
+          (text_line)))
+      (meta
+        (meta_names)
+        (meta_value
+          (paragraph)))
+      (meta
+        (meta_names)
+        (meta_value
+          (text_line)))
+      (meta
+        (meta_names)
+        (meta_value
+          (text_line)))
+      (meta
+        (meta_names)
+        (meta_value
+          (object
             (meta_value
-              (text_line)))
-          (meta
-
+              (text_line)
+              (comment))
             (meta_value
-              (paragraph)))
-          (meta
-
-            (meta_value
-              (text_line)))
-          (meta
-
-            (meta_value
-              (text_line)))
-          (meta
-
-            (meta_value
-              (object
-
-                (meta_value
-                  (text_line)
-                  (comment))
-
-                (meta_value
-                  (text_line)
-                  (comment))))))))
-
+              (text_line)
+              (comment))))))))
 
 ================================================================================
 Custom meta
@@ -367,7 +374,8 @@ a:
 
 (source_file
   (rule
-    (name)
+    (dotted_name
+      (name))
     (rule_body
       (custom_meta
         (meta_value
@@ -381,4 +389,3 @@ a:
           (object
             (meta_value
               (text_line))))))))
-

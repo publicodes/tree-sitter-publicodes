@@ -1,4 +1,3 @@
-
 ================================================================================
 Avec
 ================================================================================
@@ -18,25 +17,32 @@ a:
 
 (source_file
   (rule
-    (name)
-    (rule_body
-      (avec
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_avec
+        m_name: (avec)
         (rule
-          (name)
-          (number))
+          rule_name: (dotted_name
+            (name))
+          body: (rule_body
+            (number)))
         (rule
-          (name)
-          (rule_body
+          rule_name: (dotted_name
+            (name))
+          body: (rule_body
             (mechanism
               (m_unary
+                m_name: (m_unary_name)
                 (number)))
             (meta
-
-              (meta_value
+              meta_name: (meta_names)
+              meta_value: (meta_value
                 (text_line)))))
         (rule
-          (name)
-          (rule_body
+          rule_name: (dotted_name
+            (name))
+          body: (rule_body
             (mechanism
               (m_array
                 m_name: (m_array_name)
@@ -60,23 +66,31 @@ b:
 
 (source_file
   (rule
-    rule_name: (name)
-    (rule_body
-      (remplace
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
         (reference
-          (name)))))
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (rule_body
-      (remplace
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
         (reference
-          (name))
-        (reference
-          (name)))
+          (dotted_name
+            (name)))
+        (références_à)
+        ref: (reference
+          (dotted_name
+            (name))))
       (meta
-        (meta_value
+        meta_name: (meta_names)
+        meta_value: (meta_value
           (text_line))))))
-
 
 ================================================================================
 remplace - 2
@@ -99,26 +113,41 @@ d:
 
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        rule_name: (name)
-        (rule_body
-          (remplace
-            (reference
-              (name))
-            (reference
+(source_file
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
+        (références_à)
+        ref: (reference
+          (dotted_name
+            (name)))
+        (sauf_dans)
+        except: (remplace_rule_except
+          (reference
+            (dotted_name
+              (name)))))
+      (meta
+        meta_name: (meta_names)
+        meta_value: (meta_value
+          (text_line)))))
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
+        (références_à)
+        ref: (reference
+          (dotted_name
+            (name)))
+        (dans)
+        in: (remplace_rule_in
+          (reference
+            (dotted_name
               (name)))
-          (meta
-
-            (meta_value
-              (text_line)))))
-      (rule
-        (name)
-        (rule_body
-          (remplace
-            (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name))))))
+          (reference
+            (dotted_name
+              (name))))))))

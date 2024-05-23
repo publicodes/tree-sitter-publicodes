@@ -26,7 +26,8 @@ importer!:
       (text_line))
     (import_rules
       (import_rule
-        (name)))))
+        (dotted_name
+          (name))))))
 
 ================================================================================
 Import (minimal)
@@ -67,18 +68,23 @@ importer!:
         (text_line)))
     (import_rules
       (import_rule
-        (name))
+        (dotted_name
+          (name)))
       (rule
-        (name)
-        (name)
+        (dotted_name
+          (name)
+          (name))
         (rule_body
           (meta
+            (meta_names)
             (meta_value
               (text_line)))
           (meta
+            (meta_names)
             (meta_value
               (text_line)))))
       (import_rule
-        (name)
-        (name)
-        (name)))))
+        (dotted_name
+          (name)
+          (name)
+          (name))))))

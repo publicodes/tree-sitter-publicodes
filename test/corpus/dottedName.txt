@@ -8,25 +8,29 @@ a . b:
 
 (source_file
   (rule
-    (name)
-    (name)))
-
+    (dotted_name
+      (name)
+      (name))
+    (rule_body)))
 
 ================================================================================
 Several rule definitions
 ================================================================================
 
-a:  
+a:
 b  :
 
 --------------------------------------------------------------------------------
 
-
 (source_file
   (rule
-    (name))
+    (dotted_name
+      (name))
+    (rule_body))
   (rule
-    (name)))
+    (dotted_name
+      (name))
+    (rule_body)))
 
 ================================================================================
 Long dottedname
@@ -38,12 +42,14 @@ a . b . c . d . e . f:
 
 (source_file
   (rule
-    (name)
-    (name)
-    (name)
-    (name)
-    (name)
-    (name)))
+    (dotted_name
+      (name)
+      (name)
+      (name)
+      (name)
+      (name)
+      (name))
+    (rule_body)))
 
 ================================================================================
 Dotted names with numbers
@@ -55,7 +61,9 @@ année 2020:
 
 (source_file
   (rule
-    (name)))
+    (dotted_name
+      (name))
+    (rule_body)))
 
 ================================================================================
 Dotted names with special chars
@@ -68,18 +76,25 @@ note . b-:
 
 --------------------------------------------------------------------------------
 
-
 (source_file
   (rule
-    (name))
+    (dotted_name
+      (name))
+    (rule_body))
   (rule
-  (name))
+    (dotted_name
+      (name))
+    (rule_body))
   (rule
-  (name)
-  (name))
+    (dotted_name
+      (name)
+      (name))
+    (rule_body))
   (rule
-  (name)
-  (name)))
+    (dotted_name
+      (name)
+      (name))
+    (rule_body)))
 
 ================================================================================
 Dotted names with reserved words
@@ -90,20 +105,43 @@ ouinon:
 oui non:
 
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (name))
+    (dotted_name
+      (name))
+    (rule_body))
   (rule
-  (name))
+    (dotted_name
+      (name))
+    (rule_body))
   (rule
-  (name)))
+    (dotted_name
+      (name))
+    (rule_body)))
+
+
+================================================================================
+Dotted names can have multiple spaces before and after dot
+================================================================================
+
+a  .   b a:
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name)
+      (name))
+    (rule_body)))
 
 ================================================================================
 Dotted names can't start with number
 :error
 ================================================================================
 
-2022 year:  
+2022 year:
 
 --------------------------------------------------------------------------------
 
@@ -134,20 +172,6 @@ Dotted names can't have parentheses (TODO)
 yes (no):
 
 --------------------------------------------------------------------------------
-
-================================================================================
-Dotted names can have multiple spaces before and after dot
-================================================================================
-
-a  .   b a:
-
---------------------------------------------------------------------------------
-
-(source_file
-  (rule
-    (name)
-    (name)))
-
 
 ===================================================
 Dotted names can't have multiple spaces inside rule

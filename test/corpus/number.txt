@@ -8,8 +8,10 @@ a: 10
 
 (source_file
   (rule
-    (name)
-    value: (number)))
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (number))))
 
 ================================================================================
 Float constant
@@ -21,18 +23,10 @@ a: 10.2
 
 (source_file
   (rule
-    (name)
-    value: (number)))
-
-
-================================================================================
-Number with several .
-:error
-================================================================================
-
-a: 10.2.4
-
---------------------------------------------------------------------------------
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (number))))
 
 ================================================================================
 Number with unit - 1
@@ -50,42 +44,54 @@ h: 4 pili-pili
 
 (source_file
   (rule
-    (name)
-    (number
-      (units
-        (unit))))
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)))))
   (rule
-    (name)
-    (number
-      (units
-        (unit))))
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)))))
   (rule
-    (name)
-    (number
-      (units
-        (unit))))
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)))))
   (rule
-    (name)
-    (number
-      (units
-        (unit))))
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)))))
   (rule
-    (name)
-    (number
-      (units
-        (unit))))
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)))))
   (rule
-    (name)
-    (number
-      (units
-        (unit))))
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)))))
   (rule
-    (name)
-    (number
-      (units
-        (unit)))))
-
-
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit))))))
 
 ================================================================================
 Number with unit - 2
@@ -98,56 +104,86 @@ d: 10 % /an
 e: 15 €/mois
 f: 65.6 € /kW.h /éolienne
 
+--------------------------------------------------------------------------------
 
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)
+          (unit)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)
+          (unit)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)
+          (unit)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)
+          (unit)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit)
+          (unit)
+          (unit)
+          (unit))))))
+
+================================================================================
+Number with unit - 3 (TODO)
+:skip
+================================================================================
+
+a: 5.8 L/100km
+b: 12 €/100g
+
+--------------------------------------------------------------------------------
+
+================================================================================
+Number with unit - 4
+================================================================================
+
+a: 5 e-e
 
 --------------------------------------------------------------------------------
 
 (source_file
   (rule
-    (name)
-    (number
-      (units
-        (unit)
-        (unit))))
-  (rule
-    (name)
-    (number
-      (units
-        (unit)
-        (unit))))
-  (rule
-    (name)
-    (number
-      (units
-        (unit)
-        (unit))))
-  (rule
-    (name)
-    (number
-      (units
-        (unit)
-        (unit))))
-  (rule
-    (name)
-    (number
-      (units
-        (unit)
-        (unit)
-        (unit)
-        (unit)))))
-
+    (dotted_name
+      (name))
+    (rule_body
+      (number
+        (units
+          (unit))))))
 
 ================================================================================
-Number with unit - 3 (TODO)
+Number with several '.'
 :error
 ================================================================================
-a: 5.8 L/100km
-b: 12 €/100g
+
+a: 10.2.4
+
 --------------------------------------------------------------------------------
 
-================================================================================
-Number with unit - 4 (TODO)
-:error
-================================================================================
-a: 5 e-e
---------------------------------------------------------------------------------
+

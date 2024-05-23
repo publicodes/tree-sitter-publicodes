@@ -526,43 +526,12 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "CHOICE",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "import_rule"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "rule"
-                              }
-                            ]
+                            "type": "SYMBOL",
+                            "name": "import_rule"
                           },
                           {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "CHOICE",
-                                "members": [
-                                  {
-                                    "type": "SYMBOL",
-                                    "name": "import_rule"
-                                  },
-                                  {
-                                    "type": "SYMBOL",
-                                    "name": "rule"
-                                  }
-                                ]
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
+                            "type": "SYMBOL",
+                            "name": "rule"
                           }
                         ]
                       },
@@ -599,43 +568,12 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "CHOICE",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "import_rule"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "rule"
-                              }
-                            ]
+                            "type": "SYMBOL",
+                            "name": "import_rule"
                           },
                           {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "CHOICE",
-                                "members": [
-                                  {
-                                    "type": "SYMBOL",
-                                    "name": "import_rule"
-                                  },
-                                  {
-                                    "type": "SYMBOL",
-                                    "name": "rule"
-                                  }
-                                ]
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
+                            "type": "SYMBOL",
+                            "name": "rule"
                           }
                         ]
                       },
@@ -1804,30 +1742,8 @@
                         "name": "_array_prefix"
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "m_variation_si"
-                          },
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "m_variation_si"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "m_variation_si"
                       },
                       {
                         "type": "SYMBOL",
@@ -1847,30 +1763,8 @@
                           "name": "_array_prefix"
                         },
                         {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "SYMBOL",
-                              "name": "m_variation_sinon"
-                            },
-                            {
-                              "type": "SEQ",
-                              "members": [
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "_indent"
-                                },
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "m_variation_sinon"
-                                },
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "_dedent"
-                                }
-                              ]
-                            }
-                          ]
+                          "type": "SYMBOL",
+                          "name": "m_variation_sinon"
                         },
                         {
                           "type": "SYMBOL",
@@ -2542,30 +2436,8 @@
                                       "name": "_array_prefix"
                                     },
                                     {
-                                      "type": "CHOICE",
-                                      "members": [
-                                        {
-                                          "type": "SYMBOL",
-                                          "name": "_m_taux_or_montant"
-                                        },
-                                        {
-                                          "type": "SEQ",
-                                          "members": [
-                                            {
-                                              "type": "SYMBOL",
-                                              "name": "_indent"
-                                            },
-                                            {
-                                              "type": "SYMBOL",
-                                              "name": "_m_taux_or_montant"
-                                            },
-                                            {
-                                              "type": "SYMBOL",
-                                              "name": "_dedent"
-                                            }
-                                          ]
-                                        }
-                                      ]
+                                      "type": "SYMBOL",
+                                      "name": "_m_taux_or_montant"
                                     },
                                     {
                                       "type": "SYMBOL",
@@ -2627,30 +2499,8 @@
                                       "name": "_array_prefix"
                                     },
                                     {
-                                      "type": "CHOICE",
-                                      "members": [
-                                        {
-                                          "type": "SYMBOL",
-                                          "name": "_m_taux_or_montant"
-                                        },
-                                        {
-                                          "type": "SEQ",
-                                          "members": [
-                                            {
-                                              "type": "SYMBOL",
-                                              "name": "_indent"
-                                            },
-                                            {
-                                              "type": "SYMBOL",
-                                              "name": "_m_taux_or_montant"
-                                            },
-                                            {
-                                              "type": "SYMBOL",
-                                              "name": "_dedent"
-                                            }
-                                          ]
-                                        }
-                                      ]
+                                      "type": "SYMBOL",
+                                      "name": "_m_taux_or_montant"
                                     },
                                     {
                                       "type": "SYMBOL",
@@ -2929,30 +2779,8 @@
                     "name": "_array_prefix"
                   },
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "reference"
-                      },
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "_indent"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "reference"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "_dedent"
-                          }
-                        ]
-                      }
-                    ]
+                    "type": "SYMBOL",
+                    "name": "reference"
                   },
                   {
                     "type": "SYMBOL",
@@ -2984,30 +2812,8 @@
                     "name": "_array_prefix"
                   },
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "reference"
-                      },
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "_indent"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "reference"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "_dedent"
-                          }
-                        ]
-                      }
-                    ]
+                    "type": "SYMBOL",
+                    "name": "reference"
                   },
                   {
                     "type": "SYMBOL",
@@ -3384,30 +3190,8 @@
                         "name": "_array_prefix"
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "reference"
-                          },
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "reference"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "reference"
                       },
                       {
                         "type": "SYMBOL",
@@ -3439,30 +3223,8 @@
                         "name": "_array_prefix"
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "reference"
-                          },
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "reference"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "reference"
                       },
                       {
                         "type": "SYMBOL",
@@ -3535,30 +3297,8 @@
                         "name": "_array_prefix"
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "reference"
-                          },
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "reference"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "reference"
                       },
                       {
                         "type": "SYMBOL",
@@ -3590,30 +3330,8 @@
                         "name": "_array_prefix"
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "reference"
-                          },
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_indent"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "reference"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_dedent"
-                              }
-                            ]
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "reference"
                       },
                       {
                         "type": "SYMBOL",

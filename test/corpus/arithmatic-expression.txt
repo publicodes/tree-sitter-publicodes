@@ -12,24 +12,32 @@ d: (-5)
 
 (source_file
   (rule
-    (name)
-    (ar_unary_expression
-      (number
-        (units
-          (unit)))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_unary_expression
+        (number
+          (units
+            (unit))))))
   (rule
-    (name)
-    (ar_unary_expression
-    (reference
-      (name))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_unary_expression
+        (reference
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (number))
+    (dotted_name
+      (name))
+    (rule_body
+      (number)))
   (rule
-    (name)
-    (ar_unary_expression
-      (number))))
-
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_unary_expression
+        (number)))))
 
 ================================================================================
 Binary expression
@@ -42,33 +50,46 @@ d: 12 + 1
 
 
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (name)
-    (ar_binary_expression
-      (reference
-        (name))
-      (reference
-        (name))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (reference
+          (dotted_name
+            (name)))
+        (reference
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (ar_binary_expression
-      (reference
-        (name))
-      (reference
-        (name))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (reference
+          (dotted_name
+            (name)))
+        (reference
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (ar_binary_expression
-      (reference
-        (name))
-      (number)))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (reference
+          (dotted_name
+            (name)))
+        (number))))
   (rule
-    (name)
-    (ar_binary_expression
-      (number)
-      (number)))
-)
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (number)))))
 
 ================================================================================
 Binary expression starting with numbers
@@ -81,36 +102,51 @@ f: 8 / pou
 g: 10 + cool
 
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (name)
-    (ar_binary_expression
-      (number)
-      (number)))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (number))))
   (rule
-    (name)
-    (ar_binary_expression
-      (number)
-            (reference
-        (name))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (reference
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (ar_binary_expression
-      (number)
-            (reference
-        (name))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (reference
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (ar_binary_expression
-      (number)
-            (reference
-        (name))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (reference
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (ar_binary_expression
-      (number)
-            (reference
-        (name)))))
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (reference
+          (dotted_name
+            (name)))))))
 
 ================================================================================
 Associativity
@@ -122,80 +158,95 @@ c: (12 - e) + 4
 
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (name)
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
         (ar_binary_expression
-          (ar_binary_expression
-            (number)
-(reference
-              (name)))
+          (number)
           (reference
-            (name))))
-
-      (rule
-        (name)
+            (dotted_name
+              (name))))
+        (reference
+          (dotted_name
+            (name))))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
         (ar_binary_expression
+          (number)
           (ar_binary_expression
             (number)
-            (ar_binary_expression
-              (number)
-              (number)))
-          (number)))
-      (rule
-        (name)
+            (number)))
+        (number))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
         (ar_binary_expression
-          (ar_binary_expression
-            (number)
-   (reference
-              (name)))
-          (number))))
+          (number)
+          (reference
+            (dotted_name
+              (name))))
+        (number)))))
 
-
-=============
+================================================================================
 Error unary -
 :error
-=============
-c: a -5
--------------
+================================================================================
 
-=============
+c: a -5
+
+--------------------------------------------------------------------------------
+
+================================================================================
 Error without spaces
 :error
-=============
-c: 1+5
--------------
+================================================================================
 
-=============
+c: 1+5
+
+--------------------------------------------------------------------------------
+
+================================================================================
 Can't mix number and boolean (TODO)
 :error
 :skip
-=============
+================================================================================
+
 c: 4.5 - oui
--------------
 
+--------------------------------------------------------------------------------
 
-=============
+================================================================================
 Error with string
 :error
-=============
-c: 4.5 + "ab"
--------------
+================================================================================
 
-=============
+c: 4.5 + "ab"
+
+--------------------------------------------------------------------------------
+
+================================================================================
 Error with date
 :error
-=============
-c: 01/12/2024 + 41 jours
--------------
+================================================================================
 
+c: 01/12/2024 + 41 jours
+
+--------------------------------------------------------------------------------
 
 ================================================================================
 Expression on several lines (TODO ?) (POSSIBLE AUJOURD'HUI)
 :skip
 ================================================================================
 
-a: 5 
+a: 5
   + 4
   * 2
 
