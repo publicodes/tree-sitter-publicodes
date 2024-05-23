@@ -124,14 +124,6 @@ bool tree_sitter_publicodes_external_scanner_scan(
       line2 # This line is expected to be indented, without the need of parsing an `INDENT` token
     ```
   */
-  if (valid_symbols[ARRAY_PREFIX] && lexer->lookahead == '-')
-  {
-    skip(lexer);
-    lexer->result_symbol = ARRAY_PREFIX;
-    uint16_t indent_length = lexer->get_column(lexer);
-    array_push(indents, indent_length);
-    return true;
-  }
 
   for (;;)
   {
@@ -204,6 +196,19 @@ bool tree_sitter_publicodes_external_scanner_scan(
       lexer->result_symbol = DEDENT;
       return true;
     }
+  }
+  if (valid_symbols[ARRAY_PREFIX] && lexer->lookahead == '-')
+  {
+    skip(lexer);
+    while (lexer->lookahead == ' ' || lexer->lookahead == '\n')
+    {
+      skip(lexer);
+    }
+
+    uint16_t indent_length = lexer->get_column(lexer);
+    lexer->result_symbol = ARRAY_PREFIX;
+    array_push(indents, indent_length);
+    return true;
   }
   return false;
 }
