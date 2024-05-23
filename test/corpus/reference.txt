@@ -1,28 +1,4 @@
 ================================================================================
-Identifier constant
-================================================================================
-
-rule:
-
-rule . sub: rule
-
---------------------------------------------------------------------------------
-
-(source_file
-  (rule
-    rule_name: (dotted_name
-      (name))
-    body: (rule_body))
-  (rule
-    rule_name: (dotted_name
-      (name)
-      (name))
-    body: (rule_body
-      (reference
-        (dotted_name
-          (name))))))
-
-================================================================================
 Reference with `-`
 ================================================================================
 
@@ -39,6 +15,62 @@ rule: CSG-CRDS
         (dotted_name
           (name))))))
 
+================================================================================
+Reference with mechanism name
+================================================================================
+
+rule: somme
+
+rule: sécurité sociale plafond
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (reference
+        (dotted_name
+          (name)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (reference
+        (dotted_name
+          (name))))))
+
+================================================================================
+Reference with mechanism name in array mechanism
+:skip
+================================================================================
+
+rule:
+  somme:
+    - sécurité sociale plafond
+    - somme
+    - plafond
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_array
+          (m_array_name)
+          (reference
+            (dotted_name
+              (name)))))))
+          (reference
+            (dotted_name
+              (name)))))))
+          (reference
+            (dotted_name
+              (name))))))))
 
 ================================================================================
 Reference indented with special characters and reserved words
