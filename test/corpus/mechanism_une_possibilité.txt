@@ -63,7 +63,7 @@ c:
       (name))
     body: (rule_body
       (s_formule
-        (formule)
+        m_name: (formule)
         (m_une_possibilité
           m_name: (une_possibilité)
           (possibilités)

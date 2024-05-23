@@ -166,7 +166,7 @@ module.exports = grammar({
         // Formule can only appear top-level in a rule
         s_formule: ($) =>
             seq(
-                $.formule,
+                field("m_name", $.formule),
                 ":",
                 choice($._valeur, indented($, $.m_une_possibilité)),
             ),

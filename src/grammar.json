@@ -919,8 +919,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "formule"
+          "type": "FIELD",
+          "name": "m_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "formule"
+          }
         },
         {
           "type": "STRING",

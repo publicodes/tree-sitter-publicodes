@@ -1497,10 +1497,21 @@
   {
     "type": "s_formule",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "formule",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "ar_binary_expression",
@@ -1520,10 +1531,6 @@
         },
         {
           "type": "date",
-          "named": true
-        },
-        {
-          "type": "formule",
           "named": true
         },
         {
