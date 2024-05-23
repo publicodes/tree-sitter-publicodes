@@ -55,7 +55,7 @@ function array($, rule) {
 }
 
 function array_item($, rule) {
-    return seq($._array_prefix, choice(rule, indented($, rule)), $._dedent);
+    return seq($._array_prefix, rule, $._dedent);
 }
 function key_value(keys, rule, key_name) {
     if (!Array.isArray(keys)) {

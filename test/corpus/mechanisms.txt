@@ -102,15 +102,6 @@ c:
             (number)
             (number))))))
 
-================================================================================
-Array-like mechanism - 4
-================================================================================
-
-a:
-  produit:
-    - plafond
-    - a
---------------------------------------------------------------------------------
 
 ================================================================================
 Unary mechanism
@@ -287,6 +278,45 @@ b:
                 (string))))
           (number)
           (number))))))
+
+================================================================================
+Variations - 2
+================================================================================
+
+dirigeant . indépendant . revenu professionnel:
+  variations:
+    - si: entreprise . imposition = 'IS'
+      alors:
+        somme:
+        - rémunération . net
+        - cotisations et contributions . non déductibles
+    - sinon: entreprise . résultat fiscal
+
+---------------------------------------------------
+    (source_file
+      (rule
+        (name)
+        (name)
+        (name)
+        (rule_body
+          (mechanism
+            (m_variations
+              (comparison
+                (reference
+                  (name)
+                  (name))
+                (string))
+              (mechanism
+                (m_array
+                  (reference
+                    (name)
+                    (name))
+                  (reference
+                    (name)
+                    (name))))
+              (reference
+                (name)
+                (name)))))))
 
 ================================================================================
 Durée
