@@ -1,16 +1,16 @@
 
 ================================================================================
-Avec 
+Avec
 ================================================================================
 
-a: 
-  avec: 
+a:
+  avec:
     a: 10
-    b: 
+    b:
       valeur: 20
       titre: Test
-    c: 
-      somme: 
+    c:
+      somme:
       - 10
       - 20
 
@@ -31,7 +31,7 @@ a:
               (m_unary
                 (number)))
             (meta
-              
+
               (meta_value
                 (text_line)))))
         (rule
@@ -39,6 +39,7 @@ a:
           (rule_body
             (mechanism
               (m_array
+                m_name: (m_array_name)
                 (number)
                 (number)))))))))
 
@@ -46,12 +47,12 @@ a:
 remplace - 1
 ================================================================================
 
-a: 
+a:
   remplace: b
-b: 
-  remplace: 
+b:
+  remplace:
     - c
-    - 
+    -
       références à: a
   titre: Test
 
@@ -59,7 +60,7 @@ b:
 
 (source_file
   (rule
-    (name)
+    rule_name: (name)
     (rule_body
       (remplace
         (reference
@@ -73,27 +74,26 @@ b:
         (reference
           (name)))
       (meta
-        
         (meta_value
           (text_line))))))
-          
+
 
 ================================================================================
 remplace - 2
 ================================================================================
 
-a: 
-  remplace: 
+a:
+  remplace:
     références à : b
-    sauf dans: 
+    sauf dans:
       - c
-    
+
   titre: Test
 
-d: 
-  remplace: 
+d:
+  remplace:
     - références à: a
-      dans: 
+      dans:
       - c
       - x
 
@@ -101,7 +101,7 @@ d:
 
     (source_file
       (rule
-        (name)
+        rule_name: (name)
         (rule_body
           (remplace
             (reference
@@ -109,7 +109,7 @@ d:
             (reference
               (name)))
           (meta
-            
+
             (meta_value
               (text_line)))))
       (rule

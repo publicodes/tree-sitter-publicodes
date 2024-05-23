@@ -1,0 +1,84 @@
+================================================================================
+Import (full)
+================================================================================
+
+importer!:
+  depuis:
+    nom: "@incubateur-ademe/nosgestesclimat"
+    source: "../path/to/nosgestesclimat"
+    url: https://example.com/nosgestesclimat
+  dans: ngc
+  les règles:
+    - rule 2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import
+    (import_from
+      (import_name
+        (text_line))
+      (import_source
+        (text_line))
+      (import_url
+        (text_line)))
+    (import_into
+      (text_line))
+    (import_rules
+      (import_rule
+        (name)))))
+
+================================================================================
+Import (minimal)
+================================================================================
+
+importer!:
+  depuis:
+    nom: "@incubateur-ademe/nosgestesclimat"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import
+    (import_from
+      (import_name
+        (text_line)))))
+
+================================================================================
+Import (with rules)
+================================================================================
+
+importer!:
+  depuis:
+    nom: "@incubateur-ademe/nosgestesclimat"
+  les règles:
+    - rule 2
+    - rule 3 . a:
+        titre: Test
+        description: Test
+    - rule 2 . a . b
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import
+    (import_from
+      (import_name
+        (text_line)))
+    (import_rules
+      (import_rule
+        (name))
+      (rule
+        (name)
+        (name)
+        (rule_body
+          (meta
+            (meta_value
+              (text_line)))
+          (meta
+            (meta_value
+              (text_line)))))
+      (import_rule
+        (name)
+        (name)
+        (name)))))

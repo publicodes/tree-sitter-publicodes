@@ -1,2 +1,3 @@
 # tree-sitter-publicodes
-Publicodes grammar for tree-sitter 
+
+Publicodes grammar for tree-sitter

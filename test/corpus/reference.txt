@@ -24,19 +24,21 @@ Reference with `-`
 rule: CSG-CRDS
 
 --------------------------------------------------------------------------------
+
 (source_file
-	(rule
-	(name)
-	(reference
-		(name))))
+  (rule
+    (dotted_name (name))
+    (rule_body
+      (reference
+	(dotted_name (name))))))
 
 ================================================================================
 Reference indented with special characters and reserved words
 :skip
 ================================================================================
 
-a: 
-	valeur: 
+a:
+	valeur:
 		sécurité sociale plafond
 
 --------------------------------------------------------------------------------

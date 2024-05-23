@@ -2,7 +2,7 @@
 Une possibilité
 ================================================================================
 
-a: 
+a:
   une possibilité:
     choix obligatoire: oui
     possibilités:
@@ -14,12 +14,12 @@ a:
       - compta
       - optique
 
-a: 
-  formule: 
+a:
+  formule:
     une possibilité:
       possibilités:
         - b
-c: 
+c:
   une possibilité:
     choix obligatoire: non
     possibilités:
@@ -28,7 +28,7 @@ c:
 
     (source_file
       (rule
-        (name)
+        rule_name: (name)
         (rule_body
           (m_une_possibilité
             (reference
@@ -64,8 +64,8 @@ Une possibilités n'est pas un mécanisme comme les autres
 :error
 ================================================================================
 
-a: 
-  valeur: 
+a:
+  valeur:
     une possibilité:
       possibilités:
         - b

@@ -8,18 +8,18 @@ a:
 
 (source_file
   (rule
-    (name)
-    (string)))
+    (dotted_name (name))
+    (rule_body (string))))
 
 ================================================================================
-Rule with valeur mecanism - YAML style
+Rule with valeur mechanism - YAML style
 ================================================================================
 
 a:
   valeur: 5
 
 b:
-  valeur: 
+  valeur:
     '5'
 c:
   formule: oui
@@ -30,21 +30,24 @@ c:
 
 (source_file
   (rule
-    (name)
+    (dotted_name (name))
     (rule_body
       (mechanism
         (m_unary
+          (m_unary_name)
           (number)))))
   (rule
-    (name)
+    (dotted_name (name))
     (rule_body
       (mechanism
         (m_unary
+          (m_unary_name)
           (number)))))
   (rule
-    (name)
+    (dotted_name (name))
     (rule_body
-      (formule
+      (s_formule
+        (formule)
         (boolean)))))
 
 ================================================================================
@@ -54,46 +57,49 @@ Rule with weird indentation (TODO : should be error ?)
 a:
   valeur:
   5
-  
+
 --------------------------------------------------------------------------------
 (source_file
   (rule
-    (name)
+    (dotted_name (name))
     (rule_body
       (mechanism
         (m_unary
+          (m_unary_name)
           (number))))))
 
 
 ================================================================================
-Rules with commentaire
+Rules with comments
 ================================================================================
 a: # COMZ
 #COMZ
   # COMZ
   valeur: 4 + 5 # COMZ
 # COMZ
-  # COMZ : 
-b: 
+  # COMZ :
+b:
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (name)
-        (comment)
-        (comment)
-        (comment)
-        (rule_body
-          (mechanism
-            (m_unary
-              (ar_binary_expression
-                (number)
-                (number))
-              (comment)
-              (comment)
-              (comment)))))
-      (rule
-        (name)))
+(source_file
+  (rule
+    (dotted_name (name))
+    (comment)
+    (comment)
+    (comment)
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (ar_binary_expression
+            (number)
+            (number))
+          (comment)
+          (comment)
+          (comment)))))
+  (rule
+    (dotted_name (name))
+    (rule_body)))
 
 ================================================================================
 Doesn't allow tab for indenting
@@ -120,16 +126,18 @@ b:
 --------------------------------------------------------------------------------
     (source_file
       (rule
-        (name)
+        (dotted_name (name))
         (rule_body
           (mechanism
             (m_unary
+              (m_unary_name)
               (number)))))
       (rule
-        (name)
+        (dotted_name (name))
         (rule_body
           (mechanism
             (m_unary
+              (m_unary_name)
               (number))))))
 
 
@@ -142,7 +150,7 @@ a: "a"
 c: 'oui'
 
 --------------------------------------------------------------------------------
-  
+
 ================================================================================
 Rule privé
 ================================================================================
@@ -150,7 +158,7 @@ Rule privé
 [privé] a:
   valeur: 5
 
-b: 
+b:
   valeur: 5
   privé: oui
 
@@ -159,15 +167,17 @@ b:
 (source_file
   (rule
     (tag)
-    (name)
+    (dotted_name (name))
     (rule_body
       (mechanism
         (m_unary
+          (m_unary_name)
           (number)))))
   (rule
-    (name)
+    (dotted_name (name))
     (rule_body
       (mechanism
         (m_unary
+          (m_unary_name)
           (number)))
       (tag))))
