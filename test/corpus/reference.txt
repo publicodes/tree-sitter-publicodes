@@ -43,7 +43,6 @@ rule: sécurité sociale plafond
 
 ================================================================================
 Reference with mechanism name in array mechanism
-:skip
 ================================================================================
 
 rule:
@@ -64,17 +63,16 @@ rule:
           (m_array_name)
           (reference
             (dotted_name
-              (name)))))))
+              (name)))
           (reference
             (dotted_name
-              (name)))))))
+              (name)))
           (reference
             (dotted_name
               (name))))))))
 
 ================================================================================
 Reference indented with special characters and reserved words
-:skip
 ================================================================================
 
 a:
@@ -83,15 +81,15 @@ a:
 
 --------------------------------------------------------------------------------
 
-(source_file
-  (rule
-    (dotted_name
-      (name))
-  (rule
-    (dotted_name
-      (name))
-    (rule_body
-      (reference
+    (source_file
+      (rule
         (dotted_name
-          (name)))))))
+          (name))
+        (rule_body
+          (mechanism
+            (m_unary
+              (m_unary_name)
+              (reference
+                (dotted_name
+                  (name))))))))
 
