@@ -479,22 +479,24 @@ b:
             (units
               numerators: (unit)))
           (tranches)
-          (taux)
-          (number
-            (units
-              numerators: (unit)))
-          (plafond)
-          ceiling: (number
-            (units
-              numerators: (unit)))
-          (taux)
-          (number
-            (units
-              numerators: (unit)))
-          (plafond)
-          ceiling: (number
-            (units
-              numerators: (unit)))))))
+          (tranche
+            (taux)
+            value: (number
+              (units
+                numerators: (unit)))
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit))))
+          (tranche
+            (taux)
+            value: (number
+              (units
+                numerators: (unit)))
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit))))))))
   (rule
     rule_name: (dotted_name
       (name))
@@ -511,23 +513,26 @@ b:
             (dotted_name
               (name)))
           (tranches)
-          (plafond)
-          ceiling: (number
-            (units
-              numerators: (unit)))
-          (taux)
-          (number
-            (units
-              numerators: (unit)))
-          (plafond)
-          ceiling: (number
-            (units
-              numerators: (unit)))
-          (taux)
-          (number
-            (units
-              numerators: (unit)))
-          (taux)
-          (number
-            (units
-              numerators: (unit))))))))
+          (tranche
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit)))
+            (taux)
+            value: (number
+              (units
+                numerators: (unit))))
+          (tranche
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit)))
+            (taux)
+            value: (number
+              (units
+                numerators: (unit))))
+          (tranche
+            (taux)
+            value: (number
+              (units
+                numerators: (unit)))))))))

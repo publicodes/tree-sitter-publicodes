@@ -1,4 +1,6 @@
 // From https://github.com/publicodes/publicodes/blob/6ee8c5d2316c8099931504b401feaaabd22b89c8/packages/core/source/grammar.ne#L17C6-L19
+const space =
+    /[\t\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]/;
 const letter = /[a-zA-Z\u00C0-\u017F]/;
 const symbol = prec(0, /[',°€%²$_’"«»]/); // TODO: add parentheses
 const digit = /\d/;
@@ -12,7 +14,7 @@ const any_char_or_special_char = choice(any_char, /\-|\+/);
 const phrase_starting_with = (char) =>
     seq(
         seq(char, repeat(any_char_or_special_char)),
-        repeat(seq(" ", seq(any_char, repeat(any_char_or_special_char))))
+        repeat(seq(space, seq(any_char, repeat(any_char_or_special_char))))
     );
 
 const rule_name = token(phrase_starting_with(letter));
@@ -62,7 +64,7 @@ function keywords(keys) {
     if (!Array.isArray(keys)) {
         keys = [keys];
     }
-    return token(prec(4, seq(choice(...keys), /[\s]*/, ":")));
+    return token(prec(4, seq(choice(...keys), repeat(space), ":")));
 }
 
 module.exports = grammar({
@@ -329,8 +331,13 @@ module.exports = grammar({
                         may_be_indented(
                             $,
                             seq(
-                                repeat1(array_item($, $._m_tranche)),
-                                optional(array_item($, $._m_taux_or_montant))
+                                repeat1(array_item($, $.tranche)),
+                                optional(
+                                    array_item(
+                                        $,
+                                        alias($._m_taux_or_montant, $.tranche)
+                                    )
+                                )
                             )
                         )
                     )
@@ -339,7 +346,7 @@ module.exports = grammar({
         m_barème_like_name: (_) =>
             keywords(["barème", "taux progressif", "grille"]),
 
-        _m_tranche: ($) =>
+        tranche: ($) =>
             choice(
                 // With plafond last
                 seq(
@@ -353,7 +360,8 @@ module.exports = grammar({
                 )
             ),
 
-        _m_taux_or_montant: ($) => seq(choice($.taux, $.montant), $._valeur),
+        _m_taux_or_montant: ($) =>
+            seq(choice($.taux, $.montant), field("value", $._valeur)),
 
         m_texte: ($) =>
             seq(
@@ -548,7 +556,7 @@ module.exports = grammar({
         number: ($) => seq(number, optional($.units)),
         units: ($) =>
             seq(
-                field("numerators", seq(optional(" "), $._units)),
+                field("numerators", seq(optional(space), $._units)),
                 field("denominators", repeat(seq("/", $._units)))
             ),
         _units: ($) => seq($.unit, repeat(seq(".", $.unit))),

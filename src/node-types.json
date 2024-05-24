@@ -430,64 +430,6 @@
           }
         ]
       },
-      "ceiling": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "\"",
-            "named": false
-          },
-          {
-            "type": "'",
-            "named": false
-          },
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "ar_binary_expression",
-            "named": true
-          },
-          {
-            "type": "ar_unary_expression",
-            "named": true
-          },
-          {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "comparison",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "mechanism",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "reference",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          }
-        ]
-      },
       "m_name": {
         "multiple": false,
         "required": true,
@@ -562,35 +504,7 @@
       "required": true,
       "types": [
         {
-          "type": "ar_binary_expression",
-          "named": true
-        },
-        {
-          "type": "ar_unary_expression",
-          "named": true
-        },
-        {
           "type": "assiette",
-          "named": true
-        },
-        {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "comparison",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "mechanism",
-          "named": true
-        },
-        {
-          "type": "montant",
           "named": true
         },
         {
@@ -598,23 +512,7 @@
           "named": true
         },
         {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "plafond",
-          "named": true
-        },
-        {
-          "type": "reference",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "taux",
+          "type": "tranche",
           "named": true
         },
         {
@@ -1660,6 +1558,146 @@
     "fields": {}
   },
   {
+    "type": "tranche",
+    "named": true,
+    "fields": {
+      "ceiling": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "ar_binary_expression",
+            "named": true
+          },
+          {
+            "type": "ar_unary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "comparison",
+            "named": true
+          },
+          {
+            "type": "date",
+            "named": true
+          },
+          {
+            "type": "mechanism",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "reference",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "ar_binary_expression",
+            "named": true
+          },
+          {
+            "type": "ar_unary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "comparison",
+            "named": true
+          },
+          {
+            "type": "date",
+            "named": true
+          },
+          {
+            "type": "mechanism",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "reference",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "montant",
+          "named": true
+        },
+        {
+          "type": "plafond",
+          "named": true
+        },
+        {
+          "type": "taux",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "unit",
     "named": true,
     "fields": {},
@@ -1701,10 +1739,6 @@
         "required": true,
         "types": [
           {
-            "type": " ",
-            "named": false
-          },
-          {
             "type": ".",
             "named": false
           },
@@ -1715,10 +1749,6 @@
         ]
       }
     }
-  },
-  {
-    "type": " ",
-    "named": false
   },
   {
     "type": " != ",
