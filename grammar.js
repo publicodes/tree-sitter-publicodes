@@ -654,7 +654,8 @@ module.exports = grammar({
             ),
         // Paragraph are like multiline strings but they do not parse # as comments
         // This needs to be done in the external scanner because otherwise # would be consumed as comments
-        _paragraph: ($) => seq(token(prec(2, choice("|", ">"))), $.paragraph),
+        _paragraph: ($) =>
+            seq(token(prec(2, choice("|", ">", "|-", ">-"))), $.paragraph),
 
         object: ($) => indented($, repeat1(seq($._key, $.meta_value))),
         _key: ($) =>

@@ -254,6 +254,10 @@ a:
     **Dans l’idéal, on devrait supporter le markdown**
   description: >
     Ceci aussi est un paragraphe
+  description: |-
+    Ceci aussi est un paragraphe
+  description: >-
+    Ceci aussi est un paragraphe
 
 --------------------------------------------------------------------------------
 
@@ -269,7 +273,16 @@ a:
       (meta
         (meta_name)
         (meta_value
+          (paragraph)))
+      (meta
+        (meta_name)
+        (meta_value
+          (paragraph)))
+      (meta
+        (meta_name)
+        (meta_value
           (paragraph))))))
+
 
 ================================================================================
 Meta paragraph with comment
