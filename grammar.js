@@ -326,7 +326,7 @@ module.exports = grammar({
                             seq(
                                 $.multiplicateur,
                                 ":",
-                                field("multiplicateur", $._valeur),
+                                field("multiplier", $._valeur),
                             ),
                         ),
                         $.tranches,
@@ -349,11 +349,11 @@ module.exports = grammar({
                 // With plafond last
                 seq(
                     $._m_taux_or_montant,
-                    seq($.plafond, ":", field("plafond", $._valeur)),
+                    seq($.plafond, ":", field("ceiling", $._valeur)),
                 ),
                 // With plafond first
                 seq(
-                    seq($.plafond, ":", field("plafond", $._valeur)),
+                    seq($.plafond, ":", field("ceiling", $._valeur)),
                     $._m_taux_or_montant,
                 ),
             ),

@@ -419,19 +419,9 @@
           }
         ]
       },
-      "m_name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "m_barème_like_name",
-            "named": true
-          }
-        ]
-      },
-      "multiplicateur": {
+      "ceiling": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "\"",
@@ -487,9 +477,19 @@
           }
         ]
       },
-      "plafond": {
-        "multiple": true,
+      "m_name": {
+        "multiple": false,
         "required": true,
+        "types": [
+          {
+            "type": "m_barème_like_name",
+            "named": true
+          }
+        ]
+      },
+      "multiplier": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
             "type": "\"",

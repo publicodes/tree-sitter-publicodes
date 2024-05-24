@@ -478,7 +478,7 @@ b:
             (units
               numerators: (unit)))
           (plafond)
-          plafond: (number
+          ceiling: (number
             (units
               numerators: (unit)))
           (taux)
@@ -486,7 +486,7 @@ b:
             (units
               numerators: (unit)))
           (plafond)
-          plafond: (number
+          ceiling: (number
             (units
               numerators: (unit)))))))
   (rule
@@ -501,12 +501,12 @@ b:
             (units
               numerators: (unit)))
           (multiplicateur)
-          multiplicateur: (reference
+          multiplier: (reference
             (dotted_name
               (name)))
           (tranches)
           (plafond)
-          plafond: (number
+          ceiling: (number
             (units
               numerators: (unit)))
           (taux)
@@ -514,7 +514,7 @@ b:
             (units
               numerators: (unit)))
           (plafond)
-          plafond: (number
+          ceiling: (number
             (units
               numerators: (unit)))
           (taux)

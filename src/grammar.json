@@ -2395,7 +2395,7 @@
                         },
                         {
                           "type": "FIELD",
-                          "name": "multiplicateur",
+                          "name": "multiplier",
                           "content": {
                             "type": "SYMBOL",
                             "name": "_valeur"
@@ -2600,7 +2600,7 @@
                 },
                 {
                   "type": "FIELD",
-                  "name": "plafond",
+                  "name": "ceiling",
                   "content": {
                     "type": "SYMBOL",
                     "name": "_valeur"
@@ -2626,7 +2626,7 @@
                 },
                 {
                   "type": "FIELD",
-                  "name": "plafond",
+                  "name": "ceiling",
                   "content": {
                     "type": "SYMBOL",
                     "name": "_valeur"
