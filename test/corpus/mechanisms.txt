@@ -261,6 +261,7 @@ b:
         toutes ces conditions:
         - a = 10
         - b = 'oui'
+        - c = "oui"
       alors: 10
     - sinon: 5
 
@@ -309,6 +310,11 @@ b:
                     (dotted_name
                       (name)))
                   (number))
+                (comparison
+                  (reference
+                    (dotted_name
+                      (name)))
+                  (string))
                 (comparison
                   (reference
                     (dotted_name

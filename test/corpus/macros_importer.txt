@@ -16,24 +16,20 @@ importer!:
 (source_file
   (import
     (importer)
-    (import_from
+    from: (import_from
       (depuis)
-      (import_name
-        (nom)
-        (text_line))
-      (import_source
-        (source)
-        (text_line))
-      (import_url
-        (url)
-        (text_line)))
-    (import_into
-      (dans)
-      (text_line))
-    (import_rules
+      (nom)
+      name: (text_line)
+      (source)
+      source: (text_line)
+      (url)
+      url: (text_line))
+    (dans)
+    into: (text_line)
+    rules: (import_rules
       (les_règles)
       (import_rule
-        (dotted_name
+        rule_name: (dotted_name
           (name))))))
 
 ================================================================================
@@ -49,11 +45,10 @@ importer!:
 (source_file
   (import
     (importer)
-    (import_from
+    from: (import_from
       (depuis)
-      (import_name
-        (nom)
-        (text_line)))))
+      (nom)
+      name: (text_line))))
 
 ================================================================================
 Import (with rules)
@@ -74,31 +69,30 @@ importer!:
 (source_file
   (import
     (importer)
-    (import_from
+    from: (import_from
       (depuis)
-      (import_name
-        (nom)
-        (text_line)))
-    (import_rules
+      (nom)
+      name: (text_line))
+    rules: (import_rules
       (les_règles)
       (import_rule
-        (dotted_name
+        rule_name: (dotted_name
           (name)))
       (rule
-        (dotted_name
+        rule_name: (dotted_name
           (name)
           (name))
-        (rule_body
+        body: (rule_body
           (meta
-            (meta_name)
-            (meta_value
+            meta_name: (meta_name)
+            meta_value: (meta_value
               (text_line)))
           (meta
-            (meta_name)
-            (meta_value
+            meta_name: (meta_name)
+            meta_value: (meta_value
               (text_line)))))
       (import_rule
-        (dotted_name
+        rule_name: (dotted_name
           (name)
           (name)
           (name))))))

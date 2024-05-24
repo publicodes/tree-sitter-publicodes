@@ -100,9 +100,9 @@ module.exports = grammar({
                 indented(
                     $,
                     seq(
-                        $.import_from,
-                        optional($.import_into),
-                        optional($.import_rules),
+                        field("from", $.import_from),
+                        optional($._import_into),
+                        field("rules", optional($.import_rules)),
                     ),
                 ),
             ),
@@ -114,21 +114,25 @@ module.exports = grammar({
                 indented(
                     $,
                     seq(
-                        $.import_name,
-                        optional($.import_source),
-                        optional($.import_url),
+                        $._import_name,
+                        optional($._import_source),
+                        optional($._import_url),
                     ),
                 ),
             ),
-        import_name: ($) => seq($.nom, ":", maybe_with_quote($.text_line)),
-        import_source: ($) => seq($.source, ":", maybe_with_quote($.text_line)),
-        import_url: ($) => seq($.url, ":", maybe_with_quote($.text_line)),
+        _import_name: ($) =>
+            seq($.nom, ":", field("name", maybe_with_quote($.text_line))),
+        _import_source: ($) =>
+            seq($.source, ":", field("source", maybe_with_quote($.text_line))),
+        _import_url: ($) =>
+            seq($.url, ":", field("url", maybe_with_quote($.text_line))),
 
-        import_into: ($) => seq($.dans, ":", maybe_with_quote($.text_line)),
+        _import_into: ($) =>
+            seq($.dans, ":", field("into", maybe_with_quote($.text_line))),
 
         import_rules: ($) =>
             seq($.les_règles, ":", array($, choice($.import_rule, $.rule))),
-        import_rule: ($) => $.dotted_name,
+        import_rule: ($) => field("rule_name", $.dotted_name),
 
         /*
         =====================
@@ -547,7 +551,7 @@ module.exports = grammar({
         constant: ($) => choice($.boolean, $.string, $.number, $.date),
         boolean: (_) => choice("oui", "non"),
 
-        string: (_) => /'.*?'/,
+        string: (_) => choice(/'.*?'/, /".*?"/),
 
         date: () => date,
         // TODO: may want to distinguish between integers and floats
@@ -655,6 +659,7 @@ module.exports = grammar({
         object: ($) => indented($, repeat1(seq($._key, $.meta_value))),
         _key: ($) =>
             token(prec(2, seq(choice(/"[^"]+"/, /'[^']+'/, /[^:#\n]+/), ":"))),
+        // FIXME: catch all trailing whitespaces
         text_line: ($) => token(prec(1, /[^\n#]*/)),
     },
 });
