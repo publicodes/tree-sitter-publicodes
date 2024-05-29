@@ -50,6 +50,64 @@ a:
                 (number)))))))))
 
 ================================================================================
+Avec - 2 (TODO)
+:skip
+================================================================================
+
+rule:
+  avec:
+    agent commercial:
+      description: |
+        L’agent commercial négocie et/ou conclut des contrats de vente, d’achat, de location ou de prestation de services pour le compte d’un tiers (producteur, industriel, commerçant, etc.). Il s’agit donc d’un intermédiaire de commerce qui, contrairement au VRP (vendeur, représentant et placier), est un professionnel indépendant.
+      question: Exercez-vous votre activité en tant qu'agent commercial ?
+      par défaut:
+        valeur: non
+        variable manquante: entreprise . activités
+      références:
+        'Devenir agent commercial : pourquoi et comment obtenir ce statut ?': https://www.economie.gouv.fr/entreprises/agent-commercial-immatriculation
+        'Agent commercial - Réglementation': https://bpifrance-creation.fr/activites-reglementees/agent-commercial
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (s_avec
+        (avec)
+        (rule
+          (dotted_name
+            (name))
+          (rule_body
+            (meta
+              (meta_name)
+              (meta_value
+                (paragraph)))
+            (meta
+              (meta_name)
+              (meta_value
+                (text_line)))
+            (mechanism
+              (m_unary
+                (m_unary_name)
+                (mechanism
+                  (m_unary
+                    (m_unary_name)
+                    (boolean)))
+                (custom_meta
+                  (meta_value
+                    (text_line)))))
+            (meta
+              (meta_name)
+              (meta_value
+                (object
+                  (meta_value
+                    (text_line))
+                  (meta_value
+                    (text_line)))))))))))
+
+================================================================================
 remplace - 1
 ================================================================================
 

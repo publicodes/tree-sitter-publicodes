@@ -438,7 +438,7 @@ c:
           unit: (m_durée_units))))))
 
 ================================================================================
-Barème et assimilé
+Barème like
 ================================================================================
 
 a:
@@ -536,3 +536,26 @@ b:
             value: (number
               (units
                 numerators: (unit)))))))))
+
+================================================================================
+Barème like - 2 (TODO)
+:skip
+================================================================================
+
+cotisation proportionnelle:
+  unité: €/an
+  barème:
+    assiette: assiette des cotisations
+    multiplicateur: plafond sécurité sociale
+    tranches:
+      - taux: 0%
+        plafond: 0.85
+      - taux:
+          variations:
+            - si: date >= 01/2023
+              alors: 10.80%
+            - sinon: 10.65%
+        plafond: 5
+    arrondi: oui
+
+--------------------------------------------------------------------------------
