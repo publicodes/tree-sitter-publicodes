@@ -234,7 +234,8 @@ module.exports = grammar({
                 $.m_unité,
                 $.m_durée,
                 $.m_barème_like,
-                $.m_texte
+                $.m_texte,
+                $.m_variable_manquante
             ),
 
         m_inversion: ($) =>
@@ -380,13 +381,11 @@ module.exports = grammar({
                         optional(
                             seq(
                                 $.choix_obligatoire,
-
                                 field("required", $.boolean)
                             )
                         ),
                         seq(
                             $.possibilités,
-
                             field("options", $.m_une_possibilité_options)
                         )
                     )
@@ -394,6 +393,12 @@ module.exports = grammar({
             ),
 
         m_une_possibilité_options: ($) => array($, $.reference),
+
+        m_variable_manquante: ($) =>
+            seq(
+                field("m_name", $.variable_manquante),
+                single_line($, $.reference)
+            ),
 
         /*
         ========================
@@ -615,7 +620,7 @@ module.exports = grammar({
         depuis: (_) => keywords("depuis"),
         jusqu_à: (_) => keywords("jusqu'à"),
         unité: (_) => keywords("unité"),
-
+        variable_manquante: (_) => keywords("variable manquante"),
         /*
         ====================
             Métadonnées
