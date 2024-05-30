@@ -1614,6 +1614,10 @@
         {
           "type": "SYMBOL",
           "name": "m_texte"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "m_variable_manquante"
         }
       ]
     },
@@ -2807,6 +2811,54 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      ]
+    },
+    "m_variable_manquante": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "m_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "variable_manquante"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_indent"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "reference"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_dedent"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "reference"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_newline"
+                }
+              ]
             }
           ]
         }
@@ -5043,6 +5095,38 @@
                 {
                   "type": "STRING",
                   "value": "unité"
+                }
+              ]
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "PATTERN",
+                "value": "[\\t\\u0020\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            }
+          ]
+        }
+      }
+    },
+    "variable_manquante": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 4,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "variable manquante"
                 }
               ]
             },

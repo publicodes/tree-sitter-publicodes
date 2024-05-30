@@ -879,6 +879,32 @@
     }
   },
   {
+    "type": "m_variable_manquante",
+    "named": true,
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "variable_manquante",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "m_variation_si",
     "named": true,
     "fields": {
@@ -1133,6 +1159,10 @@
         },
         {
           "type": "m_unité",
+          "named": true
+        },
+        {
+          "type": "m_variable_manquante",
           "named": true
         },
         {
@@ -2008,6 +2038,10 @@
   },
   {
     "type": "url",
+    "named": true
+  },
+  {
+    "type": "variable_manquante",
     "named": true
   },
   {
