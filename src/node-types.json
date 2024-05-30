@@ -639,7 +639,7 @@
         ]
       },
       "unit": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
@@ -716,7 +716,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "paragraph",
@@ -1267,42 +1267,12 @@
     }
   },
   {
-    "type": "remplace_rule_except",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "reference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "remplace_rule_in",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "reference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "rule",
     "named": true,
     "fields": {
       "body": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "rule_body",
@@ -1338,7 +1308,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "ar_binary_expression",
@@ -1402,6 +1372,21 @@
         },
         {
           "type": "tag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rule_or_array",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "reference",
           "named": true
         }
       ]
@@ -1504,7 +1489,7 @@
         "required": false,
         "types": [
           {
-            "type": "remplace_rule_except",
+            "type": "rule_or_array",
             "named": true
           }
         ]
@@ -1514,7 +1499,7 @@
         "required": false,
         "types": [
           {
-            "type": "remplace_rule_in",
+            "type": "rule_or_array",
             "named": true
           }
         ]
@@ -1779,6 +1764,10 @@
         ]
       }
     }
+  },
+  {
+    "type": "\n",
+    "named": false
   },
   {
     "type": " != ",

@@ -8,8 +8,8 @@ enum TokenType {
   DEDENT,
   ARRAY_PREFIX,
   COMMENT,
-  NEWLINE,
   PARAGRAPH,
+  END_OF_FILE,
   ERROR_RECOVERY_MODE
 };
 
@@ -86,29 +86,20 @@ bool tree_sitter_publicodes_external_scanner_scan(void *payload, TSLexer *lexer,
                                                   const bool *valid_symbols) {
   bool error_recovery_mode = valid_symbols[ERROR_RECOVERY_MODE];
 
-  if (!valid_symbols[INDENT] && !valid_symbols[DEDENT] &&
-      !valid_symbols[NEWLINE] && !valid_symbols[PARAGRAPH] &&
-      !valid_symbols[ARRAY_PREFIX]) {
-    return false;
-  }
-
   if (valid_symbols[PARAGRAPH] && !error_recovery_mode) {
     return parse_paragraph(payload, lexer, valid_symbols);
   }
 
-  Array(int) *indents = payload;
-  uint32_t indent_length = 0;
-  bool found_end_of_line = false;
+  if (valid_symbols[END_OF_FILE] && lexer->eof(lexer)) {
+    lexer->result_symbol = END_OF_FILE;
+    return true;
+  }
 
-  /*
-    An array can have a block following directly the `-` prefix (without a new
-    line). The indent level should change in this case. Example:
-    ```
-    - line1
-      line2 # This line is expected to be indented, without the need of parsing
-    an `INDENT` token
-    ```
-  */
+  Array(int) *indents = payload;
+  uint16_t last_indent_length = *array_back(indents);
+  uint32_t indent_length = 0;
+
+  bool found_end_of_line = false;
 
   for (;;) {
     if (lexer->lookahead == '\n') {
@@ -142,18 +133,12 @@ bool tree_sitter_publicodes_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (found_end_of_line) {
     if (indents->size > 0) {
-      uint16_t current_indent_length = *array_back(indents);
 
-      if (valid_symbols[INDENT] && indent_length > current_indent_length) {
+      if (valid_symbols[INDENT] && indent_length > last_indent_length) {
         array_push(indents, indent_length);
         lexer->result_symbol = INDENT;
         return true;
       }
-    }
-    if (valid_symbols[NEWLINE]) {
-
-      lexer->result_symbol = NEWLINE;
-      return true;
     }
   }
 
@@ -166,6 +151,15 @@ bool tree_sitter_publicodes_external_scanner_scan(void *payload, TSLexer *lexer,
     }
   }
 
+  /*
+    An array can have a block following directly the `-` prefix (without a new
+    line). The indent level should change in this case. Example:
+    ```
+    - line1
+      line2 # This line is expected to be indented, without the need of parsing
+    an `INDENT` token
+    ```
+  */
   if (valid_symbols[ARRAY_PREFIX] && lexer->lookahead == '-') {
     skip(lexer);
     while (lexer->lookahead == ' ' || lexer->lookahead == '\n') {

@@ -5,6 +5,10 @@
     "languageToolLinter.plainText.enabled": false,
     "files.associations": {
         "*.html": "html",
-        "array.h": "c"
-    }
+        "array.h": "c",
+        "parser.h": "c"
+    },
+    "C_Cpp.vcFormat.indent.withinParentheses": "alignToParenthesis",
+    "C_Cpp.formatting": "default",
+    "C_Cpp.clang_format_style": "LLVM"
 }

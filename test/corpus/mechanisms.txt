@@ -245,6 +245,40 @@ a:
               (number))))))))
 
 ================================================================================
+Contexte - 2
+================================================================================
+a:
+  contexte:
+    b: x
+  avec: 
+    C: 10
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (dotted_name
+          (name))
+        (rule_body
+          (mechanism
+            (m_contexte
+              (contexte)
+              (reference
+                (dotted_name
+                  (name)))
+              (reference
+                (dotted_name
+                  (name)))))
+          (s_avec
+            (avec)
+            (rule
+              (dotted_name
+                (name))
+              (rule_body
+                (number)))))))
+
+
+================================================================================
 Variations
 ================================================================================
 
@@ -394,8 +428,10 @@ b:
 
 c:
   durée:
-    jusqu'à: fin de contrat
-    unité: année civile
+    jusqu'à: 
+      fin de contrat
+    unité: 
+      année civile
 --------------------------------------------------------------------------------
 
 (source_file
@@ -536,26 +572,3 @@ b:
             value: (number
               (units
                 numerators: (unit)))))))))
-
-================================================================================
-Barème like - 2 (TODO)
-:skip
-================================================================================
-
-cotisation proportionnelle:
-  unité: €/an
-  barème:
-    assiette: assiette des cotisations
-    multiplicateur: plafond sécurité sociale
-    tranches:
-      - taux: 0%
-        plafond: 0.85
-      - taux:
-          variations:
-            - si: date >= 01/2023
-              alors: 10.80%
-            - sinon: 10.65%
-        plafond: 5
-    arrondi: oui
-
---------------------------------------------------------------------------------

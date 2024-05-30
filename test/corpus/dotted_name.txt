@@ -10,8 +10,7 @@ a . b:
   (rule
     (dotted_name
       (name)
-      (name))
-    (rule_body)))
+      (name))))
 
 ================================================================================
 Several rule definitions
@@ -25,12 +24,10 @@ b  :
 (source_file
   (rule
     (dotted_name
-      (name))
-    (rule_body))
+      (name)))
   (rule
     (dotted_name
-      (name))
-    (rule_body)))
+      (name))))
 
 ================================================================================
 Long dottedname
@@ -48,8 +45,7 @@ a . b . c . d . e . f:
       (name)
       (name)
       (name)
-      (name))
-    (rule_body)))
+      (name))))
 
 ================================================================================
 Dotted names with numbers
@@ -62,8 +58,7 @@ année 2020:
 (source_file
   (rule
     (dotted_name
-      (name))
-    (rule_body)))
+      (name))))
 
 ================================================================================
 Dotted names with special chars
@@ -79,22 +74,18 @@ note . b-:
 (source_file
   (rule
     (dotted_name
-      (name))
-    (rule_body))
+      (name)))
   (rule
     (dotted_name
-      (name))
-    (rule_body))
-  (rule
-    (dotted_name
-      (name)
-      (name))
-    (rule_body))
+      (name)))
   (rule
     (dotted_name
       (name)
-      (name))
-    (rule_body)))
+      (name)))
+  (rule
+    (dotted_name
+      (name)
+      (name))))
 
 ================================================================================
 Dotted names with reserved words
@@ -109,17 +100,13 @@ oui non:
 (source_file
   (rule
     (dotted_name
-      (name))
-    (rule_body))
+      (name)))
   (rule
     (dotted_name
-      (name))
-    (rule_body))
+      (name)))
   (rule
     (dotted_name
-      (name))
-    (rule_body)))
-
+      (name))))
 
 ================================================================================
 Dotted names can have multiple spaces before and after dot
@@ -133,8 +120,8 @@ a  .   b a:
   (rule
     (dotted_name
       (name)
-      (name))
-    (rule_body)))
+      (name))))
+
 
 ================================================================================
 Dotted names can't start with number
@@ -190,4 +177,5 @@ Dotted names can't be oui or non (TODO)
 
 oui . non:
 
+oui: x
 --------------------------------------------------------------------------------
