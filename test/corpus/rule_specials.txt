@@ -126,7 +126,7 @@ d:
           (dotted_name
             (name)))
         (sauf_dans)
-        except: (remplace_rule_except
+        except: (rule_or_array
           (reference
             (dotted_name
               (name)))))
@@ -145,10 +145,22 @@ d:
           (dotted_name
             (name)))
         (dans)
-        in: (remplace_rule_in
+        in: (rule_or_array
           (reference
             (dotted_name
               (name)))
           (reference
             (dotted_name
               (name))))))))
+
+================================================================================
+Rends non applicable
+================================================================================
+
+a:
+  rends non applicable:
+    - b
+    - références à: c
+      sauf dans: x
+
+--------------------------------------------------------------------------------

@@ -242,16 +242,54 @@ c: 01/12/2024 + 41 jours
 --------------------------------------------------------------------------------
 
 ================================================================================
-Multiline expression - YAML style (TODO)
-:skip
+Multiline expression - YAML style
 ================================================================================
 
 a: 5
   + 4
   * 2
 
-rule:
+rule: 
+  valeur: (salarié . cotisations . retraite complémentaire / 1.27)
+    / valeur d'acquisition
+
+--------------------------------------------------------------------------------
+    (source_file
+      (rule
+        (dotted_name
+          (name))
+        (rule_body
+          (ar_binary_expression
+            (number)
+            (ar_binary_expression
+              (number)
+              (number)))))
+      (rule
+        (dotted_name
+          (name))
+        (rule_body
+          (mechanism
+            (m_unary
+              (m_unary_name)
+              (ar_binary_expression
+                (ar_binary_expression
+                  (reference
+                    (dotted_name
+                      (name)
+                      (name)
+                      (name)))
+                  (number))
+                (reference
+                  (dotted_name
+                    (name)))))))))
+
+================================================================================
+Multiline expression - line break inside variable name (TODO ?)
+:error
+================================================================================
+
+rule: 
   valeur: (salarié . cotisations . retraite complémentaire / 1.27) / valeur
     d'acquisition
-
+    
 --------------------------------------------------------------------------------

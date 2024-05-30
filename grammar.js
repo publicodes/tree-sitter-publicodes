@@ -30,10 +30,6 @@ const unit_identifier = token.immediate(
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-function single_line($, rule) {
-    return choice(indented($, rule), seq(rule, $._newline));
-}
-
 function maybe_with_quote(rule) {
     return choice(
         // This is to be coherent with the YAML parser
@@ -48,7 +44,7 @@ function indented($, rule) {
 }
 
 function may_be_indented($, rule) {
-    return choice(indented($, rule), seq($._newline, rule));
+    return choice(indented($, rule), rule);
 }
 
 function array($, rule) {
@@ -78,8 +74,8 @@ module.exports = grammar({
         $._dedent,
         $._array_prefix,
         $.comment,
-        $._newline,
         $.paragraph,
+        $._eof,
         $.error_recovery_mode,
     ],
 
@@ -145,13 +141,12 @@ module.exports = grammar({
                 optional(seq("[", $.tag, "]")),
                 field("rule_name", $.dotted_name),
                 ":",
-                field("body", $.rule_body)
+                choice(field("body", $.rule_body), $._newline)
             ),
 
         rule_body: ($) =>
             choice(
-                $._newline,
-                single_line($, maybe_with_quote($._expression)),
+                may_be_indented($, maybe_with_quote($._expression)),
                 indented($, repeat1($._statement))
             ),
 
@@ -181,7 +176,7 @@ module.exports = grammar({
         */
         _valeur: ($) =>
             choice(
-                single_line($, maybe_with_quote($._expression)),
+                may_be_indented($, maybe_with_quote($._expression)),
                 indented($, repeat1($.mechanism))
             ),
 
@@ -255,7 +250,6 @@ module.exports = grammar({
         m_variations: ($) =>
             seq(
                 field("m_name", $.variations),
-
                 indented(
                     $,
                     seq(
@@ -268,16 +262,14 @@ module.exports = grammar({
         m_variation_si: ($) =>
             seq(
                 $.si,
-
                 field("condition", $._valeur),
                 $.alors,
-
                 field("consequence", $._valeur)
             ),
 
         m_variation_sinon: ($) => seq($.sinon, $._valeur),
 
-        m_unité: ($) => seq(field("m_name", $.unité), single_line($, $.units)),
+        m_unité: ($) => seq(field("m_name", $.unité), $.units),
 
         m_durée: ($) =>
             seq(
@@ -288,18 +280,11 @@ module.exports = grammar({
                     seq(
                         optional(seq($.depuis, field("from", $._date_or_ref))),
                         optional(seq($.jusqu_à, field("to", $._date_or_ref))),
-                        optional(
-                            seq(
-                                $.unité,
-
-                                field("unit", single_line($, $.m_durée_units))
-                            )
-                        )
+                        optional(seq($.unité, field("unit", $.m_durée_units)))
                     )
                 )
             ),
-        _date_or_ref: ($) =>
-            single_line($, maybe_with_quote(choice($.date, $.reference))),
+        _date_or_ref: ($) => maybe_with_quote(choice($.date, $.reference)),
         m_durée_units: (_) =>
             choice(
                 "jour",
@@ -318,17 +303,14 @@ module.exports = grammar({
                     $,
                     seq(
                         $.assiette,
-
                         field("assiette", $._valeur),
                         optional(
                             seq(
                                 $.multiplicateur,
-
                                 field("multiplier", $._valeur)
                             )
                         ),
                         $.tranches,
-
                         may_be_indented(
                             $,
                             seq(
@@ -395,10 +377,7 @@ module.exports = grammar({
         m_une_possibilité_options: ($) => array($, $.reference),
 
         m_variable_manquante: ($) =>
-            seq(
-                field("m_name", $.variable_manquante),
-                single_line($, $.reference)
-            ),
+            seq(field("m_name", $.variable_manquante), $.reference),
 
         /*
         ========================
@@ -411,9 +390,8 @@ module.exports = grammar({
         s_remplace: ($) =>
             seq(
                 field("m_name", $.remplace),
-
                 choice(
-                    single_line($, $.reference),
+                    $.reference,
                     indented($, $._remplace_rule),
                     array($, choice($._remplace_rule, $.reference))
                 )
@@ -422,21 +400,11 @@ module.exports = grammar({
         _remplace_rule: ($) =>
             seq(
                 $.références_à,
-
-                field("ref", single_line($, $.reference)),
-                optional(seq($.dans, field("in", $.remplace_rule_in))),
-                optional(
-                    seq(
-                        $.sauf_dans,
-
-                        field("except", $.remplace_rule_except)
-                    )
-                )
+                field("ref", $.reference),
+                optional(seq($.dans, field("in", $.rule_or_array))),
+                optional(seq($.sauf_dans, field("except", $.rule_or_array)))
             ),
-        remplace_rule_in: ($) =>
-            choice(single_line($, $.reference), array($, $.reference)),
-        remplace_rule_except: ($) =>
-            choice(single_line($, $.reference), array($, $.reference)),
+        rule_or_array: ($) => choice($.reference, array($, $.reference)),
 
         /*
         ========================
@@ -544,7 +512,7 @@ module.exports = grammar({
         */
 
         comment: (_) => token(prec(3, seq("#", /.*/))),
-
+        _newline: ($) => choice("\n", $._eof),
         /*
         ===================
             Constants
@@ -561,7 +529,10 @@ module.exports = grammar({
         number: ($) => seq(number, optional($.units)),
         units: ($) =>
             seq(
-                field("numerators", seq(optional(space), $._units)),
+                field(
+                    "numerators",
+                    seq(optional(token.immediate(space)), $._units)
+                ),
                 field("denominators", repeat(seq("/", $._units)))
             ),
         _units: ($) => seq($.unit, repeat(seq(".", $.unit))),
@@ -643,16 +614,21 @@ module.exports = grammar({
 
         custom_meta: ($) => seq(field("meta_name", $._key), $.meta_value),
 
-        meta_value: ($) =>
-            choice($._newline, $._text_line, $.object, $._paragraph),
+        meta_value: ($) => choice($._text_line, $.object, $._paragraph),
 
         _text_line: ($) =>
             choice(
                 seq(
                     optional($.text_line),
-                    indented($, repeat1(seq($.text_line, $._newline)))
+                    indented(
+                        $,
+                        seq(
+                            repeat(seq($.text_line, $._newline)),
+                            optional($.text_line)
+                        )
+                    )
                 ),
-                seq($.text_line, $._newline)
+                $.text_line
             ),
         // Paragraph are like multiline strings but they do not parse # as comments
         // This needs to be done in the external scanner because otherwise # would be consumed as comments

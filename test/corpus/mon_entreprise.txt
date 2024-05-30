@@ -1266,7 +1266,7 @@ dirigeant . indépendant . IJSS . imposable:
             (name)
             (name)))
         (sauf_dans)
-        (remplace_rule_except
+        (rule_or_array
           (reference
             (dotted_name
               (name)
@@ -1387,7 +1387,7 @@ dirigeant . indépendant . IJSS . imposable:
           (dotted_name
             (name)))
         (dans)
-        (remplace_rule_in
+        (rule_or_array
           (reference
             (dotted_name
               (name)))
@@ -1688,8 +1688,8 @@ dirigeant . indépendant . IJSS . imposable:
             (meta_value
               (text_line))
             (meta_value
-              (text_line)
-              (comment)))))
+              (text_line))
+            (comment))))
       (custom_meta
         (meta_value
           (paragraph)))))
@@ -1998,14 +1998,14 @@ dirigeant . indépendant . IJSS . imposable:
                 (reference
                   (dotted_name
                     (name)))
-                (date))
-              (comment)
-              (comment)
-              (comment)
-              (comment)
-              (comment)
-              (comment)
-              (comment)))
+                (date))))
+          (comment)
+          (comment)
+          (comment)
+          (comment)
+          (comment)
+          (comment)
+          (comment)
           (mechanism
             (m_unary
               (m_unary_name)
@@ -2252,8 +2252,8 @@ dirigeant . indépendant . IJSS . imposable:
           (rule_body
             (reference
               (dotted_name
-                (name)))
-            (comment)))
+                (name)))))
+        (comment)
         (rule
           (dotted_name
             (name))
@@ -2568,8 +2568,8 @@ dirigeant . indépendant . IJSS . imposable:
           (rule_body
             (custom_meta
               (meta_value
-                (text_line)
-                (comment))))))))
+                (text_line)))
+            (comment))))))
   (rule
     (dotted_name
       (name)

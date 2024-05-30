@@ -235,7 +235,8 @@ a:
           (paragraph)))
       (meta
         (meta_name)
-        (meta_value))
+        (meta_value
+          (text_line)))
       (meta
         (meta_name)
         (meta_value
@@ -283,7 +284,6 @@ a:
         (meta_value
           (paragraph))))))
 
-
 ================================================================================
 Meta paragraph with comment
 ================================================================================
@@ -322,6 +322,7 @@ a:
   notes: |
   # Ceci est un bug
     lala
+
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -368,8 +369,8 @@ a:
         (meta_value
           (object
             (meta_value
-              (text_line)
-              (comment))
+              (text_line))
+            (comment)
             (meta_value
               (text_line)
               (comment))))))))

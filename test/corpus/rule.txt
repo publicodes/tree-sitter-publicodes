@@ -1,3 +1,4 @@
+
 ================================================================================
 Simple rule with new line - YAML style
 ================================================================================
@@ -28,28 +29,31 @@ c:
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_unary
           (m_unary_name)
           (number)))))
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_unary
           (m_unary_name)
           (number)))))
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (s_formule
         (formule)
         (boolean)))))
 
 ================================================================================
-Rule with weird indentation (TODO : should be error ?)
+Rule with weird indentation
 ================================================================================
 
 a:
@@ -57,15 +61,16 @@ a:
   5
 
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_unary
           (m_unary_name)
           (number))))))
-
 
 ================================================================================
 Rules with comments
@@ -81,7 +86,8 @@ b:
 
 (source_file
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (comment)
     (comment)
     (comment)
@@ -91,13 +97,13 @@ b:
           (m_unary_name)
           (ar_binary_expression
             (number)
-            (number))
-          (comment)
-          (comment)
-          (comment)))))
+            (number))))
+      (comment)
+      (comment)
+      (comment)))
   (rule
-    (dotted_name (name))
-    (rule_body)))
+    (dotted_name
+      (name))))
 
 ================================================================================
 Doesn't allow tab for indenting
@@ -108,8 +114,6 @@ a:
 	5
 
 --------------------------------------------------------------------------------
-
-
 ================================================================================
 Accept single quote or double quote arround valeur - YAML style
 ================================================================================
@@ -122,22 +126,24 @@ b:
 
 
 --------------------------------------------------------------------------------
-    (source_file
-      (rule
-        (dotted_name (name))
-        (rule_body
-          (mechanism
-            (m_unary
-              (m_unary_name)
-              (number)))))
-      (rule
-        (dotted_name (name))
-        (rule_body
-          (mechanism
-            (m_unary
-              (m_unary_name)
-              (number))))))
 
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (number)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (number))))))
 
 ================================================================================
 Accept single quote or double quote arround reference - YAML style (TODO?)
@@ -165,14 +171,16 @@ b:
 (source_file
   (rule
     (tag)
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_unary
           (m_unary_name)
           (number)))))
   (rule
-    (dotted_name (name))
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_unary
