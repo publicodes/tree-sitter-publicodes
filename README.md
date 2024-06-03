@@ -61,5 +61,5 @@ npm run parse path/to/file.publicodes
 
 # Rebuild the grammar (to execute after each change in the grammar if the
 # package is used locally)
-npm run dev
+npm run build
 ```
