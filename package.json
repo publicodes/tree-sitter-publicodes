@@ -1,6 +1,6 @@
 {
     "name": "tree-sitter-publicodes",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Publicodes grammar for tree-sitter",
     "main": "bindings/node",
     "types": "bindings/node",
