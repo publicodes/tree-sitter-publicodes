@@ -5,16 +5,19 @@
     "main": "bindings/node",
     "types": "bindings/node",
     "repository": "git@github.com:publicodes/tree-sitter-publicodes.git",
-    "author": "Emile Rolley <emile.rolley@tuta.io>",
+    "contributors": [
+        "Emile Rolley <emile.rolley@tuta.io> (https://emile-rolley.fr)",
+        "Johan Girod <dev@johangirod.com> (https://johangirod.com)"
+    ],
     "license": "MIT",
     "scripts": {
+        "build": "tree-sitter generate && node-gyp rebuild",
         "generate": "tree-sitter generate",
         "highlight": "tree-sitter highlight",
-        "parse": "tree-sitter generate && tree-sitter parse",
-        "test": "tree-sitter generate && tree-sitter test",
         "install": "node-gyp-build",
-        "dev": "tree-sitter generate && node-gyp rebuild",
-        "prebuildify": "prebuildify --napi --strip"
+        "parse": "tree-sitter generate && tree-sitter parse",
+        "prebuildify": "prebuildify --napi --strip",
+        "test": "tree-sitter generate && tree-sitter test"
     },
     "tree-sitter": [
         {
