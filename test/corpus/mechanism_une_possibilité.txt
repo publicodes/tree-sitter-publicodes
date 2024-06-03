@@ -1,8 +1,8 @@
 ===================================================================================
 Une possibilité
-================================================================================
+===================================================================================
 
-a: 
+a:
   une possibilité:
     choix obligatoire: oui
     possibilités:
@@ -14,58 +14,84 @@ a:
       - compta
       - optique
 
-a: 
-  formule: 
+a:
+  formule:
     une possibilité:
       possibilités:
         - b
-c: 
+c:
   une possibilité:
     choix obligatoire: non
     possibilités:
       - d
 -----------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (name)
-        (rule_body
-          (m_une_possibilité
+(source_file
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (m_une_possibilité
+        m_name: (une_possibilité)
+        (choix_obligatoire)
+        required: (boolean)
+        (possibilités)
+        options: (m_une_possibilité_options
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))))))
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_formule
+        m_name: (formule)
+        (m_une_possibilité
+          m_name: (une_possibilité)
+          (possibilités)
+          options: (m_une_possibilité_options
             (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name)))))
-      (rule
-        (name)
-        (rule_body
-          (formule
-            (m_une_possibilité
-              (reference
-                (name))))))
-      (rule
-        (name)
-        (rule_body
-          (m_une_possibilité
-            (reference
-              (name))))))
+              (dotted_name
+                (name))))))))
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (m_une_possibilité
+        m_name: (une_possibilité)
+        (choix_obligatoire)
+        required: (boolean)
+        (possibilités)
+        options: (m_une_possibilité_options
+          (reference
+            (dotted_name
+              (name))))))))
 
 ===================================================================================
 Une possibilités n'est pas un mécanisme comme les autres
 :error
 ================================================================================
 
-a: 
-  valeur: 
+a:
+  valeur:
     une possibilité:
       possibilités:
         - b

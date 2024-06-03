@@ -1,4 +1,3 @@
-
 ================================================================================
 Boolean constant
 ================================================================================
@@ -10,9 +9,12 @@ b: non
 
 (source_file
   (rule
-    (name)
-    value: (boolean))
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (boolean)))
   (rule
-    (name)
-    value: (boolean)))
-
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (boolean))))

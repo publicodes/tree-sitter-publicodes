@@ -1,4 +1,6 @@
 // From https://github.com/publicodes/publicodes/blob/6ee8c5d2316c8099931504b401feaaabd22b89c8/packages/core/source/grammar.ne#L17C6-L19
+const space =
+    /[\t\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]/;
 const letter = /[a-zA-Z\u00C0-\u017F]/;
 const symbol = prec(0, /[',°€%²$_’"«»]/); // TODO: add parentheses
 const digit = /\d/;
@@ -12,7 +14,7 @@ const any_char_or_special_char = choice(any_char, /\-|\+/);
 const phrase_starting_with = (char) =>
     seq(
         seq(char, repeat(any_char_or_special_char)),
-        repeat(seq(" ", seq(any_char, repeat(any_char_or_special_char))))
+        repeat(seq(space, seq(any_char, repeat(any_char_or_special_char))))
     );
 
 const rule_name = token(phrase_starting_with(letter));
@@ -28,10 +30,6 @@ const unit_identifier = token.immediate(
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-function single_line($, rule) {
-    return choice(indented($, rule), seq(rule, $._newline));
-}
-
 function maybe_with_quote(rule) {
     return choice(
         // This is to be coherent with the YAML parser
@@ -46,7 +44,7 @@ function indented($, rule) {
 }
 
 function may_be_indented($, rule) {
-    return choice(indented($, rule), seq($._newline, rule));
+    return choice(indented($, rule), rule);
 }
 
 function array($, rule) {
@@ -57,15 +55,12 @@ function array($, rule) {
 function array_item($, rule) {
     return seq($._array_prefix, rule, $._dedent);
 }
-function key_value(keys, rule, key_name) {
+
+function keywords(keys) {
     if (!Array.isArray(keys)) {
         keys = [keys];
     }
-    let possible_keys = token(prec(4, choice(...keys)));
-    if (key_name !== undefined) {
-        possible_keys = field(key_name, possible_keys);
-    }
-    return seq(possible_keys, ":", rule);
+    return token(prec(4, seq(choice(...keys), repeat(space), ":")));
 }
 
 module.exports = grammar({
@@ -79,8 +74,8 @@ module.exports = grammar({
         $._dedent,
         $._array_prefix,
         $.comment,
-        $._newline,
         $.paragraph,
+        $._eof,
         $.error_recovery_mode,
     ],
 
@@ -88,41 +83,92 @@ module.exports = grammar({
     word: ($) => $.name,
     conflicts: ($) => [[$._ar_expression, $._bool_expression]],
     rules: {
-        source_file: ($) => repeat($.rule),
+        source_file: ($) => seq(optional($.import), repeat($.rule)),
+
+        /*
+        =====================
+           Macro importer!
+        =====================
+        */
+
+        import: ($) =>
+            seq(
+                $.importer,
+                indented(
+                    $,
+                    seq(
+                        field("from", $.import_from),
+                        optional($._import_into),
+                        field("rules", optional($.import_rules))
+                    )
+                )
+            ),
+
+        import_from: ($) =>
+            seq(
+                $.depuis,
+                indented(
+                    $,
+                    seq(
+                        $._import_name,
+                        optional($._import_source),
+                        optional($._import_url)
+                    )
+                )
+            ),
+        _import_name: ($) =>
+            seq($.nom, field("name", maybe_with_quote($.text_line))),
+        _import_source: ($) =>
+            seq($.source, field("source", maybe_with_quote($.text_line))),
+        _import_url: ($) =>
+            seq($.url, field("url", maybe_with_quote($.text_line))),
+
+        _import_into: ($) =>
+            seq($.dans, field("into", maybe_with_quote($.text_line))),
+
+        import_rules: ($) =>
+            seq($.les_règles, array($, choice($.import_rule, $.rule))),
+        import_rule: ($) => field("rule_name", $.dotted_name),
+
+        /*
+        =====================
+           Rule definition
+        =====================
+        */
 
         rule: ($) =>
             seq(
                 optional(seq("[", $.tag, "]")),
-                $._dottedName,
+                field("rule_name", $.dotted_name),
                 ":",
-                choice(
-                    field("empty", $._newline),
-                    field(
-                        "value",
-                        single_line($, maybe_with_quote($._expression))
-                    ),
-                    field("body", $.rule_body)
-                )
+                choice(field("body", $.rule_body), $._newline)
             ),
 
-        rule_body: ($) => indented($, repeat1($._statement)),
+        rule_body: ($) =>
+            choice(
+                may_be_indented($, maybe_with_quote($._expression)),
+                indented($, repeat1($._statement))
+            ),
+
         _statement: ($) =>
             choice(
                 $.mechanism,
                 $.meta,
-                $.formule,
-                $.avec,
-                $.remplace,
+                $.s_formule,
+                $.s_avec,
+                $.s_remplace,
                 $._tags,
                 $.custom_meta,
                 $.m_une_possibilité
             ),
+
         // Formule can only appear top-level in a rule
-        formule: ($) =>
-            key_value(
-                "formule",
+        s_formule: ($) =>
+            seq(
+                field("m_name", $.formule),
                 choice($._valeur, indented($, $.m_une_possibilité))
             ),
+
         /*
         ====================
             Mécanismes
@@ -130,51 +176,50 @@ module.exports = grammar({
         */
         _valeur: ($) =>
             choice(
-                single_line($, maybe_with_quote($._expression)),
+                may_be_indented($, maybe_with_quote($._expression)),
                 indented($, repeat1($.mechanism))
             ),
 
         mechanism: ($) => choice($.m_unary, $.m_array, $._m_special),
 
-        m_unary: ($) =>
-            key_value(
-                [
-                    "valeur",
-                    "plafond",
-                    "plancher",
-                    "applicable si",
-                    "non applicable si",
-                    "arrondi",
-                    "est non défini",
-                    "est défini",
-                    "est non applicable",
-                    "est applicable",
-                    "par défaut",
-                    "abattement",
-                ],
-                $._valeur,
-                "mechanism_name"
-            ),
+        m_unary: ($) => seq(field("m_name", $.m_unary_name), $._valeur),
+        m_unary_name: (_) =>
+            keywords([
+                "valeur",
+                "plafond",
+                "plancher",
+                "applicable si",
+                "non applicable si",
+                "arrondi",
+                "est non défini",
+                "est défini",
+                "est non applicable",
+                "est applicable",
+                "par défaut",
+                "abattement",
+            ]),
+
         m_array: ($) =>
-            key_value(
-                [
-                    "somme",
-                    "produit",
-                    "moyenne",
-                    "le maximum de",
-                    "le minimum de",
-                    "une de ces conditions",
-                    "toutes ces conditions",
-                ],
+            seq(
+                field("m_name", $.m_array_name),
                 array(
                     $,
                     choice(
                         maybe_with_quote($._expression),
                         repeat1($.mechanism)
                     )
-                ),
-                "mechanism_name"
+                )
             ),
+        m_array_name: (_) =>
+            keywords([
+                "somme",
+                "produit",
+                "moyenne",
+                "le maximum de",
+                "le minimum de",
+                "une de ces conditions",
+                "toutes ces conditions",
+            ]),
 
         _m_special: ($) =>
             choice(
@@ -184,62 +229,96 @@ module.exports = grammar({
                 $.m_unité,
                 $.m_durée,
                 $.m_barème_like,
-                $.m_texte
+                $.m_texte,
+                $.m_variable_manquante
             ),
 
         m_inversion: ($) =>
-            key_value("inversion numérique", array($, $.reference)),
+            seq(
+                field("m_name", $.inversion_numérique),
+
+                array($, $.reference)
+            ),
 
         m_contexte: ($) =>
-            key_value(
-                "contexte",
+            seq(
+                field("m_name", $.contexte),
+
                 indented($, repeat1(seq($.reference, ":", $._valeur)))
             ),
+
         m_variations: ($) =>
-            key_value(
-                "variations",
+            seq(
+                field("m_name", $.variations),
                 indented(
                     $,
                     seq(
-                        repeat1(array_item($, $._variation_si)),
-                        optional(array_item($, $._variation_sinon))
+                        repeat1(array_item($, $.m_variation_si)),
+                        optional(array_item($, $.m_variation_sinon))
                     )
                 )
             ),
-        _variation_si: ($) =>
-            seq(key_value("si", $._valeur), key_value("alors", $._valeur)),
-        _variation_sinon: ($) => key_value("sinon", $._valeur),
 
-        m_unité: ($) => key_value("unité", single_line($, $.units)),
+        m_variation_si: ($) =>
+            seq(
+                $.si,
+                field("condition", $._valeur),
+                $.alors,
+                field("consequence", $._valeur)
+            ),
+
+        m_variation_sinon: ($) => seq($.sinon, $._valeur),
+
+        m_unité: ($) => seq(field("m_name", $.unité), $.units),
 
         m_durée: ($) =>
-            key_value(
-                "durée",
+            seq(
+                field("m_name", $.durée),
+
                 indented(
                     $,
                     seq(
-                        optional(
-                            seq("depuis", ":", field("depuis", $._valeur))
-                        ),
-                        optional(
-                            seq("jusqu'à", ":", field("jusqu_à", $._valeur))
-                        ),
+                        optional(seq($.depuis, field("from", $._date_or_ref))),
+                        optional(seq($.jusqu_à, field("to", $._date_or_ref))),
+                        optional(seq($.unité, field("unit", $.m_durée_units)))
+                    )
+                )
+            ),
+        _date_or_ref: ($) => maybe_with_quote(choice($.date, $.reference)),
+        m_durée_units: (_) =>
+            choice(
+                "jour",
+                "mois",
+                "an",
+                "année civile",
+                "trimestre",
+                "trimestre civil"
+            ),
+
+        m_barème_like: ($) =>
+            seq(
+                field("m_name", $.m_barème_like_name),
+
+                indented(
+                    $,
+                    seq(
+                        $.assiette,
+                        field("assiette", $._valeur),
                         optional(
                             seq(
-                                "unité",
-                                ":",
-                                field(
-                                    "unité",
-                                    single_line(
+                                $.multiplicateur,
+                                field("multiplier", $._valeur)
+                            )
+                        ),
+                        $.tranches,
+                        may_be_indented(
+                            $,
+                            seq(
+                                repeat1(array_item($, $.tranche)),
+                                optional(
+                                    array_item(
                                         $,
-                                        choice(
-                                            "jour",
-                                            "mois",
-                                            "an",
-                                            "année civile",
-                                            "trimestre",
-                                            "trimestre civil"
-                                        )
+                                        alias($._m_taux_or_montant, $.tranche)
                                     )
                                 )
                             )
@@ -247,82 +326,72 @@ module.exports = grammar({
                     )
                 )
             ),
+        m_barème_like_name: (_) =>
+            keywords(["barème", "taux progressif", "grille"]),
 
-        m_barème_like: ($) =>
-            key_value(
-                ["barème", "taux progressif", "grille"],
-                indented(
-                    $,
-                    seq(
-                        "assiette",
-                        ":",
-                        field("assiette", $._valeur),
-                        optional(
-                            seq(
-                                "multiplicateur",
-                                ":",
-                                field("multiplicateur", $._valeur)
-                            )
-                        ),
-                        "tranches",
-                        ":",
-                        may_be_indented(
-                            $,
-                            seq(
-                                repeat1(array_item($, $._m_tranche)),
-                                optional(array_item($, $._m_last_tranche))
-                            )
-                        )
-                    )
-                ),
-                "mechanism_name"
-            ),
-
-        _m_tranche: ($) =>
+        tranche: ($) =>
             choice(
                 // With plafond last
                 seq(
-                    key_value(["taux", "montant"], field("valeur", $._valeur)),
-                    key_value("plafond", field("plafond", $._valeur))
+                    $._m_taux_or_montant,
+                    seq($.plafond, field("ceiling", $._valeur))
                 ),
                 // With plafond first
                 seq(
-                    key_value("plafond", field("plafond", $._valeur)),
-                    key_value(["taux", "montant"], field("valeur", $._valeur))
+                    seq($.plafond, field("ceiling", $._valeur)),
+                    $._m_taux_or_montant
                 )
             ),
 
-        _m_last_tranche: ($) =>
-            key_value(["taux", "montant"], field("valeur", $._valeur)),
+        _m_taux_or_montant: ($) =>
+            seq(choice($.taux, $.montant), field("value", $._valeur)),
 
-        m_texte: ($) => key_value("texte", choice($._text_line, $._paragraph)),
+        m_texte: ($) =>
+            seq(
+                field("m_name", $.texte),
+
+                choice($._text_line, $._paragraph)
+            ),
 
         m_une_possibilité: ($) =>
-            key_value(
-                "une possibilité",
+            seq(
+                field("m_name", $.une_possibilité),
+
                 indented(
                     $,
                     seq(
                         optional(
-                            key_value("choix obligatoire", choice("oui", "non"))
+                            seq(
+                                $.choix_obligatoire,
+                                field("required", $.boolean)
+                            )
                         ),
-                        key_value("possibilités", array($, $.reference))
+                        seq(
+                            $.possibilités,
+                            field("options", $.m_une_possibilité_options)
+                        )
                     )
                 )
             ),
 
+        m_une_possibilité_options: ($) => array($, $.reference),
+
+        m_variable_manquante: ($) =>
+            seq(field("m_name", $.variable_manquante), $.reference),
+
         /*
         ========================
-            Avec et remplace     
+            Avec et remplace
         ========================
         */
 
-        avec: ($) => key_value("avec", indented($, repeat1($.rule))),
-        remplace: ($) =>
-            key_value(
-                "remplace",
+        s_avec: ($) =>
+            seq(field("m_name", $.avec), indented($, repeat1($.rule))),
+        s_remplace: ($) =>
+            seq(
+                field("m_name", $.remplace),
                 choice(
-                    single_line($, $.reference),
+                    $.reference,
                     indented($, $._remplace_rule),
                     array($, choice($._remplace_rule, $.reference))
                 )
@@ -330,32 +399,12 @@ module.exports = grammar({
 
         _remplace_rule: ($) =>
             seq(
-                key_value("références à", single_line($, $.reference)),
-                optional(
-                    field(
-                        "dans",
-                        key_value(
-                            "dans",
-                            choice(
-                                single_line($, $.reference),
-                                array($, $.reference)
-                            )
-                        )
-                    )
-                ),
-                optional(
-                    field(
-                        "sauf_dans",
-                        key_value(
-                            "sauf dans",
-                            choice(
-                                single_line($, $.reference),
-                                array($, $.reference)
-                            )
-                        )
-                    )
-                )
+                $.références_à,
+                field("ref", $.reference),
+                optional(seq($.dans, field("in", $.rule_or_array))),
+                optional(seq($.sauf_dans, field("except", $.rule_or_array)))
             ),
+        rule_or_array: ($) => choice($.reference, array($, $.reference)),
 
         /*
         ========================
@@ -364,7 +413,7 @@ module.exports = grammar({
         */
 
         _tags: ($) => seq($.tag, ":", "oui"),
-        tag: ($) =>
+        tag: (_) =>
             token(
                 prec(
                     3,
@@ -451,9 +500,10 @@ module.exports = grammar({
             Identifier
         ===================
         */
-        _dottedName: ($) => seq($.name, repeat(seq(" . ", $.name))),
-        name: ($) => rule_name,
-        reference: ($) => $._dottedName,
+
+        dotted_name: ($) => seq($.name, repeat(seq(" . ", $.name))),
+        name: (_) => rule_name,
+        reference: ($) => $.dotted_name,
 
         /*
         ===================
@@ -462,7 +512,7 @@ module.exports = grammar({
         */
 
         comment: (_) => token(prec(3, seq("#", /.*/))),
-
+        _newline: ($) => choice("\n", $._eof),
         /*
         ===================
             Constants
@@ -472,14 +522,17 @@ module.exports = grammar({
         constant: ($) => choice($.boolean, $.string, $.number, $.date),
         boolean: (_) => choice("oui", "non"),
 
-        string: (_) => /'.*?'/,
+        string: (_) => choice(/'.*?'/, /".*?"/),
 
         date: () => date,
         // TODO: may want to distinguish between integers and floats
         number: ($) => seq(number, optional($.units)),
         units: ($) =>
             seq(
-                field("numerators", seq(optional(" "), $._units)),
+                field(
+                    "numerators",
+                    seq(optional(token.immediate(space)), $._units)
+                ),
                 field("denominators", repeat(seq("/", $._units)))
             ),
         _units: ($) => seq($.unit, repeat(seq(".", $.unit))),
@@ -488,54 +541,121 @@ module.exports = grammar({
 
         /*
         ====================
+            Keywords
+
+        NOTE: we use named node to be able to used them in the semantic
+        highlighting in the language server.
+
+        ====================
+        */
+
+        importer: (_) => keywords("importer!"),
+        depuis: (_) => keywords("depuis"),
+        nom: (_) => keywords("nom"),
+        source: (_) => keywords("source"),
+        url: (_) => keywords("url"),
+        dans: (_) => keywords("dans"),
+        les_règles: (_) => keywords("les règles"),
+
+        formule: (_) => keywords("formule"),
+
+        avec: (_) => keywords("avec"),
+        remplace: (_) => keywords("remplace"),
+        références_à: (_) => keywords("références à"),
+        dans: (_) => keywords("dans"),
+        sauf_dans: (_) => keywords("sauf dans"),
+
+        une_possibilité: (_) => keywords("une possibilité"),
+        choix_obligatoire: (_) => keywords("choix obligatoire"),
+        possibilités: (_) => keywords("possibilités"),
+
+        texte: (_) => keywords("texte"),
+
+        assiette: (_) => keywords("assiette"),
+        montant: (_) => keywords("montant"),
+        multiplicateur: (_) => keywords("multiplicateur"),
+        tranches: (_) => keywords("tranches"),
+
+        plafond: (_) => keywords("plafond"),
+        taux: (_) => keywords("taux"),
+
+        inversion_numérique: (_) => keywords("inversion numérique"),
+        contexte: (_) => keywords("contexte"),
+        variations: (_) => keywords("variations"),
+
+        si: (_) => keywords("si"),
+        alors: (_) => keywords("alors"),
+        sinon: (_) => keywords("sinon"),
+
+        durée: (_) => keywords("durée"),
+        depuis: (_) => keywords("depuis"),
+        jusqu_à: (_) => keywords("jusqu'à"),
+        unité: (_) => keywords("unité"),
+        variable_manquante: (_) => keywords("variable manquante"),
+        /*
+        ====================
             Métadonnées
         ====================
         */
 
         meta: ($) =>
-            key_value(
-                ["titre", "question", "références", "description", "notes"],
-                $.meta_value,
-                "meta_name"
+            seq(
+                field("meta_name", $.meta_name),
+                field("meta_value", $.meta_value)
             ),
+        meta_name: (_) =>
+            keywords([
+                "titre",
+                "question",
+                "références",
+                "description",
+                "notes",
+            ]),
 
         custom_meta: ($) => seq(field("meta_name", $._key), $.meta_value),
 
-        meta_value: ($) =>
-            choice($._newline, $._text_line, $.object, $._paragraph),
+        meta_value: ($) => choice($._text_line, $.object, $._paragraph),
 
         _text_line: ($) =>
             choice(
                 seq(
                     optional($.text_line),
-                    indented($, repeat1(seq($.text_line, $._newline)))
+                    indented(
+                        $,
+                        seq(
+                            repeat(seq($.text_line, $._newline)),
+                            optional($.text_line)
+                        )
+                    )
                 ),
-                seq($.text_line, $._newline)
+                $.text_line
             ),
         // Paragraph are like multiline strings but they do not parse # as comments
         // This needs to be done in the external scanner because otherwise # would be consumed as comments
-        _paragraph: ($) => seq(token(prec(2, choice("|", ">"))), $.paragraph),
+        _paragraph: ($) =>
+            seq(token(prec(2, choice("|", ">", "|-", ">-"))), $.paragraph),
 
         object: ($) => indented($, repeat1(seq($._key, $.meta_value))),
         _key: ($) =>
             token(prec(2, seq(choice(/"[^"]+"/, /'[^']+'/, /[^:#\n]+/), ":"))),
+        // FIXME: catch all trailing whitespaces
         text_line: ($) => token(prec(1, /[^\n#]*/)),
     },
 });
 
-/* Questions : 
-- Should we enforce a space between operators and operands? 
+/* Questions :
+- Should we enforce a space between operators and operands?
     -> YES because it is easier to read and because it enable to disambiguate between unit (12 €/an) and division (12 € / an)
-- If so, should we allow for operator symbol to appear in words (ex : "a . a+") 
+- If so, should we allow for operator symbol to appear in words (ex : "a . a+")
     -> NO because it is not a common practice and it would make the grammar more complex
 
-- Should we allow for multiple spaces between operators, operands, words, etc? 
-    -> YES because it is a common practice and it makes the grammar more flexible 
+- Should we allow for multiple spaces between operators, operands, words, etc?
+    -> YES because it is a common practice and it makes the grammar more flexible
         (That's what copilot is saying anyway)
 
 - Should we allow tabs and spaces ?
-    -> NO, because it leads to complex indentation logic : 
-       we have to choose an arbitrary length for the tab, in order to compare indentation levels of different lines. 
+    -> NO, because it leads to complex indentation logic :
+       we have to choose an arbitrary length for the tab, in order to compare indentation levels of different lines.
        In python it's 8. But it's usually defined in the editor settings. So it would lead to unexpected behavior.
 
 

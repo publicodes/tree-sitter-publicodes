@@ -1,0 +1,98 @@
+================================================================================
+Import (full)
+================================================================================
+
+importer!:
+  depuis:
+    nom: "@incubateur-ademe/nosgestesclimat"
+    source: "../path/to/nosgestesclimat"
+    url: https://example.com/nosgestesclimat
+  dans: ngc
+  les règles:
+    - rule 2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import
+    (importer)
+    from: (import_from
+      (depuis)
+      (nom)
+      name: (text_line)
+      (source)
+      source: (text_line)
+      (url)
+      url: (text_line))
+    (dans)
+    into: (text_line)
+    rules: (import_rules
+      (les_règles)
+      (import_rule
+        rule_name: (dotted_name
+          (name))))))
+
+================================================================================
+Import (minimal)
+================================================================================
+
+importer!:
+  depuis:
+    nom: "@incubateur-ademe/nosgestesclimat"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import
+    (importer)
+    from: (import_from
+      (depuis)
+      (nom)
+      name: (text_line))))
+
+================================================================================
+Import (with rules)
+================================================================================
+
+importer!:
+  depuis:
+    nom: "@incubateur-ademe/nosgestesclimat"
+  les règles:
+    - rule 2
+    - rule 3 . a:
+        titre: Test
+        description: Test
+    - rule 2 . a . b
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import
+    (importer)
+    from: (import_from
+      (depuis)
+      (nom)
+      name: (text_line))
+    rules: (import_rules
+      (les_règles)
+      (import_rule
+        rule_name: (dotted_name
+          (name)))
+      (rule
+        rule_name: (dotted_name
+          (name)
+          (name))
+        body: (rule_body
+          (meta
+            meta_name: (meta_name)
+            meta_value: (meta_value
+              (text_line)))
+          (meta
+            meta_name: (meta_name)
+            meta_value: (meta_value
+              (text_line)))))
+      (import_rule
+        rule_name: (dotted_name
+          (name)
+          (name)
+          (name))))))

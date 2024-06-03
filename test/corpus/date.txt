@@ -10,22 +10,31 @@ d: 02/5/2079
 --------------------------------------------------------------------------------
 
 (source_file
-    (rule
-    (name)
-    (date))
-    (rule
-    (name)
-    (date))
-    (rule
-    (name)
-    (date))
-    (rule
-    (name)
-    (date))
-    (rule
-    (name)
-    (date)))
-
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (date)))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (date)))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (date)))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (date)))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (date))))
 
 ================================================================================
 Wrong date

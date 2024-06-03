@@ -54,21 +54,6 @@
     }
   },
   {
-    "type": "avec",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "rule",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "boolean",
     "named": true,
     "fields": {}
@@ -132,51 +117,194 @@
     }
   },
   {
-    "type": "formule",
+    "type": "dotted_name",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "ar_binary_expression",
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import",
+    "named": true,
+    "fields": {
+      "from": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "import_from",
+            "named": true
+          }
+        ]
+      },
+      "into": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "text_line",
+            "named": true
+          }
+        ]
+      },
+      "rules": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "import_rules",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dans",
           "named": true
         },
         {
-          "type": "ar_unary_expression",
+          "type": "importer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_from",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "text_line",
+            "named": true
+          }
+        ]
+      },
+      "source": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "text_line",
+            "named": true
+          }
+        ]
+      },
+      "url": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "text_line",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "depuis",
           "named": true
         },
         {
-          "type": "boolean",
+          "type": "nom",
           "named": true
         },
         {
-          "type": "comparison",
+          "type": "source",
           "named": true
         },
         {
-          "type": "date",
+          "type": "url",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_rule",
+    "named": true,
+    "fields": {
+      "rule_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dotted_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "import_rules",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "import_rule",
           "named": true
         },
         {
-          "type": "m_une_possibilité",
+          "type": "les_règles",
           "named": true
         },
         {
-          "type": "mechanism",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "reference",
-          "named": true
-        },
-        {
-          "type": "string",
+          "type": "rule",
           "named": true
         }
       ]
@@ -185,7 +313,18 @@
   {
     "type": "m_array",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "m_array_name",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -291,7 +430,17 @@
           }
         ]
       },
-      "multiplicateur": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "m_barème_like_name",
+            "named": true
+          }
+        ]
+      },
+      "multiplier": {
         "multiple": true,
         "required": false,
         "types": [
@@ -348,129 +497,46 @@
             "named": true
           }
         ]
-      },
-      "plafond": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "\"",
-            "named": false
-          },
-          {
-            "type": "'",
-            "named": false
-          },
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "ar_binary_expression",
-            "named": true
-          },
-          {
-            "type": "ar_unary_expression",
-            "named": true
-          },
-          {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "comparison",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "mechanism",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "reference",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          }
-        ]
-      },
-      "valeur": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "\"",
-            "named": false
-          },
-          {
-            "type": "'",
-            "named": false
-          },
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "ar_binary_expression",
-            "named": true
-          },
-          {
-            "type": "ar_unary_expression",
-            "named": true
-          },
-          {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "comparison",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "mechanism",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "reference",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assiette",
+          "named": true
+        },
+        {
+          "type": "multiplicateur",
+          "named": true
+        },
+        {
+          "type": "tranche",
+          "named": true
+        },
+        {
+          "type": "tranches",
+          "named": true
+        }
+      ]
     }
   },
   {
     "type": "m_contexte",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "contexte",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -518,7 +584,7 @@
     "type": "m_durée",
     "named": true,
     "fields": {
-      "depuis": {
+      "from": {
         "multiple": true,
         "required": false,
         "types": [
@@ -531,52 +597,26 @@
             "named": false
           },
           {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "ar_binary_expression",
-            "named": true
-          },
-          {
-            "type": "ar_unary_expression",
-            "named": true
-          },
-          {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "comparison",
-            "named": true
-          },
-          {
             "type": "date",
-            "named": true
-          },
-          {
-            "type": "mechanism",
-            "named": true
-          },
-          {
-            "type": "number",
             "named": true
           },
           {
             "type": "reference",
             "named": true
-          },
+          }
+        ]
+      },
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
           {
-            "type": "string",
+            "type": "durée",
             "named": true
           }
         ]
       },
-      "jusqu_à": {
+      "to": {
         "multiple": true,
         "required": false,
         "types": [
@@ -589,87 +629,65 @@
             "named": false
           },
           {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "ar_binary_expression",
-            "named": true
-          },
-          {
-            "type": "ar_unary_expression",
-            "named": true
-          },
-          {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "comparison",
-            "named": true
-          },
-          {
             "type": "date",
-            "named": true
-          },
-          {
-            "type": "mechanism",
-            "named": true
-          },
-          {
-            "type": "number",
             "named": true
           },
           {
             "type": "reference",
             "named": true
-          },
-          {
-            "type": "string",
-            "named": true
           }
         ]
       },
-      "unité": {
-        "multiple": true,
+      "unit": {
+        "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "an",
-            "named": false
-          },
-          {
-            "type": "année civile",
-            "named": false
-          },
-          {
-            "type": "jour",
-            "named": false
-          },
-          {
-            "type": "mois",
-            "named": false
-          },
-          {
-            "type": "trimestre",
-            "named": false
-          },
-          {
-            "type": "trimestre civil",
-            "named": false
+            "type": "m_durée_units",
+            "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "depuis",
+          "named": true
+        },
+        {
+          "type": "jusqu_à",
+          "named": true
+        },
+        {
+          "type": "unité",
+          "named": true
+        }
+      ]
     }
+  },
+  {
+    "type": "m_durée_units",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "m_inversion",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "inversion_numérique",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -684,10 +702,21 @@
   {
     "type": "m_texte",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "texte",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "paragraph",
@@ -703,7 +732,18 @@
   {
     "type": "m_unary",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "m_unary_name",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -750,6 +790,56 @@
   {
     "type": "m_une_possibilité",
     "named": true,
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "une_possibilité",
+            "named": true
+          }
+        ]
+      },
+      "options": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "m_une_possibilité_options",
+            "named": true
+          }
+        ]
+      },
+      "required": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "boolean",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "choix_obligatoire",
+          "named": true
+        },
+        {
+          "type": "possibilités",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_une_possibilité_options",
+    "named": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -765,7 +855,18 @@
   {
     "type": "m_unité",
     "named": true,
-    "fields": {},
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "unité",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -778,12 +879,174 @@
     }
   },
   {
-    "type": "m_variations",
+    "type": "m_variable_manquante",
+    "named": true,
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "variable_manquante",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_variation_si",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "ar_binary_expression",
+            "named": true
+          },
+          {
+            "type": "ar_unary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "comparison",
+            "named": true
+          },
+          {
+            "type": "date",
+            "named": true
+          },
+          {
+            "type": "mechanism",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "reference",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "ar_binary_expression",
+            "named": true
+          },
+          {
+            "type": "ar_unary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "comparison",
+            "named": true
+          },
+          {
+            "type": "date",
+            "named": true
+          },
+          {
+            "type": "mechanism",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "reference",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "alors",
+          "named": true
+        },
+        {
+          "type": "si",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_variation_sinon",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "ar_binary_expression",
@@ -818,7 +1081,41 @@
           "named": true
         },
         {
+          "type": "sinon",
+          "named": true
+        },
+        {
           "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "m_variations",
+    "named": true,
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "variations",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "m_variation_si",
+          "named": true
+        },
+        {
+          "type": "m_variation_sinon",
           "named": true
         }
       ]
@@ -865,6 +1162,10 @@
           "named": true
         },
         {
+          "type": "m_variable_manquante",
+          "named": true
+        },
+        {
           "type": "m_variations",
           "named": true
         }
@@ -874,16 +1175,27 @@
   {
     "type": "meta",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "meta_value",
-          "named": true
-        }
-      ]
+    "fields": {
+      "meta_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "meta_name",
+            "named": true
+          }
+        ]
+      },
+      "meta_value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "meta_value",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -944,55 +1256,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "remplace",
-    "named": true,
-    "fields": {
-      "dans": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ":",
-            "named": false
-          },
-          {
-            "type": "reference",
-            "named": true
-          }
-        ]
-      },
-      "sauf_dans": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ":",
-            "named": false
-          },
-          {
-            "type": "reference",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "reference",
+          "type": "dotted_name",
           "named": true
         }
       ]
@@ -1012,7 +1280,303 @@
           }
         ]
       },
-      "value": {
+      "rule_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dotted_name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "tag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rule_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ar_binary_expression",
+          "named": true
+        },
+        {
+          "type": "ar_unary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comparison",
+          "named": true
+        },
+        {
+          "type": "custom_meta",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "m_une_possibilité",
+          "named": true
+        },
+        {
+          "type": "mechanism",
+          "named": true
+        },
+        {
+          "type": "meta",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "s_avec",
+          "named": true
+        },
+        {
+          "type": "s_formule",
+          "named": true
+        },
+        {
+          "type": "s_remplace",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rule_or_array",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "s_avec",
+    "named": true,
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "avec",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "s_formule",
+    "named": true,
+    "fields": {
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "formule",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ar_binary_expression",
+          "named": true
+        },
+        {
+          "type": "ar_unary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comparison",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "m_une_possibilité",
+          "named": true
+        },
+        {
+          "type": "mechanism",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "s_remplace",
+    "named": true,
+    "fields": {
+      "except": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "rule_or_array",
+            "named": true
+          }
+        ]
+      },
+      "in": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "rule_or_array",
+            "named": true
+          }
+        ]
+      },
+      "m_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "remplace",
+            "named": true
+          }
+        ]
+      },
+      "ref": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "reference",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dans",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "références_à",
+          "named": true
+        },
+        {
+          "type": "sauf_dans",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "import",
+          "named": true
+        },
+        {
+          "type": "rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "tranche",
+    "named": true,
+    "fields": {
+      "ceiling": {
         "multiple": true,
         "required": false,
         "types": [
@@ -1053,6 +1617,68 @@
             "named": true
           },
           {
+            "type": "mechanism",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "reference",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          },
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "ar_binary_expression",
+            "named": true
+          },
+          {
+            "type": "ar_unary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "comparison",
+            "named": true
+          },
+          {
+            "type": "date",
+            "named": true
+          },
+          {
+            "type": "mechanism",
+            "named": true
+          },
+          {
             "type": "number",
             "named": true
           },
@@ -1072,69 +1698,15 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "montant",
           "named": true
         },
         {
-          "type": "tag",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "rule_body",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "avec",
+          "type": "plafond",
           "named": true
         },
         {
-          "type": "custom_meta",
-          "named": true
-        },
-        {
-          "type": "formule",
-          "named": true
-        },
-        {
-          "type": "m_une_possibilité",
-          "named": true
-        },
-        {
-          "type": "mechanism",
-          "named": true
-        },
-        {
-          "type": "meta",
-          "named": true
-        },
-        {
-          "type": "remplace",
-          "named": true
-        },
-        {
-          "type": "tag",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "source_file",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "rule",
+          "type": "taux",
           "named": true
         }
       ]
@@ -1182,10 +1754,6 @@
         "required": true,
         "types": [
           {
-            "type": " ",
-            "named": false
-          },
-          {
             "type": ".",
             "named": false
           },
@@ -1198,7 +1766,7 @@
     }
   },
   {
-    "type": " ",
+    "type": "\n",
     "named": false
   },
   {
@@ -1266,6 +1834,10 @@
     "named": false
   },
   {
+    "type": "alors",
+    "named": true
+  },
+  {
     "type": "an",
     "named": false
   },
@@ -1275,10 +1847,26 @@
   },
   {
     "type": "assiette",
-    "named": false
+    "named": true
+  },
+  {
+    "type": "avec",
+    "named": true
+  },
+  {
+    "type": "choix_obligatoire",
+    "named": true
   },
   {
     "type": "comment",
+    "named": true
+  },
+  {
+    "type": "contexte",
+    "named": true
+  },
+  {
+    "type": "dans",
     "named": true
   },
   {
@@ -1287,10 +1875,26 @@
   },
   {
     "type": "depuis",
-    "named": false
+    "named": true
+  },
+  {
+    "type": "durée",
+    "named": true
   },
   {
     "type": "exposant",
+    "named": true
+  },
+  {
+    "type": "formule",
+    "named": true
+  },
+  {
+    "type": "importer",
+    "named": true
+  },
+  {
+    "type": "inversion_numérique",
     "named": true
   },
   {
@@ -1298,19 +1902,47 @@
     "named": false
   },
   {
-    "type": "jusqu'à",
-    "named": false
+    "type": "jusqu_à",
+    "named": true
+  },
+  {
+    "type": "les_règles",
+    "named": true
+  },
+  {
+    "type": "m_array_name",
+    "named": true
+  },
+  {
+    "type": "m_barème_like_name",
+    "named": true
+  },
+  {
+    "type": "m_unary_name",
+    "named": true
+  },
+  {
+    "type": "meta_name",
+    "named": true
   },
   {
     "type": "mois",
     "named": false
   },
   {
+    "type": "montant",
+    "named": true
+  },
+  {
     "type": "multiplicateur",
-    "named": false
+    "named": true
   },
   {
     "type": "name",
+    "named": true
+  },
+  {
+    "type": "nom",
     "named": true
   },
   {
@@ -1326,7 +1958,35 @@
     "named": true
   },
   {
-    "type": "string",
+    "type": "plafond",
+    "named": true
+  },
+  {
+    "type": "possibilités",
+    "named": true
+  },
+  {
+    "type": "remplace",
+    "named": true
+  },
+  {
+    "type": "références_à",
+    "named": true
+  },
+  {
+    "type": "sauf_dans",
+    "named": true
+  },
+  {
+    "type": "si",
+    "named": true
+  },
+  {
+    "type": "sinon",
+    "named": true
+  },
+  {
+    "type": "source",
     "named": true
   },
   {
@@ -1334,12 +1994,20 @@
     "named": true
   },
   {
+    "type": "taux",
+    "named": true
+  },
+  {
     "type": "text_line",
     "named": true
   },
   {
+    "type": "texte",
+    "named": true
+  },
+  {
     "type": "tranches",
-    "named": false
+    "named": true
   },
   {
     "type": "trimestre",
@@ -1350,7 +2018,23 @@
     "named": false
   },
   {
+    "type": "une_possibilité",
+    "named": true
+  },
+  {
     "type": "unité",
-    "named": false
+    "named": true
+  },
+  {
+    "type": "url",
+    "named": true
+  },
+  {
+    "type": "variable_manquante",
+    "named": true
+  },
+  {
+    "type": "variations",
+    "named": true
   }
 ]

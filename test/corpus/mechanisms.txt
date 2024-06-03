@@ -2,7 +2,7 @@
 Array-like mechanism
 ================================================================================
 
-a: 
+a:
   somme:
     - 10.5
     - -10
@@ -13,101 +13,114 @@ a:
 
 
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (name)
+    (dotted_name
+      (name))
     (rule_body
       (mechanism
         (m_array
+          (m_array_name)
           (number)
           (ar_unary_expression
             (number))
           (mechanism
             (m_array
+              (m_array_name)
               (number)
               (ar_unary_expression
                 (number))
               (reference
-                (name)))))))))
-
-
+                (dotted_name
+                  (name))))))))))
 
 ================================================================================
 Array-like mechanism - 2
 ================================================================================
 
-b: 
+b:
   toutes ces conditions:
     - oui
     - b > 10
-    - 
+    -
       une de ces conditions:
         - a > 10
         - a < -10
         - a = 0
 --------------------------------------------------------------------------------
-  (source_file
-    (rule
-      (name)
-      (rule_body
-        (mechanism
-          (m_array
-            (boolean)
-            (comparison
-              (reference
-                (name))
-              (number))
-            (mechanism
-              (m_array
-                (comparison
-                  (reference
-                    (name))
-                  (number))
-                (comparison
-                  (reference
-                    (name))
-                  (ar_unary_expression
-                    (number)))
-                (comparison
-                  (reference
-                    (name))
-                  (number)))))))))
 
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_array
+          (m_array_name)
+          (boolean)
+          (comparison
+            (reference
+              (dotted_name
+                (name)))
+            (number))
+          (mechanism
+            (m_array
+              (m_array_name)
+              (comparison
+                (reference
+                  (dotted_name
+                    (name)))
+                (number))
+              (comparison
+                (reference
+                  (dotted_name
+                    (name)))
+                (ar_unary_expression
+                  (number)))
+              (comparison
+                (reference
+                  (dotted_name
+                    (name)))
+                (number)))))))))
 
 ================================================================================
 Array-like mechanism - 3
 ================================================================================
 
-c: 
+c:
   le maximum de:
   - valeur: 5
     plafond: 4
   - 20
-  - 30 
+  - 30
 
 --------------------------------------------------------------------------------
 
-  (source_file
-    (rule
-      (name)
-      (rule_body
-        (mechanism
-          (m_array
-            (mechanism
-              (m_unary
-                (number)))
-            (mechanism
-              (m_unary
-                (number)))
-            (number)
-            (number))))))
-
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_array
+          (m_array_name)
+          (mechanism
+            (m_unary
+              (m_unary_name)
+              (number)))
+          (mechanism
+            (m_unary
+              (m_unary_name)
+              (number)))
+          (number)
+          (number))))))
 
 ================================================================================
 Unary mechanism
 ================================================================================
 
-a: 
+a:
   valeur: -10
   plafond: 10
   plancher: -10
@@ -117,129 +130,172 @@ a:
 
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (name)
-        (rule_body
-          (mechanism
-            (m_unary
-              (ar_unary_expression
-                (number))))
-          (mechanism
-            (m_unary
-              (number)))
-          (mechanism
-            (m_unary
-              (ar_unary_expression
-                (number))))
-          (mechanism
-            (m_unary
-              (comparison
-                (reference
-                  (name))
-                (number))))
-          (mechanism
-            (m_unary
-              (boolean)))
-          (mechanism
-            (m_unary
-              (number))))))
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (ar_unary_expression
+            (number))))
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (number)))
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (ar_unary_expression
+            (number))))
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (comparison
+            (reference
+              (dotted_name
+                (name)))
+            (number))))
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (boolean)))
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (number))))))
+
 ================================================================================
 Unité
 ================================================================================
 
-a: 
+a:
   unité: €/mois
 
 --------------------------------------------------------------------------------
 
 (source_file
   (rule
-    (name)
-    (rule_body
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
       (mechanism
         (m_unité
+          m_name: (unité)
           (units
-            (unit)
-            (unit)))))))
+            numerators: (unit)
+            denominators: (unit)))))))
 
 ================================================================================
 Inversion
 ================================================================================
 
-a: 
-  inversion numérique: 
+a:
+  inversion numérique:
     - a
     - b
 
 --------------------------------------------------------------------------------
-    (source_file
-      (rule
-        (name)
-        (rule_body
-          (mechanism
-            (m_inversion
-              (reference
-                (name))
-              (reference
-                (name)))))))
 
-
-================================================================================
-Inversion - KO
-:error
-================================================================================
-
-a: 
-  inversion avec: 
-  - a + 5
-
---------------------------------------------------------------------------------
-
+(source_file
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (mechanism
+        (m_inversion
+          m_name: (inversion_numérique)
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name))))))))
 
 ================================================================================
 Contexte
 ================================================================================
-a: 
-  contexte: 
+a:
+  contexte:
     b : 10
-    c: 
-      somme: 
+    c:
+      somme:
       - 10
 --------------------------------------------------------------------------------
-  (source_file
-    (rule
-      (name)
-      (rule_body
-        (mechanism
-          (m_contexte
-            (reference
-              (name))
-            (number)
-            (reference
-              (name))
-            (mechanism
-              (m_array
-                (number))))))))
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_contexte
+          (contexte)
+          (reference
+            (dotted_name
+              (name)))
+          (number)
+          (reference
+            (dotted_name
+              (name)))
+          (mechanism
+            (m_array
+              (m_array_name)
+              (number))))))))
+
+================================================================================
+Contexte - 2
+================================================================================
+a:
+  contexte:
+    b: x
+  avec: 
+    C: 10
+
+--------------------------------------------------------------------------------
+
+    (source_file
+      (rule
+        (dotted_name
+          (name))
+        (rule_body
+          (mechanism
+            (m_contexte
+              (contexte)
+              (reference
+                (dotted_name
+                  (name)))
+              (reference
+                (dotted_name
+                  (name)))))
+          (s_avec
+            (avec)
+            (rule
+              (dotted_name
+                (name))
+              (rule_body
+                (number)))))))
 
 
 ================================================================================
 Variations
 ================================================================================
 
-a: 
-  variations: 
+a:
+  variations:
     - si: a > 10
       alors: 10
     - si: a < 10
       alors: 0
 
-b: 
-  variations: 
-    - si: 
+b:
+  variations:
+    - si:
         toutes ces conditions:
         - a = 10
         - b = 'oui'
+        - c = "oui"
       alors: 10
     - sinon: 5
 
@@ -247,37 +303,62 @@ b:
 
 (source_file
   (rule
-    (name)
-    (rule_body
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
       (mechanism
         (m_variations
-          (comparison
-            (reference
-              (name))
-            (number))
-          (number)
-          (comparison
-            (reference
-              (name))
-            (number))
-          (number)))))
+          m_name: (variations)
+          (m_variation_si
+            (si)
+            condition: (comparison
+              (reference
+                (dotted_name
+                  (name)))
+              (number))
+            (alors)
+            consequence: (number))
+          (m_variation_si
+            (si)
+            condition: (comparison
+              (reference
+                (dotted_name
+                  (name)))
+              (number))
+            (alors)
+            consequence: (number))))))
   (rule
-    (name)
-    (rule_body
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
       (mechanism
         (m_variations
-          (mechanism
-            (m_array
-              (comparison
-                (reference
-                  (name))
-                (number))
-              (comparison
-                (reference
-                  (name))
-                (string))))
-          (number)
-          (number))))))
+          m_name: (variations)
+          (m_variation_si
+            (si)
+            condition: (mechanism
+              (m_array
+                m_name: (m_array_name)
+                (comparison
+                  (reference
+                    (dotted_name
+                      (name)))
+                  (number))
+                (comparison
+                  (reference
+                    (dotted_name
+                      (name)))
+                  (string))
+                (comparison
+                  (reference
+                    (dotted_name
+                      (name)))
+                  (string))))
+            (alors)
+            consequence: (number))
+          (m_variation_sinon
+            (sinon)
+            (number)))))))
 
 ================================================================================
 Variations - 2
@@ -293,79 +374,111 @@ dirigeant . indépendant . revenu professionnel:
     - sinon: entreprise . résultat fiscal
 
 ---------------------------------------------------
-    (source_file
-      (rule
-        (name)
-        (name)
-        (name)
-        (rule_body
-          (mechanism
-            (m_variations
-              (comparison
-                (reference
-                  (name)
-                  (name))
-                (string))
-              (mechanism
-                (m_array
-                  (reference
-                    (name)
-                    (name))
-                  (reference
-                    (name)
-                    (name))))
+
+(source_file
+  (rule
+    rule_name: (dotted_name
+      (name)
+      (name)
+      (name))
+    body: (rule_body
+      (mechanism
+        (m_variations
+          m_name: (variations)
+          (m_variation_si
+            (si)
+            condition: (comparison
               (reference
+                (dotted_name
+                  (name)
+                  (name)))
+              (string))
+            (alors)
+            consequence: (mechanism
+              (m_array
+                m_name: (m_array_name)
+                (reference
+                  (dotted_name
+                    (name)
+                    (name)))
+                (reference
+                  (dotted_name
+                    (name)
+                    (name))))))
+          (m_variation_sinon
+            (sinon)
+            (reference
+              (dotted_name
                 (name)
-                (name)))))))
+                (name)))))))))
 
 ================================================================================
 Durée
 ================================================================================
 
-a: 
-  durée: 
+a:
+  durée:
     depuis: 10/10/2010
     jusqu'à: 10/10/2011
     unité: mois
 
-b: 
-  durée: 
+b:
+  durée:
     depuis: début de contrat
 
-c: 
-  durée: 
-    jusqu'à: fin de contrat
-    unité: année civile
+c:
+  durée:
+    jusqu'à: 
+      fin de contrat
+    unité: 
+      année civile
 --------------------------------------------------------------------------------
+
 (source_file
   (rule
-    (name)
-    (rule_body
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
       (mechanism
         (m_durée
-          (date)
-          (date)))))
+          m_name: (durée)
+          (depuis)
+          from: (date)
+          (jusqu_à)
+          to: (date)
+          (unité)
+          unit: (m_durée_units)))))
   (rule
-    (name)
-    (rule_body
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
       (mechanism
         (m_durée
-          (reference
-            (name))))))
+          m_name: (durée)
+          (depuis)
+          from: (reference
+            (dotted_name
+              (name)))))))
   (rule
-    (name)
-    (rule_body
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
       (mechanism
         (m_durée
-          (reference
-            (name)))))))
+          m_name: (durée)
+          (jusqu_à)
+          to: (reference
+            (dotted_name
+              (name)))
+          (unité)
+          unit: (m_durée_units))))))
 
 ================================================================================
-Barème et assimilé
+Barème like
 ================================================================================
 
-a: 
-  barème: 
+a:
+  barème:
     assiette: 50 €
     tranches:
     - taux: 10%
@@ -374,65 +487,88 @@ a:
       plafond: 200 €
 
 b:
-  taux progressif: 
+  taux progressif:
     assiette: 50 €
     multiplicateur: PASS
     tranches:
-    - 
+    -
         plafond: 100 €
         taux: 10%
-      
-    - 
+
+    -
         plafond: 200 €
         taux: 20%
     - taux: 100%
 
 --------------------------------------------------------------------------------
 
- (source_file
-      (rule
-        (name)
-        (rule_body
-          (mechanism
-            (m_barème_like
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))))))
-      (rule
-        (name)
-        (rule_body
-          (mechanism
-            (m_barème_like
-              (number
-                (units
-                  (unit)))
-              (reference
-                (name))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit)))
-              (number
-                (units
-                  (unit))))))))
-
+(source_file
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (mechanism
+        (m_barème_like
+          m_name: (m_barème_like_name)
+          (assiette)
+          assiette: (number
+            (units
+              numerators: (unit)))
+          (tranches)
+          (tranche
+            (taux)
+            value: (number
+              (units
+                numerators: (unit)))
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit))))
+          (tranche
+            (taux)
+            value: (number
+              (units
+                numerators: (unit)))
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit))))))))
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (mechanism
+        (m_barème_like
+          m_name: (m_barème_like_name)
+          (assiette)
+          assiette: (number
+            (units
+              numerators: (unit)))
+          (multiplicateur)
+          multiplier: (reference
+            (dotted_name
+              (name)))
+          (tranches)
+          (tranche
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit)))
+            (taux)
+            value: (number
+              (units
+                numerators: (unit))))
+          (tranche
+            (plafond)
+            ceiling: (number
+              (units
+                numerators: (unit)))
+            (taux)
+            value: (number
+              (units
+                numerators: (unit))))
+          (tranche
+            (taux)
+            value: (number
+              (units
+                numerators: (unit)))))))))

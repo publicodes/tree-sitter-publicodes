@@ -1,49 +1,95 @@
 ================================================================================
-Identifier constant
-================================================================================
-
-rule:
-
-rule . sub: rule
-
---------------------------------------------------------------------------------
-
-(source_file
-  (rule
-	(name))
-  (rule
-	(name)
-	(name)
-	value: (reference
-		(name))))
-
-================================================================================
 Reference with `-`
 ================================================================================
 
 rule: CSG-CRDS
 
 --------------------------------------------------------------------------------
+
 (source_file
-	(rule
-	(name)
-	(reference
-		(name))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (reference
+        (dotted_name
+          (name))))))
+
+================================================================================
+Reference with mechanism name
+================================================================================
+
+rule: somme
+
+rule: sécurité sociale plafond
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (reference
+        (dotted_name
+          (name)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (reference
+        (dotted_name
+          (name))))))
+
+================================================================================
+Reference with mechanism name in array mechanism
+================================================================================
+
+rule:
+  somme:
+    - sécurité sociale plafond
+    - somme
+    - plafond
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_array
+          (m_array_name)
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name)))
+          (reference
+            (dotted_name
+              (name))))))))
 
 ================================================================================
 Reference indented with special characters and reserved words
-:skip
 ================================================================================
 
-a: 
-	valeur: 
-		sécurité sociale plafond
+a:
+       valeur:
+               sécurité sociale plafond
 
 --------------------------------------------------------------------------------
+
     (source_file
       (rule
-        (name))
-      (rule
-        (name)
-        (reference
-          (name))))
+        (dotted_name
+          (name))
+        (rule_body
+          (mechanism
+            (m_unary
+              (m_unary_name)
+              (reference
+                (dotted_name
+                  (name))))))))
+

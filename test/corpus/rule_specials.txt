@@ -1,16 +1,15 @@
-
 ================================================================================
-Avec 
+Avec
 ================================================================================
 
-a: 
-  avec: 
+a:
+  avec:
     a: 10
-    b: 
+    b:
       valeur: 20
       titre: Test
-    c: 
-      somme: 
+    c:
+      somme:
       - 10
       - 20
 
@@ -18,40 +17,49 @@ a:
 
 (source_file
   (rule
-    (name)
-    (rule_body
-      (avec
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_avec
+        m_name: (avec)
         (rule
-          (name)
-          (number))
+          rule_name: (dotted_name
+            (name))
+          body: (rule_body
+            (number)))
         (rule
-          (name)
-          (rule_body
+          rule_name: (dotted_name
+            (name))
+          body: (rule_body
             (mechanism
               (m_unary
+                m_name: (m_unary_name)
                 (number)))
             (meta
-              
-              (meta_value
+              meta_name: (meta_name)
+              meta_value: (meta_value
                 (text_line)))))
         (rule
-          (name)
-          (rule_body
+          rule_name: (dotted_name
+            (name))
+          body: (rule_body
             (mechanism
               (m_array
+                m_name: (m_array_name)
                 (number)
                 (number)))))))))
+
 
 ================================================================================
 remplace - 1
 ================================================================================
 
-a: 
+a:
   remplace: b
-b: 
-  remplace: 
+b:
+  remplace:
     - c
-    - 
+    -
       références à: a
   titre: Test
 
@@ -59,66 +67,100 @@ b:
 
 (source_file
   (rule
-    (name)
-    (rule_body
-      (remplace
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
         (reference
-          (name)))))
+          (dotted_name
+            (name))))))
   (rule
-    (name)
-    (rule_body
-      (remplace
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
         (reference
-          (name))
-        (reference
-          (name)))
+          (dotted_name
+            (name)))
+        (références_à)
+        ref: (reference
+          (dotted_name
+            (name))))
       (meta
-        
-        (meta_value
+        meta_name: (meta_name)
+        meta_value: (meta_value
           (text_line))))))
-          
 
 ================================================================================
 remplace - 2
 ================================================================================
 
-a: 
-  remplace: 
+a:
+  remplace:
     références à : b
-    sauf dans: 
+    sauf dans:
       - c
-    
+
   titre: Test
 
-d: 
-  remplace: 
+d:
+  remplace:
     - références à: a
-      dans: 
+      dans:
       - c
       - x
 
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (name)
-        (rule_body
-          (remplace
-            (reference
-              (name))
-            (reference
+(source_file
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
+        (références_à)
+        ref: (reference
+          (dotted_name
+            (name)))
+        (sauf_dans)
+        except: (rule_or_array
+          (reference
+            (dotted_name
+              (name)))))
+      (meta
+        meta_name: (meta_name)
+        meta_value: (meta_value
+          (text_line)))))
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_remplace
+        m_name: (remplace)
+        (références_à)
+        ref: (reference
+          (dotted_name
+            (name)))
+        (dans)
+        in: (rule_or_array
+          (reference
+            (dotted_name
               (name)))
-          (meta
-            
-            (meta_value
-              (text_line)))))
-      (rule
-        (name)
-        (rule_body
-          (remplace
-            (reference
-              (name))
-            (reference
-              (name))
-            (reference
-              (name))))))
+          (reference
+            (dotted_name
+              (name))))))))
+
+================================================================================
+Rends non applicable
+================================================================================
+
+a:
+  rends non applicable:
+    - b
+    - références à: c
+      sauf dans: x
+
+--------------------------------------------------------------------------------
