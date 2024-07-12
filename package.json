@@ -10,10 +10,23 @@
         "Johan Girod <dev@johangirod.com> (https://johangirod.com)"
     ],
     "license": "MIT",
+    "keywords": [
+        "tree-sitter",
+        "grammar",
+        "publicodes"
+    ],
+    "files": [
+        "grammar.js",
+        "binding.gyp",
+        "prebuilds/**",
+        "bindings/node/*",
+        "queries/*",
+        "src/**"
+    ],
     "scripts": {
         "install": "node-gyp-build",
         "prebuildify": "prebuildify --napi --strip",
-        "build": "tree-sitter generate && node-gyp rebuild",
+        "build": "tree-sitter generate --no-bindings",
         "generate": "tree-sitter generate",
         "highlight": "tree-sitter highlight",
         "parse": "tree-sitter generate && tree-sitter parse",
@@ -40,16 +53,7 @@
         }
     },
     "devDependencies": {
-        "node-gyp": "^10.2.0",
         "prebuildify": "^6.0.1",
         "tree-sitter-cli": "^0.22.2"
-    },
-    "files": [
-        "grammar.js",
-        "binding.gyp",
-        "prebuilds/**",
-        "bindings/node/*",
-        "queries/*",
-        "src/**"
-    ]
+    }
 }
