@@ -57,35 +57,9 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     publish_on_npm:
-        runs-on: ubuntu-latest
         needs:
             - create_github_release
             - check_if_version_upgraded
-        steps:
-            - uses: actions/checkout@v3
-              with:
-                  ref: ${{ github.ref }}
-            - uses: actions/setup-node@v3
-              with:
-                  registry-url: https://registry.npmjs.org/
-            - uses: bahmutov/npm-install@v1
-            - run: npm run build
-            - name: Publishing on NPM
-              run: |
-                  if [ "$(npm show . version)" = "$VERSION" ]; then
-                    echo "This version is already published"
-                    exit 0
-                  fi
-                  if [ "$NODE_AUTH_TOKEN" = "" ]; then
-                    echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
-                    false
-                  fi
-                  EXTRA_ARGS=""
-                  if [ "$IS_PRE_RELEASE" = "true" ]; then
-                      EXTRA_ARGS="--tag next"
-                  fi
-                  npm publish $EXTRA_ARGS --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-                  VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
-                  IS_PRE_RELEASE: ${{ needs.check_if_version_upgraded.outputs.is_pre_release }}
+        uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
+        secrets:
+            NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
