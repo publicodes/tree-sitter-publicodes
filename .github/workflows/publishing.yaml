@@ -61,5 +61,7 @@ jobs:
         #     - create_github_release
         #     - check_if_version_upgraded
         uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
+        with:
+            node-version: 20
         secrets:
             NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
