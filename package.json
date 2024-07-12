@@ -11,12 +11,12 @@
     ],
     "license": "MIT",
     "scripts": {
+        "install": "node-gyp-build",
+        "prebuildify": "prebuildify --napi --strip",
         "build": "tree-sitter generate && node-gyp rebuild",
         "generate": "tree-sitter generate",
         "highlight": "tree-sitter highlight",
-        "install": "node-gyp-build",
         "parse": "tree-sitter generate && tree-sitter parse",
-        "prebuildify": "prebuildify --napi --strip",
         "test": "tree-sitter generate && tree-sitter test"
     },
     "tree-sitter": [
@@ -28,8 +28,8 @@
         }
     ],
     "dependencies": {
-        "node-addon-api": "^7.1.0",
-        "node-gyp-build": "^4.8.0"
+        "node-addon-api": "^8.1.0",
+        "node-gyp-build": "^4.8.1"
     },
     "peerDependencies": {
         "tree-sitter": "^0.21.0"
@@ -40,8 +40,8 @@
         }
     },
     "devDependencies": {
-        "node-gyp": "^10.1.0",
-        "prebuildify": "^6.0.0",
+        "node-gyp": "^10.2.0",
+        "prebuildify": "^6.0.1",
         "tree-sitter-cli": "^0.22.2"
     },
     "files": [
