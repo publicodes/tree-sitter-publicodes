@@ -2451,47 +2451,60 @@
               "name": "_indent"
             },
             {
-              "type": "SEQ",
+              "type": "CHOICE",
               "members": [
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "SYMBOL",
-                          "name": "choix_obligatoire"
-                        },
-                        {
-                          "type": "FIELD",
-                          "name": "required",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "boolean"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "BLANK"
-                    }
-                  ]
+                  "type": "FIELD",
+                  "name": "options",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "m_une_possibilité_options"
+                  }
                 },
                 {
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "possibilités"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "choix_obligatoire"
+                            },
+                            {
+                              "type": "FIELD",
+                              "name": "required",
+                              "content": {
+                                "type": "SYMBOL",
+                                "name": "boolean"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
                     },
                     {
-                      "type": "FIELD",
-                      "name": "options",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "m_une_possibilité_options"
-                      }
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "possibilités"
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "options",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "m_une_possibilité_options"
+                          }
+                        }
+                      ]
                     }
                   ]
                 }

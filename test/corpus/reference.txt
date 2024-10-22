@@ -81,15 +81,42 @@ a:
 
 --------------------------------------------------------------------------------
 
-    (source_file
-      (rule
-        (dotted_name
-          (name))
-        (rule_body
-          (mechanism
-            (m_unary
-              (m_unary_name)
-              (reference
-                (dotted_name
-                  (name))))))))
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (reference
+            (dotted_name
+              (name))))))))
 
+================================================================================
+Malformed reference ending with a `.`
+================================================================================
+
+a:
+ valeur: namespace .
+ unité: km
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
+          (reference
+            (dotted_name
+              (name)))))
+      (ERROR)
+      (mechanism
+        (m_unité
+          (unité)
+          (units
+            (unit)))))))

@@ -19,6 +19,10 @@ a:
     une possibilité:
       possibilités:
         - b
+a:
+  formule:
+    une possibilité:
+      - b
 c:
   une possibilité:
     choix obligatoire: non
@@ -67,6 +71,18 @@ c:
         (m_une_possibilité
           m_name: (une_possibilité)
           (possibilités)
+          options: (m_une_possibilité_options
+            (reference
+              (dotted_name
+                (name))))))))
+  (rule
+    rule_name: (dotted_name
+      (name))
+    body: (rule_body
+      (s_formule
+        m_name: (formule)
+        (m_une_possibilité
+          m_name: (une_possibilité)
           options: (m_une_possibilité_options
             (reference
               (dotted_name
