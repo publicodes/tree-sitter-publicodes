@@ -455,7 +455,7 @@ module.exports = grammar({
                     2,
                     seq(
                         $._ar_expression,
-                        token(prec(2, choice(" * ", " / "))),
+                        token(prec(2, choice(" * ", " / ", " // "))),
                         $._ar_expression,
                     ),
                 ),
