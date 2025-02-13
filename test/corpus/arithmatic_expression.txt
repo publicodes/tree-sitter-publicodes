@@ -47,7 +47,8 @@ a: b  + c
 b: c *  d
 c: a  - 5
 d: 12 + 1
-
+e: 4 ** 5
+f: 6 // 7
 
 --------------------------------------------------------------------------------
 
@@ -82,6 +83,20 @@ d: 12 + 1
         (reference
           (dotted_name
             (name)))
+        (number))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (number))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
         (number))))
   (rule
     (dotted_name
@@ -100,6 +115,8 @@ d: 12 - e
 e: 7 * a
 f: 8 / pou
 g: 10 + cool
+h: 12 ** a
+i: 6 // p a d
 
 --------------------------------------------------------------------------------
 
@@ -111,6 +128,24 @@ g: 10 + cool
       (ar_binary_expression
         (number)
         (number))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (reference
+          (dotted_name
+            (name))))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (reference
+          (dotted_name
+            (name))))))
   (rule
     (dotted_name
       (name))
@@ -152,9 +187,10 @@ g: 10 + cool
 Associativity
 ================================================================================
 
-a: 4 + c + d
+a: 4 + c e + d
 b: 1 - 4.5 * 45 + 5
-c: (12 - e) + 4
+c: (12 - e f) + 4
+d: 4 ** 5 * 12 // 3 / 4
 
 --------------------------------------------------------------------------------
 
@@ -193,53 +229,20 @@ c: (12 - e) + 4
           (reference
             (dotted_name
               (name))))
+        (number))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (ar_binary_expression
+          (ar_binary_expression
+            (ar_binary_expression
+              (number)
+              (number))
+            (number))
+          (number))
         (number)))))
-
-================================================================================
-Error unary -
-:error
-================================================================================
-
-c: a -5
-
---------------------------------------------------------------------------------
-
-================================================================================
-Error without spaces
-:error
-================================================================================
-
-c: 1+5
-
---------------------------------------------------------------------------------
-
-================================================================================
-Can't mix number and boolean (TODO)
-:error
-:skip
-================================================================================
-
-c: 4.5 - oui
-
---------------------------------------------------------------------------------
-
-================================================================================
-Error with string
-:error
-================================================================================
-
-c: 4.5 + "ab"
-
---------------------------------------------------------------------------------
-
-================================================================================
-Error with date
-:error
-================================================================================
-
-c: 01/12/2024 + 41 jours
-
---------------------------------------------------------------------------------
 
 ================================================================================
 Multiline expression - YAML style
@@ -254,42 +257,32 @@ rule:
     / valeur d'acquisition
 
 --------------------------------------------------------------------------------
-    (source_file
-      (rule
-        (dotted_name
-          (name))
-        (rule_body
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (ar_binary_expression
+        (number)
+        (ar_binary_expression
+          (number)
+          (number)))))
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (mechanism
+        (m_unary
+          (m_unary_name)
           (ar_binary_expression
-            (number)
             (ar_binary_expression
-              (number)
-              (number)))))
-      (rule
-        (dotted_name
-          (name))
-        (rule_body
-          (mechanism
-            (m_unary
-              (m_unary_name)
-              (ar_binary_expression
-                (ar_binary_expression
-                  (reference
-                    (dotted_name
-                      (name)
-                      (name)
-                      (name)))
-                  (number))
-                (reference
-                  (dotted_name
-                    (name)))))))))
-
-================================================================================
-Multiline expression - line break inside variable name (TODO ?)
-:error
-================================================================================
-
-rule: 
-  valeur: (salarié . cotisations . retraite complémentaire / 1.27) / valeur
-    d'acquisition
-    
---------------------------------------------------------------------------------
+              (reference
+                (dotted_name
+                  (name)
+                  (name)
+                  (name)))
+              (number))
+            (reference
+              (dotted_name
+                (name)))))))))

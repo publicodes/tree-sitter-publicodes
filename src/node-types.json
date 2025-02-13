@@ -846,7 +846,15 @@
       "required": true,
       "types": [
         {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "reference",
+          "named": true
+        },
+        {
+          "type": "rule",
           "named": true
         }
       ]
@@ -1771,6 +1779,10 @@
   },
   {
     "type": " != ",
+    "named": false
+  },
+  {
+    "type": " ** ",
     "named": false
   },
   {

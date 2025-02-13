@@ -1,6 +1,6 @@
-===================================================================================
+================================================================================
 Une possibilité
-===================================================================================
+================================================================================
 
 a:
   une possibilité:
@@ -28,7 +28,7 @@ c:
     choix obligatoire: non
     possibilités:
       - d
------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 (source_file
   (rule
@@ -101,15 +101,76 @@ c:
             (dotted_name
               (name))))))))
 
-===================================================================================
-Une possibilités n'est pas un mécanisme comme les autres
-:error
+================================================================================
+Une possibilités accepte des nombres
 ================================================================================
 
 a:
-  valeur:
-    une possibilité:
-      possibilités:
-        - b
+  une possibilité:
+    - 12
+    - 45
+    - 78 couteaux
 
------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (m_une_possibilité
+        (une_possibilité)
+        (m_une_possibilité_options
+          (number)
+          (number)
+          (number
+            (units
+              (unit))))))))
+
+================================================================================
+Une possibilités accepte des règles
+================================================================================
+
+a:
+  une possibilité:
+    - a: 
+        titre: 12
+        valeur: 5
+    - b:
+        titre: 45
+        valeur: 78
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (rule
+    (dotted_name
+      (name))
+    (rule_body
+      (m_une_possibilité
+        (une_possibilité)
+        (m_une_possibilité_options
+          (rule
+            (dotted_name
+              (name))
+            (rule_body
+              (meta
+                (meta_name)
+                (meta_value
+                  (text_line)))
+              (mechanism
+                (m_unary
+                  (m_unary_name)
+                  (number)))))
+          (rule
+            (dotted_name
+              (name))
+            (rule_body
+              (meta
+                (meta_name)
+                (meta_value
+                  (text_line)))
+              (mechanism
+                (m_unary
+                  (m_unary_name)
+                  (number))))))))))

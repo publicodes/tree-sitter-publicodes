@@ -14,14 +14,14 @@ const any_char_or_special_char = choice(any_char, /\-|\+/);
 const phrase_starting_with = (char) =>
     seq(
         seq(char, repeat(any_char_or_special_char)),
-        repeat(seq(space, seq(any_char, repeat(any_char_or_special_char)))),
+        repeat(seq(space, seq(any_char, repeat(any_char_or_special_char))))
     );
 
 const rule_name = token(phrase_starting_with(letter));
 
 const unit_symbol = /[°%\p{Sc}]/; // °, %, and all currency symbols (to be completed?)
 const unit_identifier = token.immediate(
-    phrase_starting_with(choice(unit_symbol, letter)),
+    phrase_starting_with(choice(unit_symbol, letter))
 );
 
 /* eslint-disable arrow-parens */
@@ -35,7 +35,7 @@ function maybe_with_quote(rule) {
         // This is to be coherent with the YAML parser
         prec(1, seq(token(prec(1, '"')), rule, token(prec(1, '"')))),
         prec(1, seq(token(prec(1, "'")), rule, token(prec(1, "'")))),
-        rule,
+        rule
     );
 }
 
@@ -99,9 +99,9 @@ module.exports = grammar({
                     seq(
                         field("from", $.import_from),
                         optional($._import_into),
-                        field("rules", optional($.import_rules)),
-                    ),
-                ),
+                        field("rules", optional($.import_rules))
+                    )
+                )
             ),
 
         import_from: ($) =>
@@ -112,9 +112,9 @@ module.exports = grammar({
                     seq(
                         $._import_name,
                         optional($._import_source),
-                        optional($._import_url),
-                    ),
-                ),
+                        optional($._import_url)
+                    )
+                )
             ),
         _import_name: ($) =>
             seq($.nom, field("name", maybe_with_quote($.text_line))),
@@ -141,13 +141,13 @@ module.exports = grammar({
                 optional(seq("[", $.tag, "]")),
                 field("rule_name", $.dotted_name),
                 ":",
-                choice(field("body", $.rule_body), $._newline),
+                choice(field("body", $.rule_body), $._newline)
             ),
 
         rule_body: ($) =>
             choice(
                 may_be_indented($, maybe_with_quote($._expression)),
-                indented($, repeat1($._statement)),
+                indented($, repeat1($._statement))
             ),
 
         _statement: ($) =>
@@ -159,14 +159,14 @@ module.exports = grammar({
                 $.s_remplace,
                 $._tags,
                 $.custom_meta,
-                $.m_une_possibilité,
+                $.m_une_possibilité
             ),
 
         // Formule can only appear top-level in a rule
         s_formule: ($) =>
             seq(
                 field("m_name", $.formule),
-                choice($._valeur, indented($, $.m_une_possibilité)),
+                choice($._valeur, indented($, $.m_une_possibilité))
             ),
 
         /*
@@ -177,7 +177,7 @@ module.exports = grammar({
         _valeur: ($) =>
             choice(
                 may_be_indented($, maybe_with_quote($._expression)),
-                indented($, repeat1($.mechanism)),
+                indented($, repeat1($.mechanism))
             ),
 
         mechanism: ($) => choice($.m_unary, $.m_array, $._m_special),
@@ -206,9 +206,9 @@ module.exports = grammar({
                     $,
                     choice(
                         maybe_with_quote($._expression),
-                        repeat1($.mechanism),
-                    ),
-                ),
+                        repeat1($.mechanism)
+                    )
+                )
             ),
         m_array_name: (_) =>
             keywords([
@@ -230,7 +230,7 @@ module.exports = grammar({
                 $.m_durée,
                 $.m_barème_like,
                 $.m_texte,
-                $.m_variable_manquante,
+                $.m_variable_manquante
             ),
 
         m_inversion: ($) =>
@@ -239,7 +239,7 @@ module.exports = grammar({
         m_contexte: ($) =>
             seq(
                 field("m_name", $.contexte),
-                indented($, repeat1(seq($.reference, ":", $._valeur))),
+                indented($, repeat1(seq($.reference, ":", $._valeur)))
             ),
 
         m_variations: ($) =>
@@ -249,9 +249,9 @@ module.exports = grammar({
                     $,
                     seq(
                         repeat1(array_item($, $.m_variation_si)),
-                        optional(array_item($, $.m_variation_sinon)),
-                    ),
-                ),
+                        optional(array_item($, $.m_variation_sinon))
+                    )
+                )
             ),
 
         m_variation_si: ($) =>
@@ -259,7 +259,7 @@ module.exports = grammar({
                 $.si,
                 field("condition", $._valeur),
                 $.alors,
-                field("consequence", $._valeur),
+                field("consequence", $._valeur)
             ),
 
         m_variation_sinon: ($) => seq($.sinon, $._valeur),
@@ -275,9 +275,9 @@ module.exports = grammar({
                     seq(
                         optional(seq($.depuis, field("from", $._date_or_ref))),
                         optional(seq($.jusqu_à, field("to", $._date_or_ref))),
-                        optional(seq($.unité, field("unit", $.m_durée_units))),
-                    ),
-                ),
+                        optional(seq($.unité, field("unit", $.m_durée_units)))
+                    )
+                )
             ),
         _date_or_ref: ($) => maybe_with_quote(choice($.date, $.reference)),
         m_durée_units: (_) =>
@@ -287,7 +287,7 @@ module.exports = grammar({
                 "an",
                 "année civile",
                 "trimestre",
-                "trimestre civil",
+                "trimestre civil"
             ),
 
         m_barème_like: ($) =>
@@ -302,8 +302,8 @@ module.exports = grammar({
                         optional(
                             seq(
                                 $.multiplicateur,
-                                field("multiplier", $._valeur),
-                            ),
+                                field("multiplier", $._valeur)
+                            )
                         ),
                         $.tranches,
                         may_be_indented(
@@ -313,13 +313,13 @@ module.exports = grammar({
                                 optional(
                                     array_item(
                                         $,
-                                        alias($._m_taux_or_montant, $.tranche),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
+                                        alias($._m_taux_or_montant, $.tranche)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             ),
         m_barème_like_name: (_) =>
             keywords(["barème", "taux progressif", "grille"]),
@@ -329,13 +329,13 @@ module.exports = grammar({
                 // With plafond last
                 seq(
                     $._m_taux_or_montant,
-                    seq($.plafond, field("ceiling", $._valeur)),
+                    seq($.plafond, field("ceiling", $._valeur))
                 ),
                 // With plafond first
                 seq(
                     seq($.plafond, field("ceiling", $._valeur)),
-                    $._m_taux_or_montant,
-                ),
+                    $._m_taux_or_montant
+                )
             ),
 
         _m_taux_or_montant: ($) =>
@@ -345,7 +345,7 @@ module.exports = grammar({
             seq(
                 field("m_name", $.texte),
 
-                choice($._text_line, $._paragraph),
+                choice($._text_line, $._paragraph)
             ),
 
         m_une_possibilité: ($) =>
@@ -359,19 +359,20 @@ module.exports = grammar({
                             optional(
                                 seq(
                                     $.choix_obligatoire,
-                                    field("required", $.boolean),
-                                ),
+                                    field("required", $.boolean)
+                                )
                             ),
                             seq(
                                 $.possibilités,
-                                field("options", $.m_une_possibilité_options),
-                            ),
-                        ),
-                    ),
-                ),
+                                field("options", $.m_une_possibilité_options)
+                            )
+                        )
+                    )
+                )
             ),
 
-        m_une_possibilité_options: ($) => array($, $.reference),
+        m_une_possibilité_options: ($) =>
+            array($, choice($.reference, $.rule, $.number)),
 
         m_variable_manquante: ($) =>
             seq(field("m_name", $.variable_manquante), $.reference),
@@ -390,8 +391,8 @@ module.exports = grammar({
                 choice(
                     $.reference,
                     indented($, $._remplace_rule),
-                    array($, choice($._remplace_rule, $.reference)),
-                ),
+                    array($, choice($._remplace_rule, $.reference))
+                )
             ),
 
         _remplace_rule: ($) =>
@@ -399,7 +400,7 @@ module.exports = grammar({
                 $.références_à,
                 field("ref", $.reference),
                 optional(seq($.dans, field("in", $.rule_or_array))),
-                optional(seq($.sauf_dans, field("except", $.rule_or_array))),
+                optional(seq($.sauf_dans, field("except", $.rule_or_array)))
             ),
         rule_or_array: ($) => choice($.reference, array($, $.reference)),
 
@@ -417,9 +418,9 @@ module.exports = grammar({
                     choice(
                         "privé",
                         "résoudre la référence circulaire",
-                        "expérimental",
-                    ),
-                ),
+                        "expérimental"
+                    )
+                )
             ),
 
         /*
@@ -433,8 +434,8 @@ module.exports = grammar({
                     prec(3, $.constant),
                     prec(2, $.reference),
                     $._ar_expression,
-                    $._bool_expression,
-                ),
+                    $._bool_expression
+                )
             ),
 
         _ar_expression: ($) =>
@@ -443,7 +444,7 @@ module.exports = grammar({
                 $.ar_binary_expression,
                 seq("(", $._ar_expression, ")"),
                 $.number,
-                $.reference,
+                $.reference
             ),
 
         ar_unary_expression: ($) => prec(3, seq(/- ?/, $._ar_expression)),
@@ -452,21 +453,29 @@ module.exports = grammar({
             choice(
                 // TODO : power of
                 prec.left(
+                    4,
+                    seq(
+                        $._ar_expression,
+                        token(prec(2, " ** ")),
+                        $._ar_expression
+                    )
+                ),
+                prec.left(
                     2,
                     seq(
                         $._ar_expression,
                         token(prec(2, choice(" * ", " / ", " // "))),
-                        $._ar_expression,
-                    ),
+                        $._ar_expression
+                    )
                 ),
                 prec.left(
                     1,
                     seq(
                         $._ar_expression,
                         token(prec(2, choice(" + ", " - "))),
-                        $._ar_expression,
-                    ),
-                ),
+                        $._ar_expression
+                    )
+                )
             ),
 
         /*
@@ -479,7 +488,7 @@ module.exports = grammar({
                 $.boolean,
                 $.comparison,
                 $.reference,
-                seq("(", $._bool_expression, ")"),
+                seq("(", $._bool_expression, ")")
             ),
 
         comparison: ($) =>
@@ -488,8 +497,8 @@ module.exports = grammar({
                 seq(
                     $._expression,
                     choice(" = ", " != ", " < ", " <= ", " > ", " >= "),
-                    $._expression,
-                ),
+                    $._expression
+                )
             ),
 
         /*
@@ -528,9 +537,9 @@ module.exports = grammar({
             seq(
                 field(
                     "numerators",
-                    seq(optional(token.immediate(space)), $._units),
+                    seq(optional(token.immediate(space)), $._units)
                 ),
-                field("denominators", repeat(seq("/", $._units))),
+                field("denominators", repeat(seq("/", $._units)))
             ),
         _units: ($) => seq($.unit, repeat(seq(".", $.unit))),
         unit: ($) => seq(unit_identifier, optional($.exposant)),
@@ -598,7 +607,7 @@ module.exports = grammar({
         meta: ($) =>
             seq(
                 field("meta_name", $.meta_name),
-                field("meta_value", $.meta_value),
+                field("meta_value", $.meta_value)
             ),
         meta_name: (_) =>
             keywords([
@@ -621,11 +630,11 @@ module.exports = grammar({
                         $,
                         seq(
                             repeat(seq($.text_line, $._newline)),
-                            optional($.text_line),
-                        ),
-                    ),
+                            optional($.text_line)
+                        )
+                    )
                 ),
-                $.text_line,
+                $.text_line
             ),
         // Paragraph are like multiline strings but they do not parse # as comments
         // This needs to be done in the external scanner because otherwise # would be consumed as comments
