@@ -64,5 +64,7 @@ jobs:
         with:
             # An higher node version broke prebuildify on windows, see https://github.com/tree-sitter/workflows/issues/9
             node-version: 20
+            # Skip WASM build as it requires emscripten which is not needed for this project
+            generate-wasm: false
         secrets:
             NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
